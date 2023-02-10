@@ -4,4 +4,3 @@ export const STATE = {
     DECLINED: 'DECLINED',
  };
  
- 

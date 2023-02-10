@@ -48,6 +48,6 @@ const ReservationSchema = new Schema({
 { timestamps: true }
 );
 
-//ReservationSchema.index({createdAt: 1},{expireAfterSeconds:2592000});
+
 
 export default model("Reservation", ReservationSchema);

@@ -68,18 +68,3 @@ export function ensureAdmin(req, res, next) {
         });
     }
 }
-
-
-export function ensureAuth(req, res, next){
-if(req.isAuthenticated()){
-
-    return next();
-
-}else{
-
-    res.redirect('/user/api/sessions/oauth/google');
-}
-
-
-
-}

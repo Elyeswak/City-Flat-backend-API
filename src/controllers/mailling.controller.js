@@ -261,39 +261,3 @@ function sendResetPasswordEmail(user) {
       }
    });
 }
-
-
-export default function sendTheRandomPasswordEmail(user, password) {
-   const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-         user: process.env.EMAIL,
-         pass: process.env.PASSWORD,
-      },
-   });
-   // var newPassword = Math.floor(Math.random() * 900000) + 1000;
-   // user.password = bcrypt.hashSync(newPassword.toString(), 10);
-   const template = handlebars.compile(emailTemplateSource);
-   const title = 'CityFlat Google authentification app password';
-   const message = `Hi there ${user.name}, you'll find down below your new password.
-   Please don't share it with anyone. We'd recommend you to change it after you login.`;
-
-   const htmlToSend = template({
-      title: title,
-      message: message,
-      code: password,
-   });
-   const mailOptions = {
-      from: process.env.EMAIL,
-      to: user.email,
-      subject: 'CityFlat [Google auth generated Password]',
-      html: htmlToSend,
-   };
-   transporter.sendMail(mailOptions, (err, info) => {
-      if (err) {
-         console.log(err);
-      } else {
-         console.log(`Email sent to ${user.email} successfully`);
-      }
-   });
-}

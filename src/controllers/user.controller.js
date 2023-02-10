@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 import userDb from '../models/user.model.js';
+import notificationDb from '../models/notification.model.js';
 import { validationResult } from 'express-validator';
 import { sendVerificationEmail } from './mailling.controller.js';
 
@@ -198,6 +199,9 @@ export function httpDeleteOneUser(req, res) {
       .catch((err) => res.status(500).json({ error: err.message }));
 }
 
+
+
+
 export function httpResetPassword(req, res) {
    const { oldPassword, newPassword } = req.body;
    findOneUserByFilter(req.params.param)
@@ -228,9 +232,6 @@ export function httpResetPassword(req, res) {
       .catch((err) => res.status(500).json({ error: err.message }));
 }
 
-
-
-
 /**
  * A helper function that gets the user
  * with a given id or username or email
@@ -246,12 +247,47 @@ export async function findOneUserByFilter(userFilter) {
          { _id: userId },
          { email: userFilter },
          { name: userFilter },
-         { googleID: userFilter },
       ],
    });
 }
 //a function that adds jwt to user object
 
+//notifications
+
+export function httpGetMyNotifications(req, res) {
+   console.log(req.user);
+   findOneUserByFilter(req.user.id)
+      .then((foundUser) => {
+         if (!foundUser) {
+
+            return res.status(404).json({ error: 'User not found!' });
+         } else {
+            
+            
+            res.status(200).json(foundUser.notifications);
+            console.log(foundUser.notifications);
+
+         }
+      })
+      .catch((err) => res.status(500).json({ error: err.message }));
+     
+}
+function notificationFormat(notification) {
+   return {
+      User: notification.User,
+      code: notification.code,
+      name: notification.name,
+      description: notification.description,
+   };
+}
+
+export function notificationListFormat(notifications) {
+   let foundNotifications = [];
+   notifications.forEach((notification) => {
+      foundNotifications .push(notificationFormat(notification));
+   });
+   return foundNotifications;
+} 
 
 function addTokenToUser(user) {
    const payload = {
@@ -279,17 +315,6 @@ function emailFormat(email) {
 }
 
 
-export default function generateRandomPassword(length) {
-   var result           = '';
-   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-   var charactersLength = characters.length;
-   for ( var i = 0; i < length; i++ ) {
-     result += characters.charAt(Math.floor(Math.random() * 
-charactersLength));
-  }
-  return result;
-}
-
 export function usersListFormat(users) {
    let foundUsers = [];
    users.forEach((user) => {
@@ -297,6 +322,7 @@ export function usersListFormat(users) {
    });
    return foundUsers;
 }
+
 export function userFormat(user) {
    return {
       id: user._id,
@@ -311,7 +337,6 @@ export function userFormat(user) {
       isVerified: user.isVerified,
       img: user.img,
       reservations:user.reservations,
-      googleID:user.googleID,
 
    };
 }

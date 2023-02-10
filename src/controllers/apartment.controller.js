@@ -153,7 +153,6 @@ function appartFormat(appartment) {
        rooms: appartment.rooms,
        reviews: appartment.reviews,
        services: appartment.services,
-       rate: appartment.rate,
        img: appartment.img,
  
     };

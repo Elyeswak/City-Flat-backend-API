@@ -1,6 +1,5 @@
 import express from 'express';
 import multer from "../middlewares/multer_config.js";
-import passport from "passport";
 import {
 
    httpLoginUser,
@@ -10,12 +9,15 @@ import {
    httpUpdateOneUser,
    httpGetAllUsers,
    httpResetPassword,
+   httpGetMyNotifications,
+   
 } from '../controllers/user.controller.js';
 
 import {
    httpVerifyEmail,
    httpResetPasswordByEmail,
    httpResendVerificationEmail,
+   
 } from '../controllers/mailling.controller.js';
 
 
@@ -25,7 +27,6 @@ import {
    ensureAdmin,
    ensureUser,
    ensureLoggedIn,
-   ensureAuth,
 } from '../middlewares/authorization-handler.js';
 
 import {
@@ -46,11 +47,11 @@ import {
 
 } from '../controllers/service.controller.js';
 
+
+
 import { 
    httpCreateReservation,
    httpGetMyReservations,
-   httpGetAllReservations,
-   httpGetOneReservation,
    httpDeclineReservation,
    httpAdminAcceptReservation,
    httpAdminDeclineReservation,
@@ -138,14 +139,14 @@ userRouter
    userRouter
    .route('/service/getAllServices')
    .get(httpGetAllServices);
+   //get all notifications for one user
+   userRouter
+   .route('/reservations/getNotifications')
+   .get(ensureUser,httpGetMyNotifications);
 //reservations
    userRouter
    .route('/reservations/getall')
    .get(ensureUser,httpGetMyReservations);
-//admin get all reservations
-   userRouter
-   .route('/reservations/getallReservations')
-   .get(ensureAuth,httpGetAllReservations);
 
    userRouter
    .route('/reservations/addReservation')
@@ -165,9 +166,7 @@ userRouter
    userRouter
    .route('/reservations/decline/:param')
    .delete(ensureUser,httpDeclineReservation);
-   userRouter
-   .route('/reservations/getOne/:param')
-   .get(ensureUser,httpGetOneReservation);
+
    userRouter
    .route('/reservations/accept/:param')
    .post(ensureAdmin,httpAdminAcceptReservation);
@@ -175,21 +174,6 @@ userRouter
    userRouter
    .route('/reservations/adminDecline/:param')
    .delete(ensureAdmin,httpAdminDeclineReservation);
-
-
-   userRouter
-   .get('/auth/google',
-  passport.authenticate('google', { scope: ['profile', 'email'] }));
-
-  userRouter
-  .get('/api/sessions/oauth/google', 
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect(200,'/user/reservations/getallReservations');
-    
-  });
-
 export { userRouter };
 
 

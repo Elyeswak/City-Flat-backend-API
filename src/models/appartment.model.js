@@ -28,10 +28,6 @@ const AppartmentSchema = new Schema({
         type: Number,
         required: true
     },
-    rate: {
-        type: Number,
-        required: true
-    },
     reviews: [{ type: Schema.Types.ObjectId, ref: 'Review', required: false }],
     services: [{ type: Schema.Types.ObjectId, ref: 'Service', required: false }],
     img:

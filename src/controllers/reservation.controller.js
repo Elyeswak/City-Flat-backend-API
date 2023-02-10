@@ -4,7 +4,8 @@ import appartmentDb from '../models/appartment.model.js';
 import userDb from '../models/user.model.js';
 import { validationResult } from 'express-validator';
 import { findOneUserByFilter, userFormat } from '../controllers/user.controller.js';
-import { sendReservationEmail, sendDeclineReservationEmail } from '../controllers/mailling.controller.js';
+import {sendReservationEmail,sendDeclineReservationEmail} from '../controllers/mailling.controller.js';
+import {SendNotification,AdminSendNotification} from '../controllers/notification.controller.js';
 
 
 export function httpGetMyReservations(req, res) {
@@ -30,30 +31,13 @@ export function httpGetMyReservations(req, res) {
 }
 
 
-export function httpGetOneReservation(req, res) {
-
-   findOneReservationByFilter(req.params.param)
-      .then((foundReservation) => {
-         if (!foundReservation) {
-
-            return res.status(404).json({ error: 'Reservation not found!' });
-         } else {
-
-            res.status(200).json(reservationFormat(foundReservation));
-
-
-         }
-      })
-      .catch((err) => res.status(500).json({ error: err.message }));
-}
-
 export function httpCreateReservation(req, res) {
    if (!validationResult(req).isEmpty()) {
       res.status(400).json({ error: validationResult(req).array() });
    } else {
       const user = req.user;
       const newReservation = req.body;
-      console.log(req.body.services);
+
       userDb
          .findOne({ email: user.email })
          .then((founduser) => {
@@ -66,7 +50,8 @@ export function httpCreateReservation(req, res) {
                const appartment = req.body.appartment;
                console.log(founduser);
                newReservation.User = founduser;
-
+              
+                     
                appartmentDb
                   .findOne({ name: appartment.name })
                   .then((appartment) => {
@@ -79,23 +64,34 @@ export function httpCreateReservation(req, res) {
 
 
                         newReservation.appartment = appartment;
-
                         newReservation.code = generateRandomCode(6);
-
+                        
                         reservationDb
                            .create(newReservation)
                            .then((result) => {
                               findOneReservationByFilter(result._id)
                                  .then((register) => {
-
+                                    console.log(AdminSendNotification(req,res,newReservation));
                                     res.status(201).json(reservationFormat(register));
-
-
-
+                                    
+                                    
 
                                  }
 
+                                    //    userDb
+                                    //    .findByIdAndUpdate(
+                                    //     founduser.id,
+                                    //     {
+                                    //        $pushAll: {
+                                    //          reservations: newReservation,
+                                    //        },
 
+                                    //     },
+                                    //     { new: true }
+                                    //  ).then((result) => {
+                                    //    
+                                    //  })
+                                    //  .catch((err) => res.status(500).json({ error: err.message }));
 
 
 
@@ -126,34 +122,6 @@ export function httpCreateReservation(req, res) {
    }
 }
 
-
-async function AddServicesToReservation(req, res, reservation, services) {
-
-   if (!validationResult(req).isEmpty()) {
-      res.status(400).json({ error: validationResult(req).array() });
-   } else {
-
-
-      reservationDb
-         .findByIdAndUpdate(
-            reservation._id,
-            {
-               $pushAll: {
-                  services: services,
-               },
-
-            },
-            { new: true }
-         ).then((register) => {
-            res.status(201).json(reservationFormat(register));
-         })
-         .catch((err) => res.status(500).json({ error: err.message }));
-   }
-
-
-
-
-}
 
 // export function httpDeclineReservation(req, res) {
 //    const user = req.user;
@@ -194,15 +162,15 @@ async function AddServicesToReservation(req, res, reservation, services) {
 
 export function httpDeclineReservation(req, res) {
    const user = req.user;
-   
+   //console.log(req.params.param);
    findOneReservationByFilter(req.params.param)
       .then((foundReservation) => {
          if (!foundReservation) {
             res.status(404).json({ error: 'Reservation not found!' });
          } else {
-
-            console.log("found user : " + foundReservation.User._id);
-            console.log("param user : " + user.id);
+            
+            console.log("found user : "+foundReservation.User._id);
+            console.log("param user : "+user.id);
             if (user.id == foundReservation.User._id) {
                reservationDb
                   .findByIdAndDelete(foundReservation._id)
@@ -222,128 +190,124 @@ export function httpDeclineReservation(req, res) {
       .catch((err) => res.status(500).json({ error: err }));
 }
 
-export function httpAdminDeclineReservation(req, res) {
+export function  httpAdminDeclineReservation(req, res){
 
-
+  
    findOneReservationByFilter(req.params.param)
       .then((foundReservation) => {
          if (!foundReservation) {
             return res.status(404).json({ message: 'Reservation not found!' });
          } else {
+            
+                  if (foundReservation.accepted== true) {
+                     return res.status(400).json({
+                        message: ' reservation already accepted',
+                     });
+                  } else {
+                     userDb
+                        .findById(foundReservation.User._id)
+                        .then((founUser) =>{
 
-            if (foundReservation.accepted == true) {
-               return res.status(400).json({
-                  message: ' reservation already accepted',
-               });
-            } else {
-               userDb
-                  .findById(foundReservation.User._id)
-                  .then((founUser) => {
+                           
+                           appartmentDb
+                           .findById(foundReservation.appartment._id)
+                        .then((foundAppart) =>{
 
-
-                     appartmentDb
-                        .findById(foundReservation.appartment._id)
-                        .then((foundAppart) => {
-
-                           sendDeclineReservationEmail(founUser, foundReservation, foundAppart);
+                        sendDeclineReservationEmail(founUser,foundReservation,foundAppart);
+                        SendNotification(req,res,foundReservation);
                            reservationDb
-                              .findByIdAndUpdate(foundReservation._id, {
-                                 $set: {
-                                    accepted: false,
-                                    state: "DECLINED",
-                                 },
-                              })
-                              .then((reservation) => {
 
-
-                                 res.status(200).json({
-                                    message: `${foundReservation.code} delclined successfully`,
-                                 });
-                              })
-                              .catch((err) => res.status(500).json({ error: err.message }));
+                           .findByIdAndUpdate(foundReservation._id, {
+                              $set: {
+                                 accepted: false,
+                                 state:"DECLINED",
+                              },
+                           })
+                           .then((reservation) => {
+                              
+                         
+                              res.status(200).json({
+                                 message: `${foundReservation.code} delclined successfully`,
+                              });
+                           })
+                           .catch((err) => res.status(500).json({ error: err.message }));
 
 
                         }).catch((err) => res.status(500).json({ error: err.message }));
 
 
-
-                  });
-
-
-
-            }
-
+                           
+                        });
+                   
+                     
+                     
+                  }
+               
          }
       })
       .catch((err) => res.status(500).json({ error: err.message }));
-
+   
 }
 
-export function httpAdminAcceptReservation(req, res) {
+
+
+export function  httpAdminAcceptReservation(req, res){
 
    findOneReservationByFilter(req.params.param)
-      .then((foundReservation) => {
-         if (!foundReservation) {
-            return res.status(404).json({ message: 'Reservation not found!' });
-         } else {
+   .then((foundReservation) => {
+      if (!foundReservation) {
+         return res.status(404).json({ message: 'Reservation not found!' });
+      } else {
+         
+               if (foundReservation.accepted== true) {
+                  return res.status(400).json({
+                     message: ' reservation already accepted',
+                  });
+               } else {
+                   
+                  reservationDb
+                        .findByIdAndUpdate(foundReservation._id, {
+                           $set: {
+                              accepted: true,
+                           },
+                        })
+                        .then((result) =>{
+                           userDb
+                     .findById(foundReservation.User._id)
+                     .then((founUser) =>{
+                        sendReservationEmail(founUser,foundReservation);
 
-            if (foundReservation.accepted == true) {
-               return res.status(400).json({
-                  message: ' reservation already accepted',
-               });
-            } else {
-
-               reservationDb
-                  .findByIdAndUpdate(foundReservation._id, {
-                     $set: {
-                        accepted: true,
-                        state: "ACCEPTED",
-                     },
-                  })
-                  .then((result) => {
-                     userDb
-                        .findById(foundReservation.User._id)
-                        .then((founUser) => {
-                           sendReservationEmail(founUser, foundReservation);
-
-                           res.status(200).json({
-                              message: `${foundReservation.code} accepted successfully`,
-                           });
+                        res.status(200).json({
+                           message: `${foundReservation.code} accepted successfully`,
+                        });
+                     }
+                    
+                     )
+                     .catch((err) =>
+                        res.status(500).json({
+                           error: err.message,
+                        })
+                     );
+                          
+                          
                         }
-
+                          
                         )
                         .catch((err) =>
-                           res.status(500).json({
-                              error: err.message,
-                           })
+                           res.status(500).json({ error: err.message })
                         );
+                  
+               }
+            
+      }
+   })
+   .catch((err) => res.status(500).json({ error: err.message }));
 
-
-                  }
-
-                  )
-                  .catch((err) =>
-                     res.status(500).json({ error: err.message })
-                  );
-
-            }
-
-         }
-      })
-      .catch((err) => res.status(500).json({ error: err.message }));
 
 
 }
 
-//get all reservations
-export function httpGetAllReservations(req, res) {
-   reservationDb
-       .find()
-       .then((reservations) => {
-           res.status(200).json(reservationListFormat(reservations));
-       })
-       .catch((err) => res.status(500).json({ error: err.message }));
-}
+
 
 export async function findOneReservationByFilter(reservationFilter) {
    var reservationtId = null;
@@ -355,7 +319,7 @@ export async function findOneReservationByFilter(reservationFilter) {
          { _id: reservationtId },
          { code: reservationFilter },
          { User: reservationFilter },
-
+         
       ],
    });
 }
@@ -371,7 +335,6 @@ function reservationFormat(reservation) {
       servicesFee: reservation.servicesFee,
       nightsFee: reservation.nightsFee,
       accepted: reservation.accepted,
-      state: reservation.state,
       services: reservation.services,
       User: reservation.User,
       appartment: reservation.appartment,
@@ -395,5 +358,3 @@ function generateRandomCode(length) {
    }
    return result;
 }
-
-

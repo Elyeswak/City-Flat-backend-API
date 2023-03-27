@@ -22,10 +22,9 @@ export function httpAddAppartment(req, res) {
 
                     // newAppartment.name = newAppartment.name.toLowerCase();
 
-
                     if (req.file) {
-                        newAppartment.img = req.file.path;
-                    }
+                     newAppartment.img = '../public/images/' + req.file.filename;
+                 }
                     apartmentDb
                         .create(newAppartment)
                         .then((result) => {
@@ -200,7 +199,7 @@ export function httpGetAllApparts(req, res) {
   } catch (error) {
     console.error(error);
     // Return an error response
-    return res.status(500).json({ message: 'An error occurred while updating the booked dates' });
+    
   }
 }
 
@@ -244,7 +243,7 @@ function appartFormat(appartment) {
        rooms: appartment.rooms,
        reviews: appartment.reviews,
        services: appartment.services,
-      
+       type: appartment.type,
        img: appartment.img,
  
     };

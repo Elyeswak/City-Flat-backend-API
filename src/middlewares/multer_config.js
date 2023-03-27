@@ -13,17 +13,17 @@ export default function (image, size) {
       storage: diskStorage({
          destination: (req, file, callback) => {
             const __dirname = dirname(fileURLToPath(import.meta.url));
-            callback(null, join(__dirname, '../public/images'));
+            callback(null, join(__dirname, '../public/images').replace(/\\/g, '/'));
          },
          filename: (req, file, callback) => {
             const name = file.originalname.split(' ').join('_');
             const extension = MIME_TYPES[file.mimetype];
-            callback(null, name + Date.now() + '.' + extension);
+            const filename = name + Date.now() + '.' + extension;
+            callback(null, filename);
          },
       }),
       limits: size,
    }).single(image);
 }
-
 
 

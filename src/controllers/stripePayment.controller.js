@@ -49,8 +49,8 @@ export async function createPaymentIntent(amount, customerId, paymentMethod) {
 
     return paymentIntent;
   } catch (err) {
-    console.error(err);
-    throw new Error(err);
+    console.error(err.message);
+    throw new Error(err.message);
   }
 }
 

@@ -203,7 +203,7 @@ export function sendUserReservationEmail(user,reservation,amount) {
 
    const template = handlebars.compile(emailReservationTemplateSource);
    const title = 'CityFlat Reservation feedback';
-   const message = `Hi there ${user.username}, We're excited to inform you that your reservation is sent to us for ${reservation.appartment.name}.
+   const message = `Hi there ${user.username}, We're excited to inform you that your reservation is sent to us for ${reservation.Order.appartment.name}.
 your reservation code is : ${reservation.code} /
 your payment checkout is successfully done .
 amount : ${amount} euro.

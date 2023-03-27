@@ -51,6 +51,7 @@ import {
 
 import {
    httpCreateReservation,
+   httpCreateOrder,
    httpGetMyReservations,
    httpGetAllReservations,
    httpGetOneReservation,
@@ -144,15 +145,18 @@ userRouter
    .route('/reservations/addReservation')
    .post(
 
-      body('reservation.description').isLength({ min: 5 }),
-      body('reservation.totalPrice'),
-      body('reservation.checkIn').isDate(),
-      body('reservation.checkOut').isDate(),
-      body('reservation.servicesFee'),
-      body('reservation.nightsFee'),
-      //ensureLoggedIn,
+   
       ensureUser,
       httpCreateReservation
+   );
+   //create order
+   userRouter
+   .route('/reservations/createOrder')
+   .post(
+
+   
+      ensureUser,
+      httpCreateOrder
    );
 
 userRouter

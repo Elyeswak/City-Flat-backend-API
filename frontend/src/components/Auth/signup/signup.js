@@ -1,52 +1,12 @@
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { isEmail, isStrongPassword } from "validator";
 import AuthService from "../../../services/Auth.services";
 
 import "./signup.css";
-
-/*==============Validations==============*/
-
-//email validation check
-const validEmail = (value) => {
-  if (!isEmail(value)) {
-    return (
-      <div className="invalid-feedback d-block">This is not a valid email.</div>
-    );
-  }
-};
-
-//username validation check
-const vname = (value) => {
-  if (value.length < 4 || value.length > 20) {
-    return (
-      <div className="invalid-feedback d-block">
-        The username must be between 4 and 20 characters.
-      </div>
-    );
-  }
-};
-
-//password validation check
-const vpassword = (value) => {
-  if (!isStrongPassword(value)) {
-    return (
-      <div className="invalid-feedback d-block">
-        <ol>
-          <li>The password must have at least 8 characters.</li>
-          <li>The password must contain at least 1 lowercase.</li>
-          <li>The password must contain at least 1 uppercase.</li>
-          <li>The password must contain at least 1 symbole.</li>
-          <li>The password must contain at least 1 number.</li>
-        </ol>
-      </div>
-    );
-  }
-};
-
-/*==============End Validations==============*/
 
 function Signup() {
   const userRef = useRef();
@@ -106,6 +66,7 @@ function Signup() {
       }
     );
   };
+
   return (
     <div className="signupPage ">
       <main>
@@ -191,7 +152,6 @@ function Signup() {
                         icon={faEye}
                       />
                     )}
-
                   </div>
                   <div className="reset__options">
                     <div>

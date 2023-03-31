@@ -3,9 +3,38 @@ import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/footer";
 import Rate from "../Rate/Rate";
 import "./ConfirmationPage.css";
+import {
+  faBowlFood,
+  faCar,
+  faParking,
+  faShirt,
+  faToolbox,
+  faTools,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function PaymentPage() {
   const [rating, setRating] = useState(0);
+
+  /**GET ALL ITEMS FROM LOCAL STORAGE */
+  const apartment = JSON.parse(localStorage.getItem("apartment"));
+  const servicesPrice = JSON.parse(localStorage.getItem("servicesPrice"));
+  const apartmentPrice = JSON.parse(localStorage.getItem("apartmentPrice"));
+  const totalPrice = JSON.parse(localStorage.getItem("totalPrice"));
+  const startDate = JSON.parse(localStorage.getItem("startDate"));
+  const endDate = JSON.parse(localStorage.getItem("endDate"));
+  const serviceNames = JSON.parse(localStorage.getItem("serviceNames"));
+  const diffInDays = JSON.parse(localStorage.getItem("diffInDays"));
+
+  /**DISPLAY ICONS ACCORDING TO THE SERVICES */
+  const serviceIcons = {
+    Car: <FontAwesomeIcon icon={faCar} />,
+    Food: <FontAwesomeIcon icon={faBowlFood} />,
+    Utilities: <FontAwesomeIcon icon={faToolbox} />,
+    Maintenance: <FontAwesomeIcon icon={faTools} />,
+    Parking: <FontAwesomeIcon icon={faParking} />,
+    Laundry: <FontAwesomeIcon icon={faShirt} />,
+  };
 
   return (
     <div className="payment_page">
@@ -19,42 +48,22 @@ function PaymentPage() {
           <div className="row row_props ">
             <div className="col payment_col">
               <div className="card__body__payment">
-                <h4>Reservation details</h4>
-                <h5>Nights :10</h5>
+                <h4>RESERVATION DETAILS</h4>
+                <h5>NIGHTS :{diffInDays}</h5>
                 <h5>
-                  from <strong>21/11/2013 </strong>to{" "}
-                  <strong>01/12/2023</strong>.
+                  FROM <strong>{startDate}</strong> TO{" "}
+                  <strong>{endDate}</strong>.
                 </h5>
                 <hr />
-                <h4>Services</h4>
+                <h4>SERVICES</h4>
                 <div className="row services">
-                  <div className="col col-sm-2">
-                    <img
-                      alt="service parking"
-                      src="./parking.jpg"
-                      className="service_img"
-                    />
-                    <br />
-                    <p className="service_title">Parking</p>
-                  </div>
-                  <div className="col col-sm-2">
-                    <img
-                      alt="service parking"
-                      src="./food.jpg"
-                      className="service_img"
-                    />
-                    <br />
-                    <p className="service_title">Food</p>
-                  </div>
-                  <div className="col col-sm-2">
-                    <img
-                      alt="service parking"
-                      src="./washing.jpg"
-                      className="service_img"
-                    />
-                    <br />
-                    <p className="service_title">Laundry</p>
-                  </div>
+                  {serviceNames.map((serviceName) => (
+                    <div className="col col-sm-2" key={serviceName}>
+                      {serviceIcons[serviceName]}
+                      <br />
+                      <p className="service_title">{serviceName}</p>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -64,10 +73,9 @@ function PaymentPage() {
             >
               <div className="card_infos_payment">
                 <div className="card__body">
-                  <h4>APARTMENT NAME</h4>
-                  <strong style={{ marginBottom: "5%" }}>
-                    Description about the house <br />
-                    and stuff
+                  <h4>{apartment.name}</h4>
+                  <strong style={{ marginBottom: "7%" }}>
+                    {apartment.description}
                   </strong>
                   <Rate rating={rating} onRating={(rate) => setRating(rate)} />
                   <img
@@ -75,18 +83,26 @@ function PaymentPage() {
                     className="apartment_picture"
                     src="./interior-design-ga22c634af_19201.png"
                   />
-                  <h4>Payment details:</h4>
-                  <p>Nights fee: €600</p>
-                  <p>Services fee: €60</p>
-                  <p>Total price: €660</p>
-                  <button className="btn btn-dark custom-confirm-button" >CONFIRM & PAY</button>
-                  <a href="/"><button type="reset" className="btn btn-dark custom-confirm-button" >CANCEL</button></a>
+                  <h4>PAYMENT DETAILS:</h4>
+                  <p>NIGHTS FEES: €{apartmentPrice}</p>
+                  <p>SERVICES FEES: €{servicesPrice}</p>
+                  <p>TOTAL PRICE: €{totalPrice}</p>
+                  <button className="btn btn-dark custom-confirm-button">
+                    SEND REQUEST
+                  </button>
+                  <a href="/">
+                    <button
+                      type="reset"
+                      className="btn btn-dark custom-confirm-button"
+                    >
+                      CANCEL
+                    </button>
+                  </a>
                 </div>
               </div>
             </div>
           </div>
         </div>
- 
       </div>
       <Footer />
     </div>

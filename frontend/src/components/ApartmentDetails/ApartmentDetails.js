@@ -35,7 +35,6 @@ function ApartmentDetails() {
       .get(`http://localhost:9090/user/appartments/${params.id}`)
       .then((response) => {
         setApartment(response.data);
-        console.log(response.data);
         localStorage.setItem("apartment", JSON.stringify(response.data));
 
         const servicePromises = response.data.services.map((el) => {
@@ -110,12 +109,12 @@ function ApartmentDetails() {
   }, []);
   localStorage.setItem("serviceNames", JSON.stringify(serviceNames));
 
-
   /**CALCULATE THE DIFFRENCE BETWEEN 2 DATES */
   const startDate = date[0].startDate;
   const endDate = date[0].endDate;
   const diffInTime = endDate.getTime() - startDate.getTime();
   const diffInDays = diffInTime / (1000 * 3600 * 24);
+  localStorage.setItem("diffInDays", JSON.stringify(diffInDays));
 
   /**APARTMENT PRICE */
   const apartmentPrice = apartment && apartment.pricePerNight * diffInDays;
@@ -126,10 +125,11 @@ function ApartmentDetails() {
   localStorage.setItem("totalPrice", JSON.stringify(totalPrice));
 
   /**STORING THE DATES LOCALLY */
-  localStorage.setItem("startDate", JSON.stringify(startDate));
-  localStorage.setItem("endDate", JSON.stringify(endDate));
-
-
+  
+    format(startDate, "dd/MM/yyyy")
+  
+  localStorage.setItem("startDate", JSON.stringify(format(startDate, "dd/MM/yyyy")));
+  localStorage.setItem("endDate", JSON.stringify(format(endDate, "dd/MM/yyyy")));
 
   /*
    *RENDERING COMPONENT
@@ -259,7 +259,7 @@ function ApartmentDetails() {
                     </div>
                   </div>
                   <div className="row details_row">
-                    <p>Night Fees :€{apartmentPrice}</p>
+                    <p>Nights Fees :€{apartmentPrice}</p>
                     <p>Services Fees :€{totalPricePerNight}</p>
                     <p>Total price :€{totalPrice}</p>
                   </div>

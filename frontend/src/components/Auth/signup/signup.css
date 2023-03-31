@@ -6,6 +6,32 @@
     font-family: font-alethia-pro;
 }
 
+
+
+.submit-btn {
+  background-color: black;
+  color: white;
+  width: 50%;
+  height: 43px;
+  border-radius: 0.1rem;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  transition: 0.3s;
+  font-family: font-alethia-pro;
+}
+
+.submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  width: 50%;
+  height: 43px;
+  border-radius: 0.1rem;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  transition: 0.3s;
+  font-family: font-alethia-pro;
+}
+
 .sign__up__form {
     max-width: 80%;
     width: 100%;

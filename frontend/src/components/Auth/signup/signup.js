@@ -49,7 +49,7 @@ const vpassword = (value) => {
 function Signup() {
   const userRef = useRef();
   const errRef = useRef();
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -57,6 +57,12 @@ function Signup() {
   const [errMsg, setErrMsg] = useState("");
   const [successful, setSuccessful] = useState(false);
   const [message, setMessage] = useState("");
+
+  const [isChecked, setIsChecked] = useState(false);
+
+  function handleCheckboxChange(event) {
+    setIsChecked(event.target.checked);
+  }
 
   const onChangeName = (e) => {
     const name = e.target.value;
@@ -73,17 +79,15 @@ function Signup() {
     setPassword(password);
   };
 
+  console.log(isChecked);
+
   const handleRegister = async (e) => {
     e.preventDefault();
-    AuthService.register(
-      name,
-      email,
-      password,
-    ).then(
+    AuthService.register(name, email, password).then(
       (response) => {
         setMessage(response.data.message);
         setSuccessful(true);
-        navigate('/');
+        navigate("/");
       },
       (error) => {
         const resMessage =
@@ -97,7 +101,7 @@ function Signup() {
         setSuccessful(false);
       }
     );
-  }
+  };
   return (
     <div className="signupPage ">
       <main>
@@ -107,19 +111,20 @@ function Signup() {
               <form
                 autoComplete="off"
                 className="sign__up__form"
-                onSubmit={handleRegister} ref={userRef}
+                onSubmit={handleRegister}
+                ref={userRef}
               >
                 <div className="cityflat_logo">
                   <img alt="" src="./logo-cityflat.png" />
                 </div>
-                    {/** error message */}
-                    <p
-                      ref={errRef}
-                      className={errMsg ? "errmsg" : "offscreen"}
-                      aria-live="assertive"
-                    >
-                      {errMsg}
-                    </p>
+                {/** error message */}
+                <p
+                  ref={errRef}
+                  className={errMsg ? "errmsg" : "offscreen"}
+                  aria-live="assertive"
+                >
+                  {errMsg}
+                </p>
                 <div className="heading">
                   <h2>WELCOME</h2>
                   <h4>Signup to your account</h4>
@@ -127,7 +132,9 @@ function Signup() {
 
                 <div className="actual-form">
                   <div className="input-wrap">
-                    <label className="label-form" htmlFor="name">Your name</label>
+                    <label className="label-form" htmlFor="name">
+                      Your name
+                    </label>
                     <input
                       type="text"
                       id="name"
@@ -139,7 +146,9 @@ function Signup() {
                     />
                   </div>
                   <div className="input-wrap">
-                    <label className="label-form" htmlFor="email">Email</label>
+                    <label className="label-form" htmlFor="email">
+                      Email
+                    </label>
                     <input
                       type="email"
                       id="email"
@@ -152,7 +161,9 @@ function Signup() {
                   </div>
 
                   <div className="input-wrap">
-                    <label className="label-form" htmlFor="password">Password</label>
+                    <label className="label-form" htmlFor="password">
+                      Password
+                    </label>
                     <input
                       type="password"
                       id="password"
@@ -164,16 +175,26 @@ function Signup() {
                     />
                   </div>
                   <div className="reset__options">
-                    <div className="remember-me">
-                      {" "}
-                      <input type="checkbox" className="form-check-input" />
-                      <span> By creating an account, you agree to our</span>
-                      <strong className="terms"> terms</strong>
-                      <span>{` and `}</span>
-                      <strong className="terms">privacy policy</strong>
+                    <div>
+                      <label className="remember-me">
+                        <input
+                          type="checkbox"
+                          checked={isChecked}
+                          onChange={handleCheckboxChange}
+                        /> By creating an account, you agree to the{" "}
+                        <a href="/terms">
+                          <strong>terms</strong>
+                        </a>{" "}
+                        and{" "}
+                        <a href="/conditions">
+                          <strong>conditions</strong>
+                        </a>
+                      </label>
+                      <button disabled={!isChecked} className="submit-btn">
+                        SIGNUP
+                      </button>
                     </div>
                   </div>
-                  <input type="submit" value="SIGN UP" className="sign-btn" />
                 </div>
               </form>
               <div className="separators">

@@ -13,7 +13,7 @@ function TopRatedPremium() {
         </div>
         <div className="col content_col" style={{ backgroundColor: "white" }}>
         <div className="card_infos">
-          <div className="card__body">
+          <div className="card__body_luxury">
             <h2>OUR BEST APARTEMENT</h2>
             <h4>SEBASTIAN-STAINES</h4>
             <p>Description about the house and stuff</p>

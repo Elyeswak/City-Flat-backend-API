@@ -1,3 +1,5 @@
+import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { isEmail, isStrongPassword } from "validator";
@@ -60,6 +62,10 @@ function Signup() {
 
   const [isChecked, setIsChecked] = useState(false);
 
+  /**CHECK FOR PASSWORD VISIBILTY */
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const togglePasswordVisibility = () => setPasswordVisible((prev) => !prev);
+
   function handleCheckboxChange(event) {
     setIsChecked(event.target.checked);
   }
@@ -78,8 +84,6 @@ function Signup() {
     const password = e.target.value;
     setPassword(password);
   };
-
-  console.log(isChecked);
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -165,23 +169,39 @@ function Signup() {
                       Password
                     </label>
                     <input
-                      type="password"
+                      type={passwordVisible ? "text" : "password"}
                       id="password"
                       minLength="4"
                       onChange={onChangePassword}
-                      className="input-field"
+                      className="input-field password_field"
                       autoComplete="off"
                       required
                     />
+
+                    {passwordVisible ? (
+                      <FontAwesomeIcon
+                        onClick={() => setPasswordVisible(false)}
+                        className="eyeIcon"
+                        icon={faEye}
+                      />
+                    ) : (
+                      <FontAwesomeIcon
+                        onClick={() => setPasswordVisible(true)}
+                        className="eyeIcon"
+                        icon={faEye}
+                      />
+                    )}
+
                   </div>
                   <div className="reset__options">
                     <div>
-                      <label className="remember-me">
+                      <label className="remember-me-signup">
                         <input
                           type="checkbox"
                           checked={isChecked}
                           onChange={handleCheckboxChange}
-                        /> By creating an account, you agree to the{" "}
+                        />{" "}
+                        By creating an account, you agree to the{" "}
                         <a href="/terms">
                           <strong>terms</strong>
                         </a>{" "}

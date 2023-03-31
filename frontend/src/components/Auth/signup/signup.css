@@ -1,9 +1,24 @@
-.remember-me{
+.remember-me-signup{
     width: 100%;
     float: left;
     text-align: left;
     font-size: 70%;
     font-family: font-alethia-pro;
+    margin-bottom: 3%;
+}
+
+
+.password_field{
+  padding-right: 30px; /* make room for the icon */
+  position: relative;
+}
+
+.eyeIcon{
+  position: absolute;
+  top: 110%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
 }
 
 

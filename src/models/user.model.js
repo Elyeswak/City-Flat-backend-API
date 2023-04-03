@@ -47,7 +47,6 @@ const UserSchema = new Schema(
     number: {
       type: Number,
       required: false,
-      unique: true,
       validate: {
         validator: function (v) {
           return /^\d{8,}$/.test(v);

@@ -17,6 +17,7 @@ import ThankyouPage from "./components/Thankyou/ThankyouPage";
 import Wishlist from "./components/Wishlist/Wishlist";
 import ConfirmationPage from "./components/Confirmation/ConfirmationPage";
 import ApartmentDetails from "./components/ApartmentDetails/ApartmentDetails";
+import Requestspage from "./components/Requests/Requestspage";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
         <Route path="/wishlist" element={<Wishlist/>}/>
         <Route path="/confirmation" element={<ConfirmationPage/>}/>
         <Route path="/details/:id" element={<ApartmentDetails/>}/>
+        <Route path="/requests" element={<Requestspage/>}/>
         <Route path="/login" element={<Login/>}/>
         <Route path="/signup" element={<Signup/>}/>
       </Routes>

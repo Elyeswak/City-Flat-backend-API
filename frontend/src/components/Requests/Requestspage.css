@@ -1,0 +1,11 @@
+.requests__page{
+    background-color: black;
+    min-height: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.requests_table{
+    padding: 4%;
+}

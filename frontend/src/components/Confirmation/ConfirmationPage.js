@@ -87,9 +87,9 @@ function PaymentPage() {
                   <p>NIGHTS FEES: €{apartmentPrice}</p>
                   <p>SERVICES FEES: €{servicesPrice}</p>
                   <p>TOTAL PRICE: €{totalPrice}</p>
-                  <button className="btn btn-dark custom-confirm-button">
+                 <a href="/requests"> <button className="btn btn-dark custom-confirm-button" >
                     SEND REQUEST
-                  </button>
+                  </button></a>
                   <a href="/">
                     <button
                       type="reset"

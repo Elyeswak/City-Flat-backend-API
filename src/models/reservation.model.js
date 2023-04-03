@@ -16,8 +16,11 @@ const ReservationSchema = new Schema({
        
       },
  
+
   
-    
+      transactionId:{
+        type:String,
+       },
     
 },
 { timestamps: true }

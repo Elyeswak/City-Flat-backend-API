@@ -306,7 +306,7 @@ export function userFormat(user) {
       number: user.number,
       address: user.address,
       isVerified: user.isVerified,
-      birthday: user.birthday,
+      birthdate: user.birthdate,
       role: user.role,
       isVerified: user.isVerified,
       img: user.img,

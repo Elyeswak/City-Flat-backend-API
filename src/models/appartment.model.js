@@ -47,8 +47,8 @@ const AppartmentSchema = new Schema(
           message: 'Rooms should only contain digits',
         },
       },
-      reviews: [{ type: Schema.Types.ObjectId, ref: 'Review', required: false }],
-      services: [{ type: Schema.Types.ObjectId, ref: 'Service', required: false }],
+      reviews: [{ type: Schema.Types.Array, ref: 'Review', required: false }],
+      services: [{ type: Schema.Types.Array, ref: 'Service', required: false }],
       img: {
         type: String,
         required: false,
@@ -56,7 +56,6 @@ const AppartmentSchema = new Schema(
     },
     { timestamps: true }
   );
-
 
 
 export default model("Appartment", AppartmentSchema);

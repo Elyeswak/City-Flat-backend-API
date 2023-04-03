@@ -21,8 +21,26 @@
   cursor: pointer;
 }
 
+.PhoneInputInput{
+  border: 0 !important;
+}
+
+.PhoneInputInput:focus-visible{
+  outline: 0 !important;
+}
 
 
+.separators-signup{
+  margin: 0% 10% 0% 10%;
+}
+
+.offscreen{
+margin: 0 !important;
+}
+main{
+  padding-top: 1% !important;
+  padding-bottom: 1% !important;
+}
 .submit-btn {
   background-color: black;
   color: white;

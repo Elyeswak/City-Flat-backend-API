@@ -93,7 +93,7 @@ userRouter
    .post(httpVerifyEmail);
 //add appartment
 userRouter
-   .route('/appartments/addAppartment')
+   .route('/appartments/addAppartment/verify/:param')
    .post(
       ensureAdmin,
       multer("img", 512 * 1024),

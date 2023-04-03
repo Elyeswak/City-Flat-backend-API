@@ -52,6 +52,7 @@ import {
 import {
    httpCreateReservation,
    httpCreateOrder,
+   httpGetOneOrder,
    httpGetMyReservations,
    httpGetAllReservations,
    httpGetOneReservation,
@@ -165,6 +166,10 @@ userRouter
 userRouter
    .route('/reservations/getOne/:param')
    .get(ensureUser, httpGetOneReservation);
+
+   userRouter
+   .route('/reservations/getOneOrder/:param')
+   .get(ensureUser, httpGetOneOrder);
 userRouter
    .route('/reservations/accept/:param')
    .post(ensureAdmin, httpAdminAcceptReservation);

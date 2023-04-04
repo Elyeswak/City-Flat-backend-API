@@ -108,7 +108,7 @@ export function httpCreateOrder(req, res) {
    }
 
    const user = req.user;
-   const newOrder = req.body.Order;
+   const newOrder = req.body;
 
 
    userDb.findOne({ email: user.email })
@@ -117,10 +117,10 @@ export function httpCreateOrder(req, res) {
             return res.status(404).json({ message: 'User not found!' });
          }
 
-         const appartment = req.body.Order.appartment;
+         const appartment = req.body.appartment;
          newOrder.User = foundUser;
 
-         appartmentDb.findOne({ name: appartment.name })
+         appartmentDb.findOne({ id: appartment._id })
             .then((foundAppartment) => {
                if (!foundAppartment) {
                   return res.status(404).json({ message: 'Appartment not found!' });
@@ -132,7 +132,7 @@ export function httpCreateOrder(req, res) {
                // Call payment function to make payment
                const paymentAmount = calculateOrderTotalFee(newOrder);
                newOrder.totalPrice = paymentAmount;
-               newOrder.isConfirmed=false;
+             
                 orderDb.create(newOrder)
                .then((result) => {
                   res.status(201).json(orderFormat(result));
@@ -554,7 +554,7 @@ function orderFormat(Order) {
       
       servicesFee: Order.servicesFee,
       nightsFee: Order.nightsFee,
-      isConfirmed: Order.isConfirmed,
+      
       state: Order.state,
       services: Order.services,
       User: Order.User,

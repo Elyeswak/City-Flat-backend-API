@@ -5,8 +5,13 @@ import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/footer";
 
 import Badge from "react-bootstrap/Badge";
+import Button from "react-bootstrap/Button";
 
 function RequestsPage() {
+
+
+
+  
   return (
     <div className="requests__page">
       <Navbar />
@@ -35,7 +40,7 @@ function RequestsPage() {
                 <td>Table cell</td>
                 <td>
                   <div>
-                    <Badge bg="warning" text="dark">
+                    <Badge bg="warning" pill text="dark">
                       PENDING
                     </Badge>{" "}
                   </div>
@@ -48,7 +53,16 @@ function RequestsPage() {
                 <td>Table cell</td>
                 <td>Table cell</td>
                 <td>Table cell</td>
-                <td>Table cell</td>
+                <td>
+                  <div>
+                    <div className="badge_status"></div>
+                    <div className="pay_btn"></div>
+                    <Badge bg="success" pill text="dark">
+                      ACCEPTED
+                    </Badge>
+                    <a href="#" class="link  link--metis"><span>PAY</span></a>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <td>3</td>
@@ -57,7 +71,13 @@ function RequestsPage() {
                 <td>Table cell</td>
                 <td>Table cell</td>
                 <td>Table cell</td>
-                <td>Table cell</td>
+                <td>
+                  <div>
+                    <Badge bg="danger" pill text="dark">
+                      DECLINED
+                    </Badge>{" "}
+                  </div>
+                </td>
               </tr>
             </tbody>
           </Table>

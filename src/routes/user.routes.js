@@ -145,8 +145,6 @@ userRouter
 userRouter
    .route('/reservations/addReservation')
    .post(
-
-   
       ensureUser,
       httpCreateReservation
    );

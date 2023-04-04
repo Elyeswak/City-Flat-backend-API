@@ -11,12 +11,17 @@ import {
   faToolbox,
   faTools,
 } from "@fortawesome/free-solid-svg-icons";
+import { format } from "date-fns";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function PaymentPage() {
   const [rating, setRating] = useState(0);
+  const navigate = useNavigate ()
 
   /**GET ALL ITEMS FROM LOCAL STORAGE */
+  const user = JSON.parse(localStorage.getItem("user"));
   const apartment = JSON.parse(localStorage.getItem("apartment"));
   const servicesPrice = JSON.parse(localStorage.getItem("servicesPrice"));
   const apartmentPrice = JSON.parse(localStorage.getItem("apartmentPrice"));
@@ -25,6 +30,9 @@ function PaymentPage() {
   const endDate = JSON.parse(localStorage.getItem("endDate"));
   const serviceNames = JSON.parse(localStorage.getItem("serviceNames"));
   const diffInDays = JSON.parse(localStorage.getItem("diffInDays"));
+  const checkIn = JSON.parse(localStorage.getItem("checkIn"));
+  const checkOut = JSON.parse(localStorage.getItem("checkOut"));
+  const servicesIds = JSON.parse(localStorage.getItem("serviceIds"));
 
   /**DISPLAY ICONS ACCORDING TO THE SERVICES */
   const serviceIcons = {
@@ -35,6 +43,58 @@ function PaymentPage() {
     Parking: <FontAwesomeIcon icon={faParking} />,
     Laundry: <FontAwesomeIcon icon={faShirt} />,
   };
+
+  console.log(apartment.id)
+  const apartmentID = apartment.id
+
+  /**CREATE AN ORDER */
+  function postData() {
+   /* const requestData = {
+      Order: {
+        User: user.id,
+        appartment: apartmentID,
+        description: apartment.description,
+        checkIn: checkIn,
+        checkOut: checkOut,
+        servicesFee: servicesPrice,
+        nightsFee: apartmentPrice,
+        services: servicesIds,
+      },
+    };*/
+
+    console.log("Request data:");
+    
+
+    axios
+      .post(
+        "http://localhost:9090/user/reservations/createOrder",
+       {Order: {
+          User: user.id,
+          appartment: apartmentID,
+          description: apartment.description,
+          checkIn: checkIn,
+          checkOut: checkOut,
+          servicesFee: servicesPrice,
+          nightsFee: apartmentPrice,
+          services: servicesIds,
+        }} ,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        console.log("Response data:", response.data);
+        // Handle success
+        navigate('/requests')
+      })
+      .catch((error) => {
+        console.error("Error message:", error.response.data);
+        // Handle error
+      });
+  }
 
   return (
     <div className="payment_page">
@@ -87,9 +147,12 @@ function PaymentPage() {
                   <p>NIGHTS FEES: €{apartmentPrice}</p>
                   <p>SERVICES FEES: €{servicesPrice}</p>
                   <p>TOTAL PRICE: €{totalPrice}</p>
-                 <a href="/requests"> <button className="btn btn-dark custom-confirm-button" >
+                  <button
+                    className="btn btn-dark custom-confirm-button"
+                    onClick={postData}
+                  >
                     SEND REQUEST
-                  </button></a>
+                  </button>
                   <a href="/">
                     <button
                       type="reset"

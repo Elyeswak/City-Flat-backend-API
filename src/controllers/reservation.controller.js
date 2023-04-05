@@ -5,6 +5,7 @@ import orderDb from '../models/order.model.js';
 import appartmentDb from '../models/appartment.model.js';
 import userDb from '../models/user.model.js';
 import cardM from '../models/userCards.model.js';
+import serviceDb from '../models/service.model.js';
 import { validationResult } from 'express-validator';
 import { findOneUserByFilter, userFormat } from '../controllers/user.controller.js';
 import { sendReservationEmail, sendDeclineReservationEmail, sendUserReservationEmail } from '../controllers/mailling.controller.js';
@@ -117,11 +118,11 @@ export function httpCreateOrder(req, res) {
             return res.status(404).json({ message: 'User not found!' });
          }
 
-         const appartment = req.body.appartment;
+         const appartmentId = newOrder.appartment;
          newOrder.User = foundUser;
 
-         appartmentDb.findOne({ id: appartment._id })
-            .then((foundAppartment) => {
+         appartmentDb.findOne({ id: appartmentId })
+            .then(async (foundAppartment) => {
                if (!foundAppartment) {
                   return res.status(404).json({ message: 'Appartment not found!' });
                }
@@ -132,7 +133,16 @@ export function httpCreateOrder(req, res) {
                // Call payment function to make payment
                const paymentAmount = calculateOrderTotalFee(newOrder);
                newOrder.totalPrice = paymentAmount;
-             
+               const serviceIds = newOrder.services;
+
+               const services = await serviceDb.find({
+                  _id: { $in: serviceIds } // Find all services with IDs in the serviceIds array
+                });
+
+                console.log("services found : "+services);
+                
+                newOrder.services=services;
+
                 orderDb.create(newOrder)
                .then((result) => {
                   res.status(201).json(orderFormat(result));

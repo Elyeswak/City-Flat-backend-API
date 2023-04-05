@@ -17,6 +17,22 @@ const getAllNotificationsForUser = async (userId) => {
   return await Notification.find({ user: userId }).sort({ createdAt: -1 });
 };
 
+export async function getNotificationsForUser(req, res) {
+  try {
+    const userId = req.user.id;
+    const notifications = await getAllNotificationsForUser(userId);
+    
+    if (!notifications || notifications.length === 0) {
+      return res.status(404).json({ error: 'No notifications found for this user!' });
+    }
+
+    res.status(200).json(notificationListFormat(notifications));
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+}
+
 //getone
 const getNotificationByIdForUser = async (notificationId, userId) => {
   try {

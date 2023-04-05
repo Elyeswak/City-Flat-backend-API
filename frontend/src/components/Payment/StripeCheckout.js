@@ -36,6 +36,9 @@ function PaymentForm() {
       cvc: cardCvc,
     };
 
+    const token =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDFiMmI5MTUyNjcxZDFiMmUyOWQwMGQiLCJuYW1lIjoiSG9zbmkiLCJlbWFpbCI6Imx1ZmZ5OUBnbWFpbC5jb20iLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNjc5NTAyMjI1LCJleHAiOjE2ODIwOTQyMjV9.BDC4zOJoxQap4rWJlRVRViFTSJuhmrFrDOLn36U7y5Q";
+
     const reservationData = {
       Order,
       Card: card,
@@ -44,7 +47,13 @@ function PaymentForm() {
     axios
       .post(
         "http://localhost:9090/user/reservations/addReservation",
-        reservationData
+        reservationData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
       )
       .then((response) => {
         console.log(response.data);

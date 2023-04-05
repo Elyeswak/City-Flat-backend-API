@@ -95,7 +95,7 @@ userRouter
    .post(httpVerifyEmail);
 //add appartment
 userRouter
-   .route('/appartments/addAppartment/verify/:param')
+   .route('/appartments/addAppartment')
    .post(
       ensureAdmin,
       multer("img", 512 * 1024),
@@ -146,6 +146,8 @@ userRouter
 userRouter
    .route('/reservations/addReservation')
    .post(
+
+   
       ensureUser,
       httpCreateReservation
    );

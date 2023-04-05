@@ -127,7 +127,6 @@ export function httpCreateOrder(req, res) {
                   return res.status(404).json({ message: 'Appartment not found!' });
                }
 
-
                newOrder.appartment = foundAppartment;
               ///newOrder.code = generateRandomCode(6);
 
@@ -160,7 +159,6 @@ export function httpCreateOrder(req, res) {
 //*********************************Create a reservation**************************************/
 
 export function httpCreateReservation(req, res) {
-   console.log("httpCreateReservation ", req.body);
    if (!validationResult(req).isEmpty()) {
       return res.status(400).json({ error: validationResult(req).array() });
    }
@@ -187,6 +185,10 @@ console.log("total price :"+order.totalPrice);
 
         })
        
+      
+    
+        
+
         if(order.isConfirmed===false){
          return res.status(400).json({ message: 'Order is not confirmed' });
         }
@@ -194,7 +196,7 @@ console.log("total price :"+order.totalPrice);
                 createCustomer(foundUser)
                   .then((customerId) => {
                      const cardDetails = req.body.Card;
-                     console.log("cardDetails => ",cardDetails);
+                     
 
                      if (!cardDetails.number || !cardDetails.exp_month || !cardDetails.exp_year || !cardDetails.cvc) {
                         return res.status(400).json({ error: 'Card details are incomplete' });
@@ -259,7 +261,7 @@ console.log("total price :"+order.totalPrice);
    
                                                 httpMakePayment(req, res, orderfound.totalPrice, customerId, newReservation._id, paymentMethod.id)
                                                 .then((paymentIntent) => {
-                                                   console.log(paymentIntent);
+   
                                                  
    
                                                    reservationDb.create(newReservation)

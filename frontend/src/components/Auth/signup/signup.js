@@ -54,18 +54,21 @@ function Signup() {
 
   /**REGISTER REQUEST */
 
-  const handleSubmit = async (event) => {
+  /*const handleSubmit = async (event) => {
     event.preventDefault(); // prevent form submission
+    const data = {
+      name: name,
+      email: email,
+      password: password,
+      number: number,
+    };
+    console.log('Request data : '+data);
     try {
       const response = await axios.post("http://localhost:9090/user/register", {
-        name: name,
-        email: email,
-        password: password,
-        number: number,
+        data,
       });
-      console.log(response.data);
+      console.log('Response data : '+response.data);
       setSuccessful(true); // response data if successful
-      
     } catch (error) {
       const resMessage =
         (error.response &&
@@ -78,7 +81,38 @@ function Signup() {
         icon: "error",
         title: "Signup Failed",
         text: resMessage,
-        confirmButtonColor: '#d6ba30',
+        confirmButtonColor: "#d6ba30",
+      });
+    }
+  };*/
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const phoneNumber =  number.replace('+', '');
+    console.log("Data before sending:", name, email, phoneNumber, password);
+    setErrMsg("");
+    try {
+      const response = await axios.post("http://localhost:9090/user/register", {
+        name,
+        email,
+        phoneNumber,
+        password,
+      });
+      console.log(response.data); 
+      setSuccessful(true);// Handle success
+    } catch (error) {
+      const resMessage =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      console.log(resMessage);
+      Swal.fire({
+        icon: "error",
+        title: "Signup Failed",
+        text: resMessage,
+        confirmButtonColor: "#d6ba30",
       });
     }
   };
@@ -97,9 +131,8 @@ function Signup() {
         icon: "success",
         title: "Signup successful!",
         text: "You have been signed up successfully.",
-        confirmButtonColor: '#d6ba30',
+        confirmButtonColor: "#d6ba30",
       }).then(navigate("/"));
-      
     } catch (error) {
       const resMessage =
         (error.response &&
@@ -112,11 +145,10 @@ function Signup() {
         icon: "error",
         title: "Signup Failed",
         text: resMessage,
-        confirmButtonColor: '#d6ba30',
+        confirmButtonColor: "#d6ba30",
       });
     }
-    }
-
+  };
 
   return (
     <>
@@ -240,7 +272,10 @@ function Signup() {
                           id="number"
                           name="number"
                           value={number}
-                          onChange={setNumber}
+                          onChange={(value) => {
+                            console.log(value); // log the phone number here
+                            setNumber(value); // set the phone number state
+                          }}
                           defaultCountry="DE"
                           className="input-field"
                         />

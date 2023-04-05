@@ -34,7 +34,6 @@
     "fs": "^0.0.1-security",
     "handlebars": "^4.7.7",
     "http": "^0.0.1-security",
-    "http-proxy-middleware": "^2.0.6",
     "jsonwebtoken": "^9.0.0",
     "moment": "^2.29.4",
     "mongodb": "^4.13.0",

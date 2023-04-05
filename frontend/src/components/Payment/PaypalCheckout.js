@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import './paypal.css'
 
 function PayPalCheckout(props) {
   const handleSubmit = async (event) => {

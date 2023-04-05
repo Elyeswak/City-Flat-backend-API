@@ -9,7 +9,7 @@ import serviceDb from '../models/service.model.js';
 import { validationResult } from 'express-validator';
 import { findOneUserByFilter, userFormat } from '../controllers/user.controller.js';
 import { sendReservationEmail, sendDeclineReservationEmail, sendUserReservationEmail } from '../controllers/mailling.controller.js';
-
+import {findOneAppartByFilter} from '../controllers/apartment.controller.js';
 import { createCustomer, addCard, httpMakePayment, createCheckoutSession } from '../controllers/stripePayment.controller.js';
 import { updateBookedDates } from "../controllers/apartment.controller.js";
 import { createNotification } from '../controllers/notification.controller.js';
@@ -110,7 +110,7 @@ export function httpCreateOrder(req, res) {
 
    const user = req.user;
    const newOrder = req.body;
-
+   
 
    userDb.findOne({ email: user.email })
       .then((foundUser) => {
@@ -118,17 +118,19 @@ export function httpCreateOrder(req, res) {
             return res.status(404).json({ message: 'User not found!' });
          }
 
-         const appartmentId = newOrder.appartment;
+        
          newOrder.User = foundUser;
-
-         appartmentDb.findOne({ id: appartmentId })
+console.log("appartment id : "+req.body.appartment);
+        findOneAppartByFilter( req.body.appartment )
             .then(async (foundAppartment) => {
+
                if (!foundAppartment) {
                   return res.status(404).json({ message: 'Appartment not found!' });
                }
 
                newOrder.appartment = foundAppartment;
               ///newOrder.code = generateRandomCode(6);
+              console.log(newOrder.appartment);
 
                // Call payment function to make payment
                const paymentAmount = calculateOrderTotalFee(newOrder);

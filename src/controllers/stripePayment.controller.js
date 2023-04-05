@@ -22,7 +22,7 @@ export async function createCustomer(foundUser) {
       userId: foundUser._id,
     },
   });
- console.log("costumer  , ", costumer);
+ console.log("customer  , ", customer);
 
   foundUser.stripeCustomerID = customer.id;
   await foundUser.save();

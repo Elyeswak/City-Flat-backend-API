@@ -139,7 +139,7 @@ export default function Paynow() {
                       </svg>
                     </button>
                     {payMeth === "stripe" ? (
-                      <StripeCheckout />
+                      <StripeCheckout totalPrice={totalPrice} />
                     ) : payMeth === "paypal" ? (
                       <PaypalCheckout totalPrice={totalPrice} />
                     ) : null}

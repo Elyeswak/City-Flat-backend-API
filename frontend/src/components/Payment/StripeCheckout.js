@@ -1,15 +1,10 @@
 import { useState } from "react";
 import axios from "axios";
-const Order = {
-  id: "6421723ad4d003e8797296cd",
-};
 
-function PaymentForm() {
+function PaymentForm(props) {
   const [cardNumber, setCardNumber] = useState("");
   const [cardExpDate, setCardExpDate] = useState("");
   const [cardCvc, setCardCvc] = useState("");
-  const [month, setmonth] = useState("");
-  const [year, setyear] = useState("");
 
   const handleCardNumberChange = (event) => {
     setCardNumber(event.target.value);
@@ -21,23 +16,26 @@ function PaymentForm() {
     setCardCvc(event.target.value);
   };
 
+  const TOTAL = props.price;
+
+  const Order = {
+    id: "642d67f089a4bc9ea5886314",
+    totalPrice: TOTAL,
+  };
+
+  const [year, month] = cardExpDate.split("-");
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (cardExpDate) {
-      setmonth(cardExpDate.split("-")[1]);
-      setyear(cardExpDate.split("-")[0]);
-    }
-
     const card = {
       number: cardNumber,
-      exp_month: month,
-      exp_year: year,
+      exp_month: month && month,
+      exp_year: year && year,
       cvc: cardCvc,
     };
 
-    const token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDFiMmI5MTUyNjcxZDFiMmUyOWQwMGQiLCJuYW1lIjoiSG9zbmkiLCJlbWFpbCI6Imx1ZmZ5OUBnbWFpbC5jb20iLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNjc5NTAyMjI1LCJleHAiOjE2ODIwOTQyMjV9.BDC4zOJoxQap4rWJlRVRViFTSJuhmrFrDOLn36U7y5Q";
+    const user = JSON.parse(localStorage.getItem("user"));
 
     const reservationData = {
       Order,
@@ -50,7 +48,7 @@ function PaymentForm() {
         reservationData,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${user.token}`,
             "Content-Type": "application/json",
           },
         }
@@ -113,8 +111,9 @@ function PaymentForm() {
   );
 }
 
-function StripeCheckout() {
-  return <PaymentForm />;
+function StripeCheckout(props) {
+  const price = props.totalPrice;
+  return <PaymentForm price={price} />;
 }
 
 export default StripeCheckout;

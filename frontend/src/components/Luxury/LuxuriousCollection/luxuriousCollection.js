@@ -5,6 +5,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import Rate from "../../Rate/Rate";
+import { motion } from "framer-motion";
 import "./luxuriouCollection.css";
 
 function LuxuriousCollection() {
@@ -40,7 +41,11 @@ function LuxuriousCollection() {
                     <div className="card">
                       <div className="card_img">
                       <Link to={`/details/${data.id}`}>
-                          <img
+                          <motion.img
+                          whileHover={{ scale: 0.8 }}
+                          whileTap={{ scale: 0.8 }}
+                          whileInView={{ opacity: [0, 1] }}
+                          transition={{ duration: 0.7 }}
                             src="./luxury-apartments.png"
                             className="card-img-top"
                             alt="..."

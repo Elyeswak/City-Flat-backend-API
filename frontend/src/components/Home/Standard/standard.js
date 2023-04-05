@@ -1,5 +1,6 @@
 import React from "react";
 import "./standard.css";
+import { motion } from "framer-motion";
 
 function standard() {
   return (
@@ -33,14 +34,20 @@ function standard() {
                     exceed your expectations.
                   </p>
                 </div>
-                <a href="/standard"><button className="btn btn-outline-warning discover__button">
-                  DISCOVER MORE
-                </button></a>
+                <a href="/standard">
+                  <button className="btn btn-outline-warning discover__button">
+                    DISCOVER MORE
+                  </button>
+                </a>
               </div>
             </div>
 
             <div className="description__image">
-              <img
+              <motion.img
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.8 }}
+                whileInView={{ opacity: [0, 1] }}
+                transition={{ duration: 0.7 }}
                 src="./bailey-alexander-pkIJXMezi_E-unsplash 1.png"
                 alt="description"
               />

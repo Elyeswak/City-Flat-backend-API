@@ -1,5 +1,6 @@
 import React from "react";
 import "./luxury.css";
+import {motion} from 'framer-motion'
 
 function luxury() {
   return (

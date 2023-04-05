@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/footer";
 import Rate from "../Rate/Rate";
-import "./ConfirmationPage.css";
+import "./paynow.css";
 import {
   faBowlFood,
   faCar,
@@ -11,19 +11,12 @@ import {
   faToolbox,
   faTools,
 } from "@fortawesome/free-solid-svg-icons";
-import { format } from "date-fns";
-import { format } from "date-fns";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import StripeCheckout from "./StripeCheckout";
+import PaypalCheckout from "./PaypalCheckout";
 
-function PaymentPage() {
-  const [rating, setRating] = useState(0);
-  const navigate = useNavigate ()
-
+export default function Paynow() {
   /**GET ALL ITEMS FROM LOCAL STORAGE */
-  const user = JSON.parse(localStorage.getItem("user"));
   const apartment = JSON.parse(localStorage.getItem("apartment"));
   const servicesPrice = JSON.parse(localStorage.getItem("servicesPrice"));
   const apartmentPrice = JSON.parse(localStorage.getItem("apartmentPrice"));
@@ -32,9 +25,6 @@ function PaymentPage() {
   const endDate = JSON.parse(localStorage.getItem("endDate"));
   const serviceNames = JSON.parse(localStorage.getItem("serviceNames"));
   const diffInDays = JSON.parse(localStorage.getItem("diffInDays"));
-  const checkIn = JSON.parse(localStorage.getItem("checkIn"));
-  const checkOut = JSON.parse(localStorage.getItem("checkOut"));
-  const servicesIds = JSON.parse(localStorage.getItem("serviceIds"));
 
   /**DISPLAY ICONS ACCORDING TO THE SERVICES */
   const serviceIcons = {
@@ -46,57 +36,23 @@ function PaymentPage() {
     Laundry: <FontAwesomeIcon icon={faShirt} />,
   };
 
-  console.log(apartment.id)
-  const apartmentID = apartment.id
+  const [rating, setRating] = useState(0);
 
-  /**CREATE AN ORDER */
-  function postData() {
-   /* const requestData = {
-      Order: {
-        User: user.id,
-        appartment: apartmentID,
-        description: apartment.description,
-        checkIn: checkIn,
-        checkOut: checkOut,
-        servicesFee: servicesPrice,
-        nightsFee: apartmentPrice,
-        services: servicesIds,
-      },
-    };*/
-
-    console.log("Request data:");
-    
-
-    axios
-      .post(
-        "http://localhost:9090/user/reservations/createOrder",
-       {Order: {
-          User: user.id,
-          appartment: apartmentID,
-          description: apartment.description,
-          checkIn: checkIn,
-          checkOut: checkOut,
-          servicesFee: servicesPrice,
-          nightsFee: apartmentPrice,
-          services: servicesIds,
-        }} ,
-        {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then((response) => {
-        console.log("Response data:", response.data);
-        // Handle success
-        navigate('/requests')
-      })
-      .catch((error) => {
-        console.error("Error message:", error.response.data);
-        // Handle error
-      });
+  function animateDisplay() {
+    const divAnimate = document.getElementById("toAnimate");
+    divAnimate && divAnimate.classList.toggle("hidden");
+    setpayMeth("")
   }
+
+  const [payMeth, setpayMeth] = useState("");
+  const [price, setPrice] = useState(10);
+
+  const handleBuyStripe = () => {
+    setpayMeth("stripe");
+  };
+  const handleBuyPaypal = () => {
+    setpayMeth("paypal");
+  };
 
   return (
     <div className="payment_page">
@@ -105,7 +61,7 @@ function PaymentPage() {
       <div className="payment__body">
         <div className="payment__content">
           <div className="payment_title">
-            <h3>CONFIRM YOUR PAYMENT</h3>
+            <h3>PROCEED YOUR PAYMENT</h3>
           </div>
           <div className="row row_props ">
             <div className="col payment_col">
@@ -149,17 +105,45 @@ function PaymentPage() {
                   <p>NIGHTS FEES: €{apartmentPrice}</p>
                   <p>SERVICES FEES: €{servicesPrice}</p>
                   <p>TOTAL PRICE: €{totalPrice}</p>
-                  <button className="btn btn-dark custom-confirm-button">
-                    <Link to={"/paystate"} className="text-light" onClick={postData}>SEND REQUEST</Link>
+                  <button
+                    className="btn btn-dark custom-confirm-button w-50"
+                    onClick={animateDisplay}
+                  >
+                    Pay now
                   </button>
-                  <a href="/">
+                  <div className="pay-meth hidden" id="toAnimate">
                     <button
-                      type="reset"
-                      className="btn btn-dark custom-confirm-button"
+                      className="pay-btn btn paypal me-5"
+                      onClick={handleBuyPaypal}
                     >
-                      CANCEL
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 384 512"
+                        width={30}
+                        height={30}
+                      >
+                        <path d="M111.4 295.9c-3.5 19.2-17.4 108.7-21.5 134-.3 1.8-1 2.5-3 2.5H12.3c-7.6 0-13.1-6.6-12.1-13.9L58.8 46.6c1.5-9.6 10.1-16.9 20-16.9 152.3 0 165.1-3.7 204 11.4 60.1 23.3 65.6 79.5 44 140.3-21.5 62.6-72.5 89.5-140.1 90.3-43.4.7-69.5-7-75.3 24.2zM357.1 152c-1.8-1.3-2.5-1.8-3 1.3-2 11.4-5.1 22.5-8.8 33.6-39.9 113.8-150.5 103.9-204.5 103.9-6.1 0-10.1 3.3-10.9 9.4-22.6 140.4-27.1 169.7-27.1 169.7-1 7.1 3.5 12.9 10.6 12.9h63.5c8.6 0 15.7-6.3 17.4-14.9.7-5.4-1.1 6.1 14.4-91.3 4.6-22 14.3-19.7 29.3-19.7 71 0 126.4-28.8 142.9-112.3 6.5-34.8 4.6-71.4-23.8-92.6z" />
+                      </svg>
                     </button>
-                  </a>
+                    <button
+                      className="pay-btn btn master ms-5"
+                      onClick={handleBuyStripe}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 576 512"
+                        width={30}
+                        height={30}
+                      >
+                        <path d="M64 32C28.7 32 0 60.7 0 96v32H576V96c0-35.3-28.7-64-64-64H64zM576 224H0V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V224zM112 352h64c8.8 0 16 7.2 16 16s-7.2 16-16 16H112c-8.8 0-16-7.2-16-16s7.2-16 16-16zm112 16c0-8.8 7.2-16 16-16H368c8.8 0 16 7.2 16 16s-7.2 16-16 16H240c-8.8 0-16-7.2-16-16z" />
+                      </svg>
+                    </button>
+                    {payMeth === "stripe" ? (
+                      <StripeCheckout />
+                    ) : payMeth === "paypal" ? (
+                      <PaypalCheckout totalPrice={totalPrice} />
+                    ) : null}
+                  </div>
                 </div>
               </div>
             </div>
@@ -170,5 +154,3 @@ function PaymentPage() {
     </div>
   );
 }
-
-export default PaymentPage;

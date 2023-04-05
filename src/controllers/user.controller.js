@@ -55,7 +55,7 @@ export function httpRegisterUser(req, res) {
       userDb
          .findOne({})
          .or([
-            { name: req.body.name?.toLowerCase() },
+            { name: req.body.name.toLowerCase() },
             { email: req.body.email },
          ])
          .then((exists) => {

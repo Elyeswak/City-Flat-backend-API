@@ -105,7 +105,7 @@ export {
   deleteNotificationById,
   updateNotificationById,
   markNotificationAsReadForUser,
-  getNotificationByIdForUser,
+ 
 };
 
 

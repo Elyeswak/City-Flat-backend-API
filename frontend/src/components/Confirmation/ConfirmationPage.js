@@ -12,13 +12,11 @@ import {
   faTools,
 } from "@fortawesome/free-solid-svg-icons";
 import { format } from "date-fns";
+import { format } from "date-fns";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-<<<<<<< HEAD
 import { Link } from "react-router-dom";
-=======
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
->>>>>>> 64e37fab1031fd16e62f9c646c99b7678632ac38
 
 function PaymentPage() {
   const [rating, setRating] = useState(0);
@@ -151,16 +149,8 @@ function PaymentPage() {
                   <p>NIGHTS FEES: €{apartmentPrice}</p>
                   <p>SERVICES FEES: €{servicesPrice}</p>
                   <p>TOTAL PRICE: €{totalPrice}</p>
-<<<<<<< HEAD
                   <button className="btn btn-dark custom-confirm-button">
-                    <Link to={"/paystate"} className="text-light">SEND REQUEST</Link>
-=======
-                  <button
-                    className="btn btn-dark custom-confirm-button"
-                    onClick={postData}
-                  >
-                    SEND REQUEST
->>>>>>> 64e37fab1031fd16e62f9c646c99b7678632ac38
+                    <Link to={"/paystate"} className="text-light" onClick={postData}>SEND REQUEST</Link>
                   </button>
                   <a href="/">
                     <button

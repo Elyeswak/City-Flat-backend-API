@@ -1,11 +1,10 @@
 import React from "react";
 import Table from "react-bootstrap/Table";
-import "./Requestspage.css";
+import "./RequestsPage.css";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/footer";
 
 import Badge from "react-bootstrap/Badge";
-import Button from "react-bootstrap/Button";
 
 function RequestsPage() {
 

@@ -54,37 +54,6 @@ function Signup() {
 
   /**REGISTER REQUEST */
 
-  /*const handleSubmit = async (event) => {
-    event.preventDefault(); // prevent form submission
-    const data = {
-      name: name,
-      email: email,
-      password: password,
-      number: number,
-    };
-    console.log('Request data : '+data);
-    try {
-      const response = await axios.post("http://localhost:9090/user/register", {
-        data,
-      });
-      console.log('Response data : '+response.data);
-      setSuccessful(true); // response data if successful
-    } catch (error) {
-      const resMessage =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      console.log(resMessage);
-      Swal.fire({
-        icon: "error",
-        title: "Signup Failed",
-        text: resMessage,
-        confirmButtonColor: "#d6ba30",
-      });
-    }
-  };*/
 
   const handleSubmit = async (e) => {
     e.preventDefault();

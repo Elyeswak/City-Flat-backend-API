@@ -70,7 +70,7 @@ function PaymentPage() {
     axios
       .post(
         "http://localhost:9090/user/reservations/createOrder",
-       {Order: {
+       {
           User: user.id,
           appartment: apartmentID,
           description: apartment.description,
@@ -79,7 +79,7 @@ function PaymentPage() {
           servicesFee: servicesPrice,
           nightsFee: apartmentPrice,
           services: servicesIds,
-        }} ,
+        } ,
         {
           headers: {
             Authorization: `Bearer ${user.token}`,

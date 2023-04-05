@@ -1,6 +1,6 @@
 import React from "react";
 import Table from "react-bootstrap/Table";
-import "./RequestsPage.css";
+import "./Requestspage.css";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/footer";
 

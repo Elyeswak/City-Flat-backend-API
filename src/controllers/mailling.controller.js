@@ -229,7 +229,7 @@ check the CityFlat App`;
    });
 }
 
-export function sendDeclineReservationEmail(user,reservation,appartment) {
+export function sendDeclineReservationEmail(user,order,appartment) {
    const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -242,7 +242,7 @@ export function sendDeclineReservationEmail(user,reservation,appartment) {
    const template = handlebars.compile(emailReservationTemplateSource);
    const title = 'CityFlat Reservation feedback';
    const message = `Hi there ${user.name}, We're terribly sorry to inform you that your reservation is declined for ${appartment.name}.
- reservation code is : ${reservation.code}.
+ reservation code is : ${order.code}.
 check your CityFlat App`;
 
    const htmlToSend = template({

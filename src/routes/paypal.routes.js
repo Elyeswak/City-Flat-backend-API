@@ -24,7 +24,7 @@ paypalRouter
             "transactions": [{
                 "amount": {
                     "currency": "EUR",
-                    "total": "150.0"
+                    "total": amount,
                 }
             }]
         };
@@ -69,14 +69,14 @@ paypalRouter
                     "items": [{
                         "name": "item",
                         "sku": "item",
-                        "price": "150.0",
+                        "price": amount,
                         "currency": "EUR",
                         "quantity": 1
                     }]
                 },
                 "amount": {
                     "currency": "EUR",
-                    "total": "150.0"
+                    "total": amount
                 },
                 "description": "This is the payment description."
             }]

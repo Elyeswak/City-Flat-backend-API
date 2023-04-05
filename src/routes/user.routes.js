@@ -57,9 +57,9 @@ import {
    httpGetMyReservations,
    httpGetAllReservations,
    httpGetOneReservation,
-   httpDeclineReservation,
-   httpAdminAcceptReservation,
-   httpAdminDeclineReservation,
+   httpDeclineOrder,
+   httpAdminAcceptOrder,
+   httpAdminDeclineOrder,
 } from '../controllers/reservation.controller.js';
 
 /** Defining the router */
@@ -163,7 +163,7 @@ userRouter
 
 userRouter
    .route('/reservations/decline/:param')
-   .delete(ensureUser, httpDeclineReservation);
+   .delete(ensureUser, httpDeclineOrder);
 userRouter
    .route('/reservations/getOne/:param')
    .get(ensureUser, httpGetOneReservation);
@@ -176,12 +176,12 @@ userRouter
    .route('/orders/Getall')
    .get(ensureUser, httpGetMyOrders);
 userRouter
-   .route('/reservations/accept/:param')
-   .post(ensureAdmin, httpAdminAcceptReservation);
+   .route('/order/accept/:param')
+   .post(ensureAdmin, httpAdminAcceptOrder);
 
 userRouter
-   .route('/reservations/adminDecline/:param')
-   .delete(ensureAdmin, httpAdminDeclineReservation);
+   .route('/order/adminDecline/:param')
+   .delete(ensureAdmin, httpAdminDeclineOrder);
 userRouter
    .route("/webhooks/stripe")
    .post(stripeWebhookMiddleware, (req, res) => {

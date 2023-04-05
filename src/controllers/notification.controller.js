@@ -33,6 +33,20 @@ export async function getNotificationsForUser(req, res) {
   }
 }
 
+export async function getNotificationForUser(req, res) {
+  try {
+    const userId = req.user.id;
+    const notificationId = req.params.notificationId;
+    
+    const notification = await getNotificationByIdForUser(notificationId, userId);
+    
+    res.status(200).json(notificationFormat(notification));
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+}
+
 //getone
 const getNotificationByIdForUser = async (notificationId, userId) => {
   try {

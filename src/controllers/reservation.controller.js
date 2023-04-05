@@ -574,7 +574,7 @@ function reservationFormat(reservation) {
       id: reservation._id,
       Card:Order.Card,
       code: reservation.code,
-     
+      transactionId:reservation.transactionId,
       state: reservation.state,
       Order:reservation.Order
    };

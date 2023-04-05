@@ -52,6 +52,7 @@ import {
 import {
    httpCreateReservation,
    httpCreateOrder,
+   httpGetOneOrder,
    httpGetMyReservations,
    httpGetAllReservations,
    httpGetOneReservation,
@@ -93,7 +94,7 @@ userRouter
    .post(httpVerifyEmail);
 //add appartment
 userRouter
-   .route('/appartments/addAppartment')
+   .route('/appartments/addAppartment/verify/:param')
    .post(
       ensureAdmin,
       multer("img", 512 * 1024),
@@ -144,8 +145,6 @@ userRouter
 userRouter
    .route('/reservations/addReservation')
    .post(
-
-   
       ensureUser,
       httpCreateReservation
    );
@@ -165,6 +164,10 @@ userRouter
 userRouter
    .route('/reservations/getOne/:param')
    .get(ensureUser, httpGetOneReservation);
+
+   userRouter
+   .route('/reservations/getOneOrder/:param')
+   .get(ensureUser, httpGetOneOrder);
 userRouter
    .route('/reservations/accept/:param')
    .post(ensureAdmin, httpAdminAcceptReservation);

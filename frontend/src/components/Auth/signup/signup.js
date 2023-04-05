@@ -1,52 +1,12 @@
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { isEmail, isStrongPassword } from "validator";
-import AuthService from "../../../services/Auth.services";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 
 import "./signup.css";
-
-/*==============Validations==============*/
-
-//email validation check
-const validEmail = (value) => {
-  if (!isEmail(value)) {
-    return (
-      <div className="invalid-feedback d-block">This is not a valid email.</div>
-    );
-  }
-};
-
-//username validation check
-const vname = (value) => {
-  if (value.length < 4 || value.length > 20) {
-    return (
-      <div className="invalid-feedback d-block">
-        The username must be between 4 and 20 characters.
-      </div>
-    );
-  }
-};
-
-//password validation check
-const vpassword = (value) => {
-  if (!isStrongPassword(value)) {
-    return (
-      <div className="invalid-feedback d-block">
-        <ol>
-          <li>The password must have at least 8 characters.</li>
-          <li>The password must contain at least 1 lowercase.</li>
-          <li>The password must contain at least 1 uppercase.</li>
-          <li>The password must contain at least 1 symbole.</li>
-          <li>The password must contain at least 1 number.</li>
-        </ol>
-      </div>
-    );
-  }
-};
-
-/*==============End Validations==============*/
 
 function Signup() {
   const userRef = useRef();
@@ -56,6 +16,8 @@ function Signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [number, setNumber] = useState();
+  const [verificationCode, setVerificationCode] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [successful, setSuccessful] = useState(false);
   const [message, setMessage] = useState("");
@@ -84,172 +46,254 @@ function Signup() {
     const password = e.target.value;
     setPassword(password);
   };
-
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    AuthService.register(name, email, password).then(
-      (response) => {
-        setMessage(response.data.message);
-        setSuccessful(true);
-        navigate("/");
-      },
-      (error) => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-
-        setMessage(resMessage);
-        setSuccessful(false);
-      }
-    );
+  const onChangeCode = (e) => {
+    const code = e.target.value;
+    setVerificationCode(code);
   };
+
+  /**REGISTER REQUEST */
+
+  const handleSubmit = async (event) => {
+    event.preventDefault(); // prevent form submission
+    try {
+      const response = await axios.post("http://localhost:9090/user/register", {
+        name: name,
+        email: email,
+        password: password,
+        number: number,
+      });
+      console.log(response.data);
+      setSuccessful(true) // response data if successful
+    } catch (error) {
+      console.error(error.response.data); // error message if not successful
+    }
+  };
+
+  const handleCodeVerification = async(event) => {
+    event.preventDefault(); // prevent from submission
+    try {
+      const response = await axios.post(`http://localhost:9090/user/verify/${email}`, {
+        verificationCode : verificationCode
+        
+      });
+      console.log(response.data);
+      navigate('/')
+    }catch (error){
+      console.log(error.response.data)
+    }
+    
+  }
+
   return (
-    <div className="signupPage ">
-      <main>
-        <div className="box">
-          <div className="inner-box">
-            <div className="forms-wrap">
-              <form
-                autoComplete="off"
-                className="sign__up__form"
-                onSubmit={handleRegister}
-                ref={userRef}
-              >
-                <div className="cityflat_logo">
+    <>
+      <div className="signupPage ">
+        <main>
+          <div className="box">
+            <div className="inner-box">
+              {successful ? (
+                <div className="forms-wrap">
+                  <form autoComplete="off" className="sign__up__form" onSubmit={handleCodeVerification}>
+                    <div className="cityflat_logo">
+                      <img alt="" src="./logo-cityflat.png" />
+                    </div>
+                    {/** error message */}
+                    <p
+                      ref={errRef}
+                      className={errMsg ? "errmsg" : "offscreen"}
+                      aria-live="assertive"
+                    >
+                      {errMsg}
+                    </p>
+                    <div className="heading">
+                      <h2>WELCOME</h2>
+                      <h4>Verify your account</h4>
+                    </div>
+
+                    <div className="actual-form">
+                      <div className="input-wrap">
+                        <label className="label-form" htmlFor="verificationCode">
+                          Verification code
+                        </label>
+                        <input
+                          type="text"
+                          id="verificationCode"
+                          minLength="4"
+                          onChange={onChangeCode}
+                          className="input-field"
+                          autoComplete="off"
+                          required
+                        />
+                      </div>
+
+                      <div className="reset__options">
+                        <div>
+                          <input
+                            type="submit"
+                            className="submit-btn"
+                            value="VERIFY"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              ) : (
+                <div className="forms-wrap">
+                  <form
+                    autoComplete="off"
+                    className="sign__up__form"
+                    onSubmit={handleSubmit}
+                    ref={userRef}
+                  >
+                    <div className="cityflat_logo">
+                      <img alt="" src="./logo-cityflat.png" />
+                    </div>
+                    {/** error message */}
+                    <p
+                      ref={errRef}
+                      className={errMsg ? "errmsg" : "offscreen"}
+                      aria-live="assertive"
+                    >
+                      {errMsg}
+                    </p>
+                    <div className="heading">
+                      <h2>WELCOME</h2>
+                      <h4>Signup to your account</h4>
+                    </div>
+
+                    <div className="actual-form">
+                      <div className="input-wrap">
+                        <label className="label-form" htmlFor="name">
+                          Your name
+                        </label>
+                        <input
+                          type="text"
+                          id="name"
+                          minLength="4"
+                          onChange={onChangeName}
+                          className="input-field"
+                          autoComplete="off"
+                          required
+                        />
+                      </div>
+                      <div className="input-wrap">
+                        <label className="label-form" htmlFor="email">
+                          Email
+                        </label>
+                        <input
+                          type="email"
+                          id="email"
+                          minLength="4"
+                          onChange={onChangeEmail}
+                          className="input-field"
+                          autoComplete="off"
+                          required
+                        />
+                      </div>
+
+                      <div className="input-wrap">
+                        <label className="label-form" htmlFor="email">
+                          Phone Number
+                        </label>
+                        <PhoneInput
+                          id="number"
+                          name="number"
+                          value={number}
+                          onChange={setNumber}
+                          defaultCountry="DE"
+                          className="input-field"
+                        />
+                      </div>
+
+                      <div className="input-wrap">
+                        <label className="label-form" htmlFor="password">
+                          Password
+                        </label>
+                        <input
+                          type={passwordVisible ? "text" : "password"}
+                          id="password"
+                          minLength="4"
+                          onChange={onChangePassword}
+                          className="input-field password_field"
+                          autoComplete="off"
+                          required
+                        />
+
+                        {passwordVisible ? (
+                          <FontAwesomeIcon
+                            onClick={() => setPasswordVisible(false)}
+                            className="eyeIcon"
+                            icon={faEye}
+                          />
+                        ) : (
+                          <FontAwesomeIcon
+                            onClick={() => setPasswordVisible(true)}
+                            className="eyeIcon"
+                            icon={faEye}
+                          />
+                        )}
+                      </div>
+                      <div className="reset__options">
+                        <div>
+                          <label className="remember-me-signup">
+                            <input
+                              type="checkbox"
+                              checked={isChecked}
+                              onChange={handleCheckboxChange}
+                            />{" "}
+                            By creating an account, you agree to the{" "}
+                            <a href="/terms">
+                              <strong>terms</strong>
+                            </a>{" "}
+                            and{" "}
+                            <a href="/conditions">
+                              <strong>conditions</strong>
+                            </a>
+                          </label>
+                          <input
+                            type="submit"
+                            disabled={!isChecked}
+                            className="submit-btn"
+                            value="SIGNIN"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                  <div className="separators-signup">
+                    <hr className="seperator left" />{" "}
+                    <b style={{ fontFamily: "font-alethia-pro" }}>OR</b>
+                    <hr className="seperator right" />
+                  </div>
+
+                  <div className="social-container-signup">
+                    <a href="#/" className="social">
+                      <img src="./vector.svg" alt="" size="2x" />
+                    </a>
+                    <a href="#/" className="social">
+                      <img src="./google--original.svg" alt="" size="2x" />
+                    </a>
+                    <a href="#/" className="social">
+                      <img src="./apple--original.svg" alt="" size="2x" />
+                    </a>
+                  </div>
+                  <div className="signup">
+                    <span>
+                      You have an account? <a href="/login">Login now</a>
+                    </span>
+                  </div>
+                </div>
+              )}
+              <div className="carousel_login">
+                <div className="">
                   <img alt="" src="./logo-cityflat.png" />
                 </div>
-                {/** error message */}
-                <p
-                  ref={errRef}
-                  className={errMsg ? "errmsg" : "offscreen"}
-                  aria-live="assertive"
-                >
-                  {errMsg}
-                </p>
-                <div className="heading">
-                  <h2>WELCOME</h2>
-                  <h4>Signup to your account</h4>
-                </div>
-
-                <div className="actual-form">
-                  <div className="input-wrap">
-                    <label className="label-form" htmlFor="name">
-                      Your name
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      minLength="4"
-                      onChange={onChangeName}
-                      className="input-field"
-                      autoComplete="off"
-                      required
-                    />
-                  </div>
-                  <div className="input-wrap">
-                    <label className="label-form" htmlFor="email">
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      minLength="4"
-                      onChange={onChangeEmail}
-                      className="input-field"
-                      autoComplete="off"
-                      required
-                    />
-                  </div>
-
-                  <div className="input-wrap">
-                    <label className="label-form" htmlFor="password">
-                      Password
-                    </label>
-                    <input
-                      type={passwordVisible ? "text" : "password"}
-                      id="password"
-                      minLength="4"
-                      onChange={onChangePassword}
-                      className="input-field password_field"
-                      autoComplete="off"
-                      required
-                    />
-
-                    {passwordVisible ? (
-                      <FontAwesomeIcon
-                        onClick={() => setPasswordVisible(false)}
-                        className="eyeIcon"
-                        icon={faEye}
-                      />
-                    ) : (
-                      <FontAwesomeIcon
-                        onClick={() => setPasswordVisible(true)}
-                        className="eyeIcon"
-                        icon={faEye}
-                      />
-                    )}
-
-                  </div>
-                  <div className="reset__options">
-                    <div>
-                      <label className="remember-me-signup">
-                        <input
-                          type="checkbox"
-                          checked={isChecked}
-                          onChange={handleCheckboxChange}
-                        />{" "}
-                        By creating an account, you agree to the{" "}
-                        <a href="/terms">
-                          <strong>terms</strong>
-                        </a>{" "}
-                        and{" "}
-                        <a href="/conditions">
-                          <strong>conditions</strong>
-                        </a>
-                      </label>
-                      <button disabled={!isChecked} className="submit-btn">
-                        SIGNUP
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </form>
-              <div className="separators">
-                <hr className="seperator left" />{" "}
-                <b style={{ fontFamily: "font-alethia-pro" }}>OR</b>
-                <hr className="seperator right" />
-              </div>
-
-              <div className="social-container">
-                <a href="#/" className="social">
-                  <img src="./vector.svg" alt="" size="2x" />
-                </a>
-                <a href="#/" className="social">
-                  <img src="./google--original.svg" alt="" size="2x" />
-                </a>
-                <a href="#/" className="social">
-                  <img src="./apple--original.svg" alt="" size="2x" />
-                </a>
-              </div>
-              <div className="signup">
-                <span>
-                  You have an account? <a href="/login">Login now</a>
-                </span>
-              </div>
-            </div>
-
-            <div className="carousel_login">
-              <div className="">
-                <img alt="" src="./logo-cityflat.png" />
               </div>
             </div>
           </div>
-        </div>
-      </main>
-    </div>
+        </main>
+      </div>
+    </>
   );
 }
 

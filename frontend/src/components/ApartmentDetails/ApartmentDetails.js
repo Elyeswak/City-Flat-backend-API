@@ -109,6 +109,16 @@ function ApartmentDetails() {
   }, []);
   localStorage.setItem("serviceNames", JSON.stringify(serviceNames));
 
+    /**EXTRACT IDS FROM SERVICES*/
+const valueStrIds = value.split(",").map(String);
+const serviceIds = valueStrIds.reduce((acc, curr) => {
+  if (service.some((s) => s.id === curr)) {
+    return [...acc, curr];
+  }
+  return acc;
+}, []);
+localStorage.setItem("serviceIds", JSON.stringify(serviceIds));
+
   /**CALCULATE THE DIFFRENCE BETWEEN 2 DATES */
   const startDate = date[0].startDate;
   const endDate = date[0].endDate;
@@ -125,11 +135,13 @@ function ApartmentDetails() {
   localStorage.setItem("totalPrice", JSON.stringify(totalPrice));
 
   /**STORING THE DATES LOCALLY */
-  
-    format(startDate, "dd/MM/yyyy")
-  
   localStorage.setItem("startDate", JSON.stringify(format(startDate, "dd/MM/yyyy")));
   localStorage.setItem("endDate", JSON.stringify(format(endDate, "dd/MM/yyyy")));
+
+  localStorage.setItem("checkIn", JSON.stringify(format(startDate, "yyyy-MM-dd")));
+  localStorage.setItem("checkOut", JSON.stringify(format(endDate, "yyyy-MM-dd")));
+
+
 
   /*
    *RENDERING COMPONENT

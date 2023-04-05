@@ -321,16 +321,16 @@ console.log("total price :"+order.totalPrice);
 
 
 
-async function AddServicesToReservation(req, res, reservation, services) {
+async function AddServicesToOrder(req, res, Order, services) {
 
    if (!validationResult(req).isEmpty()) {
       res.status(400).json({ error: validationResult(req).array() });
    } else {
 
 
-      reservationDb
+      orderDb
          .findByIdAndUpdate(
-            reservation._id,
+            Order._id,
             {
                $pushAll: {
                   services: services,
@@ -339,7 +339,7 @@ async function AddServicesToReservation(req, res, reservation, services) {
             },
             { new: true }
          ).then((register) => {
-            res.status(201).json(reservationFormat(register));
+            res.status(201).json(orderFormat(register));
          })
          .catch((err) => res.status(500).json({ error: err.message }));
    }
@@ -351,30 +351,30 @@ async function AddServicesToReservation(req, res, reservation, services) {
 
 
 
-export function httpDeclineReservation(req, res) {
+export function httpDeclineOrder(req, res) {
    const user = req.user;
 
-   findOneReservationByFilter(req.params.param)
-      .then((foundReservation) => {
-         if (!foundReservation) {
+   findOneOrderByFilter(req.params.param)
+      .then((foundOrder) => {
+         if (!foundOrder) {
             res.status(404).json({ error: 'Reservation not found!' });
          } else {
 
-            console.log("found user : " + foundReservation.User._id);
+            console.log("found user : " + foundOrder.User._id);
             console.log("param user : " + user.id);
-            if (user.id == foundReservation.User._id) {
-               reservationDb
-                  .findByIdAndDelete(foundReservation._id)
+            if (user.id == foundOrder.User._id) {
+               orderDb
+                  .findByIdAndDelete(foundOrder._id)
                   .then((result) => {
          ///// creating the decline notification
                      const notification = {
                         user: user.id,
-                        message: 'You have declined the reservation for :'+foundReservation.appartment.name+" reservation code : "+foundReservation.code,
+                        message: 'You have declined the reservation for :'+foundOrder.appartment.name+" reservation code : "+foundOrder.id,
                       };
 
                       createNotification(notification);
                      res.status(200).json({
-                        message: `${foundReservation.code} delclined successfully`,
+                        message: `${foundOrder.id} delclined successfully`,
                      });
                   })
                   .catch((err) => res.status(500).json({ error: err.message }));
@@ -388,32 +388,32 @@ export function httpDeclineReservation(req, res) {
       .catch((err) => res.status(500).json({ error: err }));
 }
 
-export function httpAdminDeclineReservation(req, res) {
+export function httpAdminDeclineOrder(req, res) {
 
 
-   findOneReservationByFilter(req.params.param)
-      .then((foundReservation) => {
-         if (!foundReservation) {
-            return res.status(404).json({ message: 'Reservation not found!' });
+   findOneOrderByFilter(req.params.param)
+      .then((foundOrder) => {
+         if (!foundOrder) {
+            return res.status(404).json({ message: 'Order not found!' });
          } else {
 
-            if (foundReservation.accepted == true) {
+            if (foundOrder.state == "ACCEPTED"||foundOrder.state=='DECLINED') {
                return res.status(400).json({
-                  message: ' reservation already accepted',
+                  message: ' Order already accepted or declined !! ',
                });
             } else {
                userDb
-                  .findById(foundReservation.User._id)
+                  .findById(foundOrder.User._id)
                   .then((founUser) => {
 
 
                      appartmentDb
-                        .findById(foundReservation.appartment._id)
+                        .findById(foundOrder.appartment._id)
                         .then((foundAppart) => {
 
-                           sendDeclineReservationEmail(founUser, foundReservation, foundAppart);
-                           reservationDb
-                              .findByIdAndUpdate(foundReservation._id, {
+                           sendDeclineReservationEmail(founUser, foundOrder, foundAppart);
+                           orderDb
+                              .findByIdAndUpdate(foundOrder._id, {
                                  $set: {
                                     accepted: false,
                                     state: "DECLINED",
@@ -421,13 +421,13 @@ export function httpAdminDeclineReservation(req, res) {
                               })
                               .then((reservation) => {
                                  const notification = {
-                                    user: foundReservation.User._id,
-                                    message: 'Your reservation for :'+foundReservation.appartment.name +" reservation code : "+foundReservation.code+"has been declined by our admin .",
+                                    user: foundOrder.User._id,
+                                    message: 'Your reservation for :'+foundOrder.appartment.name +" reservation code : "+foundOrder.id+"has been declined by our admin .",
                                   };
                                   createNotification(notification);
 
                                  res.status(200).json({
-                                    message: `${foundReservation.code} delclined successfully`,
+                                    message: `${foundOrder.id} delclined successfully`,
                                  });
                               })
                               .catch((err) => res.status(500).json({ error: err.message }));
@@ -449,22 +449,22 @@ export function httpAdminDeclineReservation(req, res) {
 
 }
 
-export function httpAdminAcceptReservation(req, res) {
+export function httpAdminAcceptOrder(req, res) {
 
-   findOneReservationByFilter(req.params.param)
-      .then((foundReservation) => {
-         if (!foundReservation) {
-            return res.status(404).json({ message: 'Reservation not found!' });
+   findOneOrderByFilter(req.params.param)
+      .then((foundOrder) => {
+         if (!foundOrder) {
+            return res.status(404).json({ message: 'Order not found!' });
          } else {
 
-            if (foundReservation.accepted == true) {
+            if (foundOrder.state == "ACCEPTED"||foundOrder.state=='DECLINED')  {
                return res.status(400).json({
-                  message: ' reservation already accepted',
+                  message: ' Order already accepted or declined',
                });
             } else {
 
-               reservationDb
-                  .findByIdAndUpdate(foundReservation._id, {
+               orderDb
+                  .findByIdAndUpdate(foundOrder._id, {
                      $set: {
                         accepted: true,
                         state: "ACCEPTED",
@@ -472,12 +472,12 @@ export function httpAdminAcceptReservation(req, res) {
                   })
                   .then((result) => {
                      userDb
-                        .findById(foundReservation.User._id)
+                        .findById(foundOrder.User._id)
                         .then((founUser) => {
-                           sendReservationEmail(founUser, foundReservation);
+                           sendReservationEmail(founUser, foundOrder);
 
                            res.status(200).json({
-                              message: `${foundReservation.code} accepted successfully`,
+                              message: `${foundOrder.id} accepted successfully`,
                            });
                         }
 
@@ -514,7 +514,7 @@ export function httpGetAllReservations(req, res) {
       })
       .catch((err) => res.status(500).json({ error: err.message }));
 }
-
+//get all orders
 export function httpGetAllOrders(req, res) {
    orderDb
       .find()
@@ -587,7 +587,7 @@ function reservationFormat(reservation) {
       Card:Order.Card,
       code: reservation.code,
       transactionId:reservation.transactionId,
-      state: reservation.state,
+      
       Order:reservation.Order
    };
 }

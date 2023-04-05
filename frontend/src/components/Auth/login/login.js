@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import AuthService from "../../../services/Auth.services";
+import Swal from 'sweetalert2';
 import "./login.css";
 
 
@@ -28,17 +29,25 @@ function Login() {
     setErrMsg("");
   }, [email, password]);
 
+/**LOGIN METHOD */
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(email, password);
     setEmail("");
     setPassword("");
-
+  
     AuthService.login(email, password).then(
       () => {
         setSuccessMsg(true);
         setIsLoggedin(true);
-        navigate('/');
+        Swal.fire({
+          icon: 'success',
+          title: 'Login successful!',
+          text: 'You have been logged in successfully.',
+          confirmButtonColor: '#d6ba30',
+          
+        }).then(navigate('/'));
+        
 
       },
       (error) => {
@@ -49,9 +58,16 @@ function Login() {
           error.message ||
           error.toString();
         console.log(resMessage);
+        Swal.fire({
+          icon: 'error',
+          title: 'Login failed',
+          text: resMessage,
+          confirmButtonColor: '#d6ba30',
+        });
       }
     );
   };
+  
 
   return (
     <>

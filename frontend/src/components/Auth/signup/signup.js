@@ -5,6 +5,7 @@ import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
+import Swal from "sweetalert2";
 
 import "./signup.css";
 
@@ -63,26 +64,59 @@ function Signup() {
         number: number,
       });
       console.log(response.data);
-      setSuccessful(true) // response data if successful
+      setSuccessful(true); // response data if successful
+      
     } catch (error) {
-      console.error(error.response.data); // error message if not successful
+      const resMessage =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      console.log(resMessage);
+      Swal.fire({
+        icon: "error",
+        title: "Signup Failed",
+        text: resMessage,
+        confirmButtonColor: '#d6ba30',
+      });
     }
   };
 
-  const handleCodeVerification = async(event) => {
+  const handleCodeVerification = async (event) => {
     event.preventDefault(); // prevent from submission
     try {
-      const response = await axios.post(`http://localhost:9090/user/verify/${email}`, {
-        verificationCode : verificationCode
-        
-      });
+      const response = await axios.post(
+        `http://localhost:9090/user/verify/${email}`,
+        {
+          verificationCode: verificationCode,
+        }
+      );
       console.log(response.data);
-      navigate('/')
-    }catch (error){
-      console.log(error.response.data)
+      Swal.fire({
+        icon: "success",
+        title: "Signup successful!",
+        text: "You have been signed up successfully.",
+        confirmButtonColor: '#d6ba30',
+      }).then(navigate("/"));
+      
+    } catch (error) {
+      const resMessage =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      console.log(resMessage);
+      Swal.fire({
+        icon: "error",
+        title: "Signup Failed",
+        text: resMessage,
+        confirmButtonColor: '#d6ba30',
+      });
     }
-    
-  }
+    }
+
 
   return (
     <>
@@ -92,7 +126,11 @@ function Signup() {
             <div className="inner-box">
               {successful ? (
                 <div className="forms-wrap">
-                  <form autoComplete="off" className="sign__up__form" onSubmit={handleCodeVerification}>
+                  <form
+                    autoComplete="off"
+                    className="sign__up__form"
+                    onSubmit={handleCodeVerification}
+                  >
                     <div className="cityflat_logo">
                       <img alt="" src="./logo-cityflat.png" />
                     </div>
@@ -111,7 +149,10 @@ function Signup() {
 
                     <div className="actual-form">
                       <div className="input-wrap">
-                        <label className="label-form" htmlFor="verificationCode">
+                        <label
+                          className="label-form"
+                          htmlFor="verificationCode"
+                        >
                           Verification code
                         </label>
                         <input

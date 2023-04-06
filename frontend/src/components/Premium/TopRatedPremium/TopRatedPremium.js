@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import Rate from "../../Rate/Rate";
 import "./TopRatedPremium.css";
+import { motion } from "framer-motion";
 
 function TopRatedPremium() {
   const [rating, setRating] = useState(0);
   return (
     <section className="top__rated__premium_page">
-      <div className="row row_props ">
+      <motion.div className="row row_props "
+      whileInView={{ y: [100, 50, 0], opacity: [0, 0, 1] }}
+      transition={{ duration: 0.5 }}>
         <div className="col image_col">
           {" "}
           <img alt="" src="./r-architecture-wDDfbanbhl8-unsplash.png" />
@@ -27,7 +30,7 @@ function TopRatedPremium() {
   
         </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

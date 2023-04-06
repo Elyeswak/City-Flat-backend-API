@@ -156,7 +156,9 @@ export function httpCreateReservation(req, res) {
 
   var newReservation = new reservationDb();
 
-  console.log("total price :" + order.totalPrice);
+  console.log(
+    "total price :" + order.totalPrice + " is a :" + typeof order.totalPrice
+  );
 
   userDb
     .findOne({ email: user.email })

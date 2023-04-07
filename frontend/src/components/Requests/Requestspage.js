@@ -5,7 +5,6 @@ import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/footer";
 
 import Badge from "react-bootstrap/Badge";
-import Button from "react-bootstrap/Button";
 
 function RequestsPage() {
 
@@ -60,7 +59,7 @@ function RequestsPage() {
                     <Badge bg="success" pill text="dark">
                       ACCEPTED
                     </Badge>
-                    <a href="#" class="link  link--metis"><span>PAY</span></a>
+                    <a href="/paynow" class="link  link--metis"><span>PAY</span></a>
                   </div>
                 </td>
               </tr>

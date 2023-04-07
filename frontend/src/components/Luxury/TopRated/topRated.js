@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Rate from '../../Rate/Rate'
+import {motion} from 'framer-motion'
 import "./topRated.css"
 
 function TopRated() {
@@ -7,7 +8,10 @@ function TopRated() {
 
   return (
     <section className="top__rated__luxury_page">
-    <div className="row row_props_luxury  ">
+    <motion.div
+        whileInView={{ y: [100, 50, 0], opacity: [0, 0, 1] }}
+        transition={{ duration: 0.5 }}
+       className="row row_props_luxury  ">
       <div className="col image_col_luxury ">
         {" "}
         <img alt="" src="./r-architecture-wDDfbanbhl8-unsplash.png" />
@@ -28,7 +32,7 @@ function TopRated() {
 
       </div>
       </div>
-    </div>
+    </motion.div>
   </section>
   )
 }

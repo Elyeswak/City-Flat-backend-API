@@ -53,12 +53,14 @@ import {
    httpCreateReservation,
    httpCreateOrder,
    httpGetOneOrder,
+   httpGetMyOrders,
+   httpGetAllOrdersForUser,
    httpGetMyReservations,
    httpGetAllReservations,
    httpGetOneReservation,
-   httpDeclineReservation,
-   httpAdminAcceptReservation,
-   httpAdminDeclineReservation,
+   httpDeclineOrder,
+   httpAdminAcceptOrder,
+   httpAdminDeclineOrder,
 } from '../controllers/reservation.controller.js';
 
 /** Defining the router */
@@ -94,7 +96,7 @@ userRouter
    .post(httpVerifyEmail);
 //add appartment
 userRouter
-   .route('/appartments/addAppartment/verify/:param')
+   .route('/appartments/addAppartment')
    .post(
       ensureAdmin,
       multer("img", 512 * 1024),
@@ -145,6 +147,8 @@ userRouter
 userRouter
    .route('/reservations/addReservation')
    .post(
+
+   
       ensureUser,
       httpCreateReservation
    );
@@ -160,7 +164,7 @@ userRouter
 
 userRouter
    .route('/reservations/decline/:param')
-   .delete(ensureUser, httpDeclineReservation);
+   .delete(ensureUser, httpDeclineOrder);
 userRouter
    .route('/reservations/getOne/:param')
    .get(ensureUser, httpGetOneReservation);
@@ -168,13 +172,20 @@ userRouter
    userRouter
    .route('/reservations/getOneOrder/:param')
    .get(ensureUser, httpGetOneOrder);
+
+   userRouter
+   .route('/orders/Getall')
+   .get(ensureUser, httpGetMyOrders);
+   userRouter
+   .route('/orders/GetallUO')
+   .get(ensureUser, httpGetAllOrdersForUser);
 userRouter
-   .route('/reservations/accept/:param')
-   .post(ensureAdmin, httpAdminAcceptReservation);
+   .route('/order/accept/:param')
+   .post(ensureAdmin, httpAdminAcceptOrder);
 
 userRouter
-   .route('/reservations/adminDecline/:param')
-   .delete(ensureAdmin, httpAdminDeclineReservation);
+   .route('/order/adminDecline/:param')
+   .delete(ensureAdmin, httpAdminDeclineOrder);
 userRouter
    .route("/webhooks/stripe")
    .post(stripeWebhookMiddleware, (req, res) => {

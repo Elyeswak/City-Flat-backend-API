@@ -5,11 +5,7 @@ const ReservationSchema = new Schema({
 
     Order:{ type: Schema.Types.ObjectId, ref: 'Order' },
     Card:{ type: Schema.Types.ObjectId, ref: 'UserCard' },
-    state: {
-        type: String,
-        enum: [STATE.PENDING, STATE.ACCEPTED,STATE.DECLINED],
-        default: STATE.PENDING,
-      },
+  
  code: {
         type: String,
         unique: true,

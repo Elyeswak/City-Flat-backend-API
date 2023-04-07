@@ -11,18 +11,16 @@ const stripe = new Stripe(process.env.SECRET_KEY, {
 
 
 export async function createCustomer(foundUser) {
-  console.log("foundUser , ",foundUser);
   if (foundUser.stripeCustomerID) {
     return foundUser.stripeCustomerID;
   }
- console.log("foundUser.stripeID , ", foundUser.stripeCustomerID);
+
   const customer = await stripe.customers.create({
     email: foundUser.email,
     metadata: {
       userId: foundUser._id,
     },
   });
- console.log("customer  , ", customer);
 
   foundUser.stripeCustomerID = customer.id;
   await foundUser.save();

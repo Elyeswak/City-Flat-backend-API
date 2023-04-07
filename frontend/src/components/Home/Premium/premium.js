@@ -1,5 +1,6 @@
 import React from "react";
 import "./premium.css";
+import { motion } from "framer-motion";
 
 function premium() {
   return (
@@ -12,7 +13,11 @@ function premium() {
           <div className="line-in-middle"></div>
           <div className="premium__content">
             <div className="description__image">
-              <img
+              <motion.img
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.8 }}
+                whileInView={{ opacity: [0, 1] }}
+                transition={{ duration: 0.7 }}
                 src="./bailey-alexander-pkIJXMezi_E-unsplash 1.png"
                 alt="description"
               />
@@ -32,16 +37,18 @@ function premium() {
                     entertainment. These apartments offer an exceptional level
                     of comfort and style, with a range of high-quality amenities
                     to elevate your stay.
-                    <br/>
-                    <br/>
-                    Whether you're traveling for work or
-                    leisure, our premium apartments offer an exceptional
-                    experience that is sure to exceed your expectations.
+                    <br />
+                    <br />
+                    Whether you're traveling for work or leisure, our premium
+                    apartments offer an exceptional experience that is sure to
+                    exceed your expectations.
                   </p>
                 </div>
-                <a href="/premium"><button className="btn btn-outline-warning discover__button">
-                  DISCOVER MORE
-                </button></a>
+                <a href="/premium">
+                  <button className="btn btn-outline-warning discover__button">
+                    DISCOVER MORE
+                  </button>
+                </a>
               </div>
             </div>
           </div>

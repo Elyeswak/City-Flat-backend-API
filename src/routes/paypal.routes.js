@@ -1,20 +1,16 @@
 import paypal from "paypal-rest-sdk";
 import express from "express";
 const { PAYPAL_CLIENT_ID, PAYPAL_APP_SECRET } = process.env;
-
 //paypal config
 paypal.configure({
   mode: "sandbox", //sandbox or live
   client_id: PAYPAL_CLIENT_ID,
   client_secret: PAYPAL_APP_SECRET,
 });
-
 /** Defining the router */
 const paypalRouter = express.Router();
-
 //*********paypal payment routes*******//
 let amount = 0;
-
 paypalRouter.get("/success", (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
   amount = req.body.price;
@@ -29,9 +25,7 @@ paypalRouter.get("/success", (req, res) => {
       },
     ],
   };
-
   var paymentId = req.query.paymentId;
-
   paypal.payment.execute(
     paymentId,
     execute_payment_json,
@@ -41,15 +35,12 @@ paypalRouter.get("/success", (req, res) => {
         throw error;
       } else {
         res.status(200).json({ message: "success payment !" });
-
         console.log(JSON.stringify(payment));
       }
     }
   );
 });
-
 paypalRouter.get("/cancel", (req, res) => {});
-
 paypalRouter.post("/pay", async (req, res) => {
   const amount = req.body.price;
   const create_payment_json = {
@@ -94,5 +85,4 @@ paypalRouter.post("/pay", async (req, res) => {
     }
   });
 });
-
 export { paypalRouter };

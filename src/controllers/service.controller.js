@@ -64,7 +64,7 @@ export function httpGetOneService(req, res) {
         .catch((err) => res.status(500).json({ error: err.message }));
 }
 
-//Update one apartment with filter
+//Update one appartment with filter
 export function httpUpdateOneService(req, res) {
     if (!validationResult(req).isEmpty()) {
         res.status(400).json({ error: validationResult(req).array() });
@@ -97,8 +97,6 @@ export function httpUpdateOneService(req, res) {
             .catch((err) => res.status(500).json({ error: err.message }));
     }
 }
-
-
 //delete one appartment with filter
 export function httpDeleteOneService(req, res) {
     findOneServiceByFilter(req.params.param)
@@ -133,8 +131,6 @@ export async function findOneServiceByFilter(serviceFilter) {
         ],
     });
 }
-
-
 //appartment object format to get all appartments
 export function servicesListFormat(services) {
     let foundservices = [];
@@ -143,8 +139,6 @@ export function servicesListFormat(services) {
     });
     return foundservices;
 }
-
-
 
 //Appartment format
 function serviceFormat(service) {

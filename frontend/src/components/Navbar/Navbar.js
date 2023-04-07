@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./Navbar.css";
+import { motion } from "framer-motion";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -13,10 +14,9 @@ import { useNavigate } from "react-router";
 function Navbar() {
   const [openProfile, setOpenProfile] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
-  const navigate=useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const navigate = useNavigate();
   const currentUser = AuthService.getCurrentUser();
-
-  
 
   let menuRef = useRef();
 
@@ -36,9 +36,10 @@ function Navbar() {
 
   const handleLogout = (e) => {
     e.preventDefault();
-    localStorage.removeItem("user");
-    navigate('/login');
-  }
+    localStorage.clear(); // clear local storage
+    setIsLoggedIn(false); // set isLoggedIn state to false
+    navigate("/login");
+  };
 
   return (
     <nav className="nav">
@@ -61,39 +62,63 @@ function Navbar() {
               <div className="menu__content">
                 <div className="menu__items">
                   <ul>
-                    <li>
+                    <motion.li
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.8 }}
+                    transition={{ duration: 0.7 }}
+                    >
                       <a href="/" className="link__item">
                         HOME
                       </a>
-                    </li>
-                    <li>
+                    </motion.li>
+                    <motion.li
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.8 }}
+                    transition={{ duration: 0.7 }}
+                    >
                       {" "}
                       <a href="/standard" className="link__item">
                         STANDARD
                       </a>
-                    </li>
-                    <li>
+                    </motion.li>
+                    <motion.li
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.8 }}
+                    transition={{ duration: 0.7 }}
+                    >
                       <a href="/premium" className="link__item">
                         PREMIUM
                       </a>
-                    </li>
-                    <li>
+                    </motion.li>
+                    <motion.li
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.8 }}
+                    transition={{ duration: 0.7 }}
+                    >
                       {" "}
                       <a href="/luxury" className="link__item">
                         LUXURY
                       </a>
-                    </li>
-                    <li>
+                    </motion.li>
+                    <motion.li
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.8 }}
+                    transition={{ duration: 0.7 }}
+                    >
                       {" "}
                       <a href="/wishlist" className="link__item">
                         WISHLIST
                       </a>
-                    </li>
-                    <li>
+                    </motion.li>
+                    <motion.li
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.8 }}
+                    transition={{ duration: 0.7 }}
+                    >
                       <a href="/contact" className="link__item">
                         CONTACT
                       </a>
-                    </li>
+                    </motion.li>
                   </ul>
                 </div>
               </div>
@@ -128,11 +153,15 @@ function Navbar() {
             <div className="dropdown__list">
               <button className="button-31">Messages</button>
               <button className="button-31">Notifications</button>
-              <a href="/wishlist"><button className="button-31">Wishlist</button></a>
+              <a href="/wishlist">
+                <button className="button-31">Wishlist</button>
+              </a>
               <hr />
               <button className="button-31">Account</button>
               <button className="button-31">Help</button>
-              <button className="button-31" onClick={handleLogout}>Logout</button>
+              <button className="button-31" onClick={handleLogout}>
+                Logout
+              </button>
             </div>
           </div>
         )}

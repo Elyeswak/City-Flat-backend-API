@@ -17,9 +17,61 @@ const getAllNotificationsForUser = async (userId) => {
   return await Notification.find({ user: userId }).sort({ createdAt: -1 });
 };
 
+export async function getNotificationsForUser(req, res) {
+  try {
+    const userId = req.user.id;
+    const notifications = await getAllNotificationsForUser(userId);
+    
+    if (!notifications || notifications.length === 0) {
+      return res.status(404).json({ error: 'No notifications found for this user!' });
+    }
+
+    res.status(200).json(notificationListFormat(notifications));
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+}
+
+export async function getNotificationForUser(req, res) {
+  try {
+    const userId = req.user.id;
+    const notificationId = req.params.notificationId;
+    
+    const notification = await getNotificationByIdForUser(notificationId, userId);
+    
+    res.status(200).json(notificationFormat(notification));
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+}
+
+//getone
+const getNotificationByIdForUser = async (notificationId, userId) => {
+  try {
+    const notification = await Notification.findOne({ _id: notificationId, user: userId });
+    if (!notification) {
+      throw new Error(`Notification ${notificationId} not found for user ${userId}`);
+    }
+    return notification;
+  } catch (err) {
+    console.error(`Error getting notification ${notificationId} for user ${userId}:`, err);
+    throw err;
+  }
+};
 // mark all notifications as read for a user
 const markAllNotificationsAsReadForUser = async (userId) => {
   await Notification.updateMany({ user: userId }, { read: true });
+};
+
+const markNotificationAsReadForUser = async (notificationId, userId) => {
+  try {
+    await Notification.updateOne({ _id: notificationId, user: userId }, { read: true });
+    console.log(`Notification ${notificationId} marked as read for user ${userId}`);
+  } catch (err) {
+    console.error(`Error marking notification ${notificationId} as read for user ${userId}:`, err);
+  }
 };
 
 // delete all notifications for a user
@@ -39,6 +91,26 @@ const updateNotificationById = async (notificationId, updatedNotification) => {
   });
 };
 
+
+export function notificationListFormat(notifications) {
+  let foundNotifs = [];
+  notifications.forEach((notif) => {
+     foundNotifs.push(notificationFormat(notif));
+  });
+  return foundNotifs;
+}
+
+
+export function notificationFormat(notification) {
+  return {
+     id: notification._id,
+     message: notification.message,
+     read: notification.read,
+     readAt: notification.readAt,
+
+  };
+}
+
 export {
   createNotification,
   getAllNotificationsForUser,
@@ -46,6 +118,8 @@ export {
   deleteAllNotificationsForUser,
   deleteNotificationById,
   updateNotificationById,
+  markNotificationAsReadForUser,
+ 
 };
 
 

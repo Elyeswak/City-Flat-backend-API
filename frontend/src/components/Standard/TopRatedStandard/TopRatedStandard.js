@@ -1,13 +1,17 @@
 import React, { useState } from 'react'
 import Rate from "../../Rate/Rate";
 import './TopRatedStandard.css'
+import { motion } from "framer-motion";
 
 
 function TopRatedStandard() {
   const [rating, setRating] = useState(0);
   return (
     <section className="top__rated__standard_page">
-      <div className="row row_props_standard ">
+      <motion.div className="row row_props_standard "
+       whileInView={{ y: [100, 50, 0], opacity: [0, 0, 1] }}
+       transition={{ duration: 0.5 }}
+      >
         <div className="col image_col_standard">
           {" "}
           <img alt="" src="./r-architecture-wDDfbanbhl8-unsplash.png" />
@@ -28,7 +32,7 @@ function TopRatedStandard() {
   
         </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

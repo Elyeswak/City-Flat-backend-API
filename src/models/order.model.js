@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 const { Schema, model } = mongoose;
+import { STATE } from "../models/reservation.enums.js";
 
 const OrdernSchema = new Schema({
   
@@ -24,13 +25,15 @@ const OrdernSchema = new Schema({
         type: Number,
         required: true
     },
-    transactionId:{
-        type:String,
-       },
+  
   
     services: [{ type: Schema.Types.Array, ref: 'Service', required: false, }],
   
-    isConfirmed: { type: Boolean, default: false },
+    state: {
+        type: String,
+        enum: [STATE.PENDING, STATE.ACCEPTED,STATE.DECLINED],
+        default: STATE.PENDING,
+      },
     
 },
 { timestamps: true }

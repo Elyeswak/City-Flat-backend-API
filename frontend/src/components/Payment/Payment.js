@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Paynow from "./Paynow";
-import RequestsPage from "../Requests/RequestsPage"
+import RequestsPage from "../Requests/Requestspage";
 
 export default function Payment() {
   const [isApproved, setIsApproved] = useState(false)

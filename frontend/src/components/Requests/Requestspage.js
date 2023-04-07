@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
-import "./RequestsPage.css";
+import "./Requestspage.css";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/footer";
 import { format } from "date-fns";

@@ -22,8 +22,7 @@ function PaymentForm(props) {
   const TOTAL = props.price;
 
   const Order = {
-    id: "642d72538402001bd9829e43",
-    totalPrice: TOTAL,
+    id: "642ea11037c0fca5fbd1dfbe",
   };
 
   const [year, month] = cardExpDate.split("-");
@@ -58,9 +57,7 @@ function PaymentForm(props) {
       )
       .then((response) => {
         console.log(response.data);
-
-        window.location.replace('/thankyou')
-        // handle successful reservation creation
+        window.location.replace("/thankyou");
       })
       .catch((error) => {
         console.error(error);

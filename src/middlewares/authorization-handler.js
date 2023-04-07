@@ -3,7 +3,7 @@ import { ROLE } from '../models/user.enums.js';
 import validator from 'validator';
 export function ensureUser(req, res, next) {
     try {
-        //console.log(req.headers.authorization);
+        //console.log(req.headers.authorization)
 
         const token = req.headers.authorization.split(' ')[1];
         //console.log(req);

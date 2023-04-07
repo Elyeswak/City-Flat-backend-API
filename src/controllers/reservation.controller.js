@@ -21,26 +21,30 @@ dotenv.config();
 const stripe = new Stripe(process.env.SECRET_KEY, {
    apiVersion: '2020-08-27',
 });
-export function httpGetMyReservations(req, res) {
+export async function httpGetMyReservations(req, res) {
    console.log(req.user);
-   findOneUserByFilter(req.user.id)
-      .then((foundUser) => {
-         if (!foundUser) {
 
-            return res.status(404).json({ error: 'User not found!' });
-         } else {
-            reservationDb
-               .find({
-                  "Order.User": foundUser,
-               })
-               .then((reservations) => {
-                  res.status(200).json(reservationListFormat(reservations));
-               })
-               .catch((err) => res.status(500).json({ error: err.message }));
+   try {
+      const foundUser = await findOneUserByFilter(req.user.id);
+      if (!foundUser) {
+         return res.status(404).json({ error: 'User not found!' });
+      }
 
-         }
+      const reservations = await reservationDb
+    
+      .find()
+      .populate({
+        path: 'Order',
+        match: { User: req.user.id },
+        populate: { path: 'appartment' }
       })
-      .catch((err) => res.status(500).json({ error: err.message }));
+         .populate('Order').populate('Card');
+
+      res.status(200).json(reservationListFormat(reservations));
+   } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: err.message });
+   }
 }
 
 export function httpGetMyOrders(req, res) {
@@ -54,7 +58,7 @@ export function httpGetMyOrders(req, res) {
             orderDb
                .find({
                   User: foundUser,
-               })
+               }).populate('appartment').populate('User')
                .then((orders) => {
                   res.status(200).json(orderListFormat(orders));
                })
@@ -67,7 +71,7 @@ export function httpGetMyOrders(req, res) {
 
 export function httpGetOneReservation(req, res) {
 
-   findOneReservationByFilter(req.params.param)
+   findOneReservationByFilter(req.params.param).populate('Order').populate('Card')
       .then((foundReservation) => {
          if (!foundReservation) {
 
@@ -85,7 +89,7 @@ export function httpGetOneReservation(req, res) {
 
 export function httpGetOneOrder(req, res) {
 
-   findOneOrderByFilter(req.params.param)
+   findOneOrderByFilter(req.params.param).populate('appartment').populate('User')
       .then((foundOrder) => {
          if (!foundOrder) {
 
@@ -133,8 +137,8 @@ console.log("appartment id : "+req.body.appartment);
               console.log(newOrder.appartment);
 
                // Call payment function to make payment
-               const paymentAmount = calculateOrderTotalFee(newOrder);
-               newOrder.totalPrice = paymentAmount;
+              
+           
                const serviceIds = newOrder.services;
 
                const services = await serviceDb.find({
@@ -510,7 +514,7 @@ export function httpAdminAcceptOrder(req, res) {
 //get all reservations
 export function httpGetAllReservations(req, res) {
    reservationDb
-      .find()
+      .find().populate('Order').populate('Card')
       .then((reservations) => {
          res.status(200).json(reservationListFormat(reservations));
       })
@@ -522,7 +526,7 @@ export async function httpGetAllOrdersForUser(req, res) {
      const userId = req.user.id;
      console.log(userId);
      
-     const orders = await orderDb.find({ user: userId });
+     const orders = await  orderDb.find({ user: userId }).populate('appartment').populate('User');
      
      if (!orders || orders.length === 0) {
        return res.status(404).json({ error: 'No orders found for this user!' });
@@ -539,7 +543,7 @@ export async function httpGetAllOrdersForUser(req, res) {
 
  export function httpGetAllOrders(req, res) {
    orderDb
-      .find()
+      .find().populate('appartment').populate('User')
       .then((orders) => {
          res.status(200).json(orderListFormat(orders));
       })
@@ -606,7 +610,7 @@ export function orderListFormat(orders) {
 function reservationFormat(reservation) {
    return {
       id: reservation._id,
-      Card:Order.Card,
+      Card:reservation.Card,
       code: reservation.code,
       transactionId:reservation.transactionId,
       

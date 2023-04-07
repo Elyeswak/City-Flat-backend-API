@@ -142,7 +142,7 @@ userRouter
 //admin get all reservations
 userRouter
    .route('/reservations/getallReservations')
-   .get(ensureAuth, httpGetAllReservations);
+   .get(ensureAdmin, httpGetAllReservations);
 
 userRouter
    .route('/reservations/addReservation')
@@ -224,7 +224,7 @@ userRouter
       passport.authenticate('google', { failureRedirect: '/login' }),
       function (req, res) {
          // Successful authentication, redirect home.
-         res.redirect(200, '/user/reservations/getallReservations');
+        
 
       });
 

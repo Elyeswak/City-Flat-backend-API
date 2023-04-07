@@ -18,8 +18,6 @@ function Login() {
   const [isLoggedin, setIsLoggedin] = useState(false);
   const [successMsg, setSuccessMsg] = useState(false);
 
-
-
   useEffect(() => {
     userRef.current.focus();
   }, []);
@@ -32,7 +30,6 @@ function Login() {
 /**LOGIN METHOD */
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(email, password);
     setEmail("");
     setPassword("");
   

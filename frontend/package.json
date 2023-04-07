@@ -21,6 +21,7 @@
     "framer-motion": "^10.11.2",
     "leaflet": "^1.9.3",
     "libphonenumber-js": "^1.10.26",
+    "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.2",
     "react-date-range": "^1.4.0",

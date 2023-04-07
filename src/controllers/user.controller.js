@@ -57,7 +57,7 @@ export function httpRegisterUser(req, res) {
       userDb
          .findOne({})
          .or([
-            { name: req.body.name.toLowerCase() },
+            { name: req.body.name },
             { email: req.body.email },
          ])
          .then((exists) => {
@@ -66,7 +66,7 @@ export function httpRegisterUser(req, res) {
             } else {
                const newUser = req.body;
 
-               newUser.name = newUser.name.toLowerCase();
+               newUser.name = newUser.name;
                newUser.password = bcrypt.hashSync(req.body.password, 10);
               
                if(req.file){

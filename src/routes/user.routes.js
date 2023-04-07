@@ -54,6 +54,7 @@ import {
    httpCreateOrder,
    httpGetOneOrder,
    httpGetMyOrders,
+   httpGetAllOrders,
    httpGetAllOrdersForUser,
    httpGetMyReservations,
    httpGetAllReservations,
@@ -175,7 +176,7 @@ userRouter
 
    userRouter
    .route('/orders/Getall')
-   .get(ensureUser, httpGetMyOrders);
+   .get(ensureAdmin, httpGetAllOrders);
    userRouter
    .route('/orders/GetallUO')
    .get(ensureUser, httpGetAllOrdersForUser);

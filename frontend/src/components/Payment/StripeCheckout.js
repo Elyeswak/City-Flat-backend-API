@@ -1,8 +1,5 @@
 import { useState } from "react";
 import axios from "axios";
-const Order = {
-  id: "642d72538402001bd9829e43",
-};
 
 function PaymentForm(props) {
   const [cardNumber, setCardNumber] = useState("");
@@ -19,6 +16,9 @@ function PaymentForm(props) {
     setCardCvc(event.target.value);
   };
 
+  /**
+   * 
+   */
   const TOTAL = props.price;
 
   const Order = {
@@ -58,6 +58,8 @@ function PaymentForm(props) {
       )
       .then((response) => {
         console.log(response.data);
+
+        window.location.replace('/thankyou')
         // handle successful reservation creation
       })
       .catch((error) => {

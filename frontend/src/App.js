@@ -13,7 +13,7 @@ import Wishlist from "./components/Wishlist/Wishlist";
 import ConfirmationPage from "./components/Confirmation/ConfirmationPage";
 import ApartmentDetails from "./components/ApartmentDetails/ApartmentDetails";
 import Paynow from "./components/Payment/Paynow";
-
+import AccountPage from "./components/Account/AccountPage";
 import Payment from "./components/Payment/Payment";
 import RequestsPage from "./components/Requests/RequestsPage";
 
@@ -33,6 +33,7 @@ function App() {
           <Route path="/paynow" element={<Paynow />} />
           <Route path="/details/:id" element={<ApartmentDetails />} />
           <Route path="/requests" element={<RequestsPage />} />
+          <Route path="/account" element={<AccountPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
         </Routes>

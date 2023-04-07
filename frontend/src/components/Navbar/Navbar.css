@@ -212,6 +212,18 @@ justify-content: center;
   float: left;
 }
 
+
+.auth-btns{
+  font-family: font-alethia-pro;
+}
+
+.btn-link{
+  color: #fff !important;
+}
+
+.btn-dark{
+  background-color: #000 !important;
+}
 @media only screen and (max-width: 250px) {
     .navbar-user {
       opacity: 0;

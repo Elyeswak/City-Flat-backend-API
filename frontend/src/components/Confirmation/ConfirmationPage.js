@@ -78,6 +78,7 @@ function PaymentPage() {
           servicesFee: servicesPrice,
           nightsFee: apartmentPrice,
           services: servicesIds,
+          totalPrice: totalPrice,
         } ,
         {
           headers: {

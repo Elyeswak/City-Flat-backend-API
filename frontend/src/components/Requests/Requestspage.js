@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
-import "./Requestspage.css";
+import "./RequestsPage.css";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/footer";
 import { format } from "date-fns";
@@ -31,6 +31,14 @@ function RequestsPage() {
       });
   }, []);
 
+  function handlePayNowClick(e, order) {
+    e.preventDefault();
+    const orderId = order.id;
+    localStorage.setItem("orderId", orderId);
+    // redirect to payment page
+   // window.location.href = "/payment";
+  }
+
   return (
     <div className="requests__page">
       <Navbar />
@@ -52,7 +60,7 @@ function RequestsPage() {
               {orders.map((order, index) => (
                 <tr key={index}>
                   <td>{index + 1}</td>
-                  <td>{order.apartment}</td>
+                  <td>{order.appartment.name}</td>
                   <td>{moment(order.checkIn).format("DD MMMM YYYY")}</td>
                   <td>{moment(order.checkOut).format("DD MMMM YYYY")}</td>
                   <td>€ {order.totalPrice}</td>
@@ -74,7 +82,11 @@ function RequestsPage() {
                         <Badge bg="success" pill text="dark">
                           ACCEPTED
                         </Badge>
-                        <a href="/paynow" className="link link--metis">
+                        <a
+                          href="#"
+                          class="link link--metis pay-now"
+                          onClick={(e) => handlePayNowClick(e, order)}
+                        >
                           <span>PAY NOW</span>
                         </a>
                       </div>

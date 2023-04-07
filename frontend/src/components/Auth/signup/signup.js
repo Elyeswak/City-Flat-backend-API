@@ -143,6 +143,7 @@ function Signup() {
         );
         console.log(response.data);
         setSuccessful(true); // response data if successful
+        localStorage.setItem("user", JSON.stringify(response.data));
         toast.success("✅ Verification code sent", {
           position: "top-right",
           autoClose: 2000,
@@ -179,7 +180,8 @@ function Signup() {
         }
       );
       console.log(response.data);
-      navigate("/");
+      
+      navigate("/login");
     } catch (error) {
       toast.error("❌ Invalid code!", {
         position: "top-right",

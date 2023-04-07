@@ -33,24 +33,31 @@ dotenv.config();
 const stripe = new Stripe(process.env.SECRET_KEY, {
   apiVersion: "2020-08-27",
 });
-export function httpGetMyReservations(req, res) {
+export async function httpGetMyReservations(req, res) {
   console.log(req.user);
-  findOneUserByFilter(req.user.id)
-    .then((foundUser) => {
-      if (!foundUser) {
-        return res.status(404).json({ error: "User not found!" });
-      } else {
-        reservationDb
-          .find({
-            "Order.User": foundUser,
-          })
-          .then((reservations) => {
-            res.status(200).json(reservationListFormat(reservations));
-          })
-          .catch((err) => res.status(500).json({ error: err.message }));
-      }
-    })
-    .catch((err) => res.status(500).json({ error: err.message }));
+
+  try {
+    const foundUser = await findOneUserByFilter(req.user.id);
+    if (!foundUser) {
+      return res.status(404).json({ error: "User not found!" });
+    }
+
+    const reservations = await reservationDb
+
+      .find()
+      .populate({
+        path: "Order",
+        match: { User: req.user.id },
+        populate: { path: "appartment" },
+      })
+      .populate("Order")
+      .populate("Card");
+
+    res.status(200).json(reservationListFormat(reservations));
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
 }
 
 export function httpGetMyOrders(req, res) {
@@ -64,6 +71,8 @@ export function httpGetMyOrders(req, res) {
           .find({
             User: foundUser,
           })
+          .populate("appartment")
+          .populate("User")
           .then((orders) => {
             res.status(200).json(orderListFormat(orders));
           })
@@ -75,6 +84,8 @@ export function httpGetMyOrders(req, res) {
 
 export function httpGetOneReservation(req, res) {
   findOneReservationByFilter(req.params.param)
+    .populate("Order")
+    .populate("Card")
     .then((foundReservation) => {
       if (!foundReservation) {
         return res.status(404).json({ error: "Reservation not found!" });
@@ -87,6 +98,8 @@ export function httpGetOneReservation(req, res) {
 
 export function httpGetOneOrder(req, res) {
   findOneOrderByFilter(req.params.param)
+    .populate("appartment")
+    .populate("User")
     .then((foundOrder) => {
       if (!foundOrder) {
         return res.status(404).json({ error: "Order not found!" });
@@ -131,9 +144,7 @@ export function httpCreateOrder(req, res) {
           newOrder.totalPrice = paymentAmount;
           const serviceIds = newOrder.services;
 
-          const services = await serviceDb.find({
-            _id: { $in: serviceIds }, // Find all services with IDs in the serviceIds array
-          });
+          // Call payment function to make payment
 
           console.log("services found : " + services);
 
@@ -483,6 +494,8 @@ export function httpAdminAcceptOrder(req, res) {
 export function httpGetAllReservations(req, res) {
   reservationDb
     .find()
+    .populate("Order")
+    .populate("Card")
     .then((reservations) => {
       res.status(200).json(reservationListFormat(reservations));
     })
@@ -494,7 +507,10 @@ export async function httpGetAllOrdersForUser(req, res) {
     const userId = req.user.id;
     console.log(userId);
 
-    const orders = await orderDb.find({ user: userId });
+    const orders = await orderDb
+      .find({ user: userId })
+      .populate("appartment")
+      .populate("User");
 
     if (!orders || orders.length === 0) {
       return res.status(404).json({ error: "No orders found for this user!" });
@@ -507,9 +523,17 @@ export async function httpGetAllOrdersForUser(req, res) {
   }
 }
 
+const orders = await orderDb.find({ user: userId });
+
+if (!orders || orders.length === 0) {
+  return res.status(404).json({ error: "No orders found for this user!" });
+}
+
 export function httpGetAllOrders(req, res) {
   orderDb
     .find()
+    .populate("appartment")
+    .populate("User")
     .then((orders) => {
       res.status(200).json(orderListFormat(orders));
     })
@@ -571,7 +595,7 @@ export function orderListFormat(orders) {
 function reservationFormat(reservation) {
   return {
     id: reservation._id,
-    Card: Order.Card,
+    Card: reservation.Card,
     code: reservation.code,
     transactionId: reservation.transactionId,
 

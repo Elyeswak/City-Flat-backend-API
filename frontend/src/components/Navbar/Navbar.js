@@ -150,8 +150,8 @@ function Navbar() {
               }`}
             >
               <div className="dropdown__list">
-                <button className="button-31">Messages</button>
                 <button className="button-31">Notifications</button>
+                <a href="/requests"><button className="button-31">Orders</button></a>
                 <a href="/wishlist">
                   <button className="button-31">Wishlist</button>
                 </a>

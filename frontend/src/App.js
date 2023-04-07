@@ -15,7 +15,7 @@ import ApartmentDetails from "./components/ApartmentDetails/ApartmentDetails";
 import Paynow from "./components/Payment/Paynow";
 import AccountPage from "./components/Account/AccountPage";
 import Payment from "./components/Payment/Payment";
-import RequestsPage from "./components/Requests/Requestspage";
+import RequestsPage from "./components/Requests/RequestsPage";
 
 function App() {
   return (

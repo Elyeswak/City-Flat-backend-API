@@ -36,7 +36,7 @@ function RequestsPage() {
     const orderId = order.id;
     localStorage.setItem("orderId", orderId);
     // redirect to payment page
-   // window.location.href = "/payment";
+    window.location.href = "/paynow";
   }
 
   return (

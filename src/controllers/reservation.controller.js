@@ -89,7 +89,7 @@ export function httpGetOneReservation(req, res) {
 
 export function httpGetOneOrder(req, res) {
 
-   findOneOrderByFilter(req.params.param).populate('appartment').populate('User')
+   findOneOrderByFilter(req.params.param)
       .then((foundOrder) => {
          if (!foundOrder) {
 
@@ -576,7 +576,7 @@ export async function findOneOrderByFilter(orderFilter) {
          { User: orderFilter },
 
       ],
-   });
+   }).populate('appartment').populate('User');
 }
 
 function orderFormat(Order) {

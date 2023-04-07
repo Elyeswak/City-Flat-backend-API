@@ -6,6 +6,8 @@ import { validationResult } from 'express-validator';
 import { sendVerificationEmail } from './mailling.controller.js';
 
 
+
+
 export function httpLoginUser(req, res) {
    const errors = validationResult(req);
    if (!errors.isEmpty()) {

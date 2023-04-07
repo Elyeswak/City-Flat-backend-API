@@ -16,6 +16,7 @@ import Paynow from "./components/Payment/Paynow";
 import AccountPage from "./components/Account/AccountPage";
 import Payment from "./components/Payment/Payment";
 import RequestsPage from "./components/Requests/Requestspage";
+import AdminDash from "./components/AdminDashboard/AdminDash";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <Route path="/account" element={<AccountPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/admndash" element={<AdminDash />} />
         </Routes>
       </BrowserRouter>
     </div>

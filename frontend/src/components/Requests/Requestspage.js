@@ -62,7 +62,7 @@ function RequestsPage() {
                         <Badge bg="warning" pill text="dark">
                           PENDING
                         </Badge>
-                        <a href="/" class="link link--metis">
+                        <a href="/" className="link link--metis">
                           <span>CANCEL</span>
                         </a>
                       </div>
@@ -74,7 +74,7 @@ function RequestsPage() {
                         <Badge bg="success" pill text="dark">
                           ACCEPTED
                         </Badge>
-                        <a href="/paynow" class="link link--metis">
+                        <a href="/paynow" className="link link--metis">
                           <span>PAY NOW</span>
                         </a>
                       </div>
@@ -84,7 +84,7 @@ function RequestsPage() {
                         <Badge bg="danger" pill text="dark">
                           DECLINED
                         </Badge>
-                        <a href="/" class="link link--metis">
+                        <a href="/" className="link link--metis">
                           <span>DELETE</span>
                         </a>
                       </div>

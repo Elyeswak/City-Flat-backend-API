@@ -163,7 +163,7 @@ userRouter
    );
 //get accepted bookedDates
 userRouter
-   .route('/orders/bookeddates')
+   .route('/orders/bookeddates/:param')
    .get(
 
 

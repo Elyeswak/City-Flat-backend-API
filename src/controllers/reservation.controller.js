@@ -513,7 +513,9 @@ export function httpAdminAcceptOrder(req, res) {
 }
 ///get booked dates
 export async function getAcceptedBookings(req , res) {
-   const acceptedOrders = await orderDb.find({ state: STATE.ACCEPTED });
+   const apartment = await appartmentDb.findById(req.params.param)
+   
+   const acceptedOrders = await orderDb.find({ appartment:apartment.id , state: STATE.ACCEPTED });
  if(acceptedOrders== null){
 
    res.status(404).json({ error: "No accepted orders !" });

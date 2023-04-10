@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom";
 
 function PaymentPage() {
   const [rating, setRating] = useState(0);
-  const navigate = useNavigate ()
+  const navigate = useNavigate();
 
   /**GET ALL ITEMS FROM LOCAL STORAGE */
   const user = JSON.parse(localStorage.getItem("user"));
@@ -45,12 +45,12 @@ function PaymentPage() {
     Laundry: <FontAwesomeIcon icon={faShirt} />,
   };
 
-  console.log(apartment.id)
-  const apartmentID = apartment.id
+  console.log(apartment.id);
+  const apartmentID = apartment.id;
 
   /**CREATE AN ORDER */
   function postData() {
-   /* const requestData = {
+    /* const requestData = {
       Order: {
         User: user.id,
         appartment: apartmentID,
@@ -64,12 +64,11 @@ function PaymentPage() {
     };*/
 
     console.log("Request data:");
-    
 
     axios
       .post(
         "http://localhost:9090/user/reservations/createOrder",
-       {
+        {
           User: user.id,
           appartment: apartmentID,
           description: apartment.description,
@@ -79,7 +78,7 @@ function PaymentPage() {
           nightsFee: apartmentPrice,
           services: servicesIds,
           totalPrice: totalPrice,
-        } ,
+        },
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -90,7 +89,7 @@ function PaymentPage() {
       .then((response) => {
         console.log("Response data:", response.data);
         // Handle success
-        navigate('/requests')
+        navigate("/requests");
       })
       .catch((error) => {
         console.error("Error message:", error.response.data);
@@ -150,7 +149,13 @@ function PaymentPage() {
                   <p>SERVICES FEES: €{servicesPrice}</p>
                   <p>TOTAL PRICE: €{totalPrice}</p>
                   <button className="btn btn-dark custom-confirm-button">
-                    <Link to={"/paystate"} className="text-light" onClick={postData}>SEND REQUEST</Link>
+                    <Link
+                      to={"/paystate"}
+                      className="text-light"
+                      onClick={postData}
+                    >
+                      SEND REQUEST
+                    </Link>
                   </button>
                   <a href="/">
                     <button

@@ -17,7 +17,7 @@ function RequestsPage() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:9090/user/orders/Getall", {
+      .get("http://localhost:9090/user/orders/GetallUO", {
         headers: {
           Authorization: `Bearer ${token}`, // if authentication is required
         },

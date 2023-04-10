@@ -23,6 +23,14 @@ export function httpLoginUser(req, res) {
                message: 'user not found!',
             });
          } else {
+
+
+           if(user.isVerified == false) {
+            return res.status(406).json({
+               message: 'user not email not verified !',
+            });
+   }
+
             bcrypt
                .compare(req.body.password, user.password)
                .then((valid) => {

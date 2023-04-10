@@ -111,7 +111,7 @@ userRouter
    .post(
       ensureAdmin,
       multer("img", 512 * 1024),
-      body('name').isLength({ min: 5 }),
+      body('name').isLength({ min: 3 }),
       body('description'),
       body('pricePerNight'),
 

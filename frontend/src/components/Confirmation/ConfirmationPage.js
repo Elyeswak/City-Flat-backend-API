@@ -45,27 +45,13 @@ function PaymentPage() {
     Laundry: <FontAwesomeIcon icon={faShirt} />,
   };
 
-  console.log(apartment.id)
+
   const apartmentID = apartment.id
 
   /**CREATE AN ORDER */
   function postData() {
-   /* const requestData = {
-      Order: {
-        User: user.id,
-        appartment: apartmentID,
-        description: apartment.description,
-        checkIn: checkIn,
-        checkOut: checkOut,
-        servicesFee: servicesPrice,
-        nightsFee: apartmentPrice,
-        services: servicesIds,
-      },
-    };*/
-
     console.log("Request data:");
-    
-
+  
     axios
       .post(
         "http://localhost:9090/user/reservations/createOrder",

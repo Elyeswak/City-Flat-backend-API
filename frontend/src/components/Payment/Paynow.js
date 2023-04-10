@@ -3,6 +3,8 @@ import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/footer";
 import Rate from "../Rate/Rate";
 import "./paynow.css";
+import { format } from "date-fns";
+import moment from "moment";
 import {
   faBowlFood,
   faCar,
@@ -21,29 +23,9 @@ const [order,setOrderData] = useState('')
 
   /**GET ORDER DETAILS */
 const orderID = localStorage.getItem("orderId");
+console.log(orderID)
 const user = JSON.parse(localStorage.getItem("user"));
 const token = user.token;
-console.log(token)
-
-/*
-useEffect(() => {
-  // Fetch apartment data when apartment id is updated
-  if (orderID) {
-    axios.get(`http://localhost:9090/reservations/getOneOrder/${orderID}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    .then((response) => {
-      setOrderData(response.data);
-    })
-    .catch((error) => {
-      console.log(error.response.data);
-    });
-  }
-}, [orderID, token]);
-
-*/
 
 useEffect(() => {
   axios
@@ -54,13 +36,14 @@ useEffect(() => {
     })
     .then((response) => {
       setOrderData(response.data);
-      console.log(response.data); // handle response data
+       // handle response data
     })
     .catch((error) => {
       console.log(error.response.data); // handle error
     });
 }, []);
 
+console.log(order)
 
   /**DISPLAY ICONS ACCORDING TO THE SERVICES */
   const serviceIcons = {
@@ -105,8 +88,8 @@ useEffect(() => {
                 <h4>RESERVATION DETAILS</h4>
                 
                 <h5>
-                  FROM <strong>{""}</strong> TO{" "}
-                  <strong>{""}</strong>.
+                  FROM <strong>{moment(order.checkIn).format("DD MMMM YYYY")}</strong> TO
+                  <strong> {moment(order.checkOut).format("DD MMMM YYYY")}</strong>.
                 </h5>
                 <hr />
                 <h4>SERVICES</h4>
@@ -121,9 +104,9 @@ useEffect(() => {
             >
               <div className="card_infos_payment">
                 <div className="card__body">
-                  <h4>{""}</h4>
+                  <h4></h4>
                   <strong style={{ marginBottom: "7%" }}>
-                    {""}
+                  {order.description}
                   </strong>
                   <Rate rating={rating} onRating={(rate) => setRating(rate)} />
                   <img
@@ -132,9 +115,9 @@ useEffect(() => {
                     src="./interior-design-ga22c634af_19201.png"
                   />
                   <h4>PAYMENT DETAILS:</h4>
-                  <p>NIGHTS FEES: €{}</p>
-                  <p>SERVICES FEES: €{}</p>
-                  <p>TOTAL PRICE: €{}</p>
+                  <p>NIGHTS FEES: €{order.nightsFee}</p>
+                  <p>SERVICES FEES: €{order.servicesFee}</p>
+                  <p>TOTAL PRICE: €{order.totalPrice}</p>
                   <button
                     className="btn btn-dark custom-confirm-button w-50"
                     onClick={animateDisplay}
@@ -169,9 +152,9 @@ useEffect(() => {
                       </svg>
                     </button>
                     {payMeth === "stripe" ? (
-                      <StripeCheckout totalPrice={""} />
+                      <StripeCheckout totalPrice={order.totalPrice} />
                     ) : payMeth === "paypal" ? (
-                      <PaypalCheckout totalPrice={""} />
+                      <PaypalCheckout totalPrice={order.totalPrice} />
                     ) : null}
                   </div>
                 </div>

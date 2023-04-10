@@ -42,6 +42,7 @@ function ApartmentDetails() {
             .get(`http://localhost:9090/user/services/${el}`)
             .then((response) => {
               return response.data;
+              console.Console('services : '+response.data)
             })
             .catch((error) => {
               console.log(error);
@@ -51,6 +52,7 @@ function ApartmentDetails() {
           setService(res);
           console.log(res);
         });
+
       })
       .catch((error) => {
         console.log(error);

@@ -62,6 +62,7 @@ import {
    httpDeclineOrder,
    httpAdminAcceptOrder,
    httpAdminDeclineOrder,
+   getAcceptedBookings,
 } from '../controllers/reservation.controller.js';
 
 /** Defining the router */
@@ -112,7 +113,7 @@ userRouter
    .post(
       ensureAdmin,
       multer("img", 512 * 1024),
-      body('name').isLength({ min: 5 }),
+      body('name').isLength({ min: 2 }),
       body('description'),
       body('pricePerNight'),
 
@@ -149,18 +150,27 @@ userRouter
    .route('/reservations/addReservation')
    .post(
 
-   
+
       ensureUser,
       httpCreateReservation
    );
-   //create order
-   userRouter
+//create order
+userRouter
    .route('/reservations/createOrder')
    .post(
 
-   
+
       ensureUser,
       httpCreateOrder
+   );
+//get accepted bookedDates
+userRouter
+   .route('/orders/bookeddates')
+   .get(
+
+
+
+      getAcceptedBookings
    );
 
 userRouter
@@ -170,14 +180,14 @@ userRouter
    .route('/reservations/getOne/:param')
    .get(ensureUser, httpGetOneReservation);
 
-   userRouter
+userRouter
    .route('/reservations/getOneOrder/:param')
    .get(ensureUser, httpGetOneOrder);
 
-   userRouter
+userRouter
    .route('/orders/Getall')
    .get(ensureAdmin, httpGetAllOrders);
-   userRouter
+userRouter
    .route('/orders/GetallUO')
    .get(ensureUser, httpGetAllOrdersForUser);
 userRouter
@@ -225,7 +235,7 @@ userRouter
       passport.authenticate('google', { failureRedirect: '/login' }),
       function (req, res) {
          // Successful authentication, redirect home.
-        
+
 
       });
 

@@ -14,6 +14,7 @@ import { createCustomer, addCard, httpMakePayment, createCheckoutSession } from 
 import { updateBookedDates } from "../controllers/apartment.controller.js";
 import { createNotification } from '../controllers/notification.controller.js';
 import dotenv from 'dotenv';
+import { STATE } from '../models/reservation.enums.js';
 
 /* Accessing .env content */
 dotenv.config();
@@ -89,7 +90,7 @@ export function httpGetOneReservation(req, res) {
 
 export function httpGetOneOrder(req, res) {
 
-   findOneOrderByFilter(req.params.param).populate('appartment').populate('User')
+   findOneOrderByFilter(req.params.param)
       .then((foundOrder) => {
          if (!foundOrder) {
 
@@ -510,6 +511,25 @@ export function httpAdminAcceptOrder(req, res) {
 
 
 }
+///get booked dates
+export async function getAcceptedBookings(req , res) {
+   const acceptedOrders = await orderDb.find({ state: STATE.ACCEPTED });
+ if(acceptedOrders== null){
+
+   res.status(404).json({ error: "No accepted orders !" });
+ } else{
+
+   const bookedDates = acceptedOrders.map(order => {
+      const { checkIn, checkOut } = order;
+      return { start: checkIn, end: checkOut };
+    });
+  
+    res.status(200).json(bookedDates);
+
+ }
+   
+ }
+
 
 //get all reservations
 export function httpGetAllReservations(req, res) {
@@ -576,7 +596,7 @@ export async function findOneOrderByFilter(orderFilter) {
          { User: orderFilter },
 
       ],
-   });
+   }).populate('appartment').populate('User');
 }
 
 function orderFormat(Order) {

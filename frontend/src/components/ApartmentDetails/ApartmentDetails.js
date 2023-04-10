@@ -4,6 +4,8 @@ import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/footer";
 import CarouselPage from "../../utils/Carousel";
 import Rate from "../Rate/Rate";
+import moment from "moment";
+import {extendMoment} from "moment-range";
 import "./ApartmentDetails.css";
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
@@ -29,37 +31,55 @@ function ApartmentDetails() {
 
   const [apartment, setApartment] = useState(null);
   const [service, setService] = useState([]);
+  const [bookedDates, setBookedDates] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const navigate = useNavigate();
 
   /**AXIOS REQUESTS */
+
   useEffect(() => {
+    // fetch apartment data
     axios
       .get(`http://localhost:9090/user/appartments/${params.id}`)
       .then((response) => {
         setApartment(response.data);
         localStorage.setItem("apartment", JSON.stringify(response.data));
-
+  
+        // fetch services data
         const servicePromises = response.data.services.map((el) => {
           return axios
             .get(`http://localhost:9090/user/services/${el}`)
             .then((response) => {
               return response.data;
-              console.Console("services : " + response.data);
             })
             .catch((error) => {
               console.log(error);
             });
         });
-        Promise.all(servicePromises).then((res) => {
-          setService(res);
-          console.log(res);
+  
+        // fetch booked dates data
+        const bookedDatesPromise = axios
+          .get(`http://localhost:9090/user/orders/bookeddates/${params.id}`)
+          .then((response) => {
+            return response.data;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+  
+        Promise.all([bookedDatesPromise, ...servicePromises]).then((res) => {
+          const [bookedDates, ...services] = res;
+          setBookedDates(bookedDates);
+          setService(services);
+          console.log("Booked Dates: ", bookedDates);
+          console.log("Services: ", services);
         });
       })
       .catch((error) => {
         console.log(error);
       });
   }, [params.id]);
+  
 
   /*
    * SELECT SERVICES
@@ -199,10 +219,32 @@ function ApartmentDetails() {
   }
   };
 
-  /*
-   *RENDERING COMPONENT
-   */
+/**DISABLED BOOKED DATES */
+// const formattedDates = bookedDates.map(({ start, end }) => {
+//   const startDate = new Date(start).toISOString().substring(0, 10);
+//   const endDate = new Date(end).toISOString().substring(0, 10);
+//   return [startDate, endDate];
+// });
 
+// const output = [formattedDates];
+// console.log('output'+output);
+
+const disabledDates = bookedDates.flatMap(({ start, end }) => {
+  const startDate = new Date(start);
+  const endDate = new Date(end);
+  const dates = [];
+  let currentDate = new Date(startDate);
+
+  while (currentDate <= endDate) {
+    dates.push(new Date(currentDate));
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+
+  return dates;
+});
+
+console.log('disabled : '+ disabledDates)
+/**RENDERING COMPONENT*/
   return (
     <>
       {apartment && (
@@ -306,6 +348,7 @@ function ApartmentDetails() {
                     ranges={date}
                     className="date"
                     minDate={new Date()}
+                    disabledDates={disabledDates}
                   />
                 </div>
               </div>

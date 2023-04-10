@@ -8,13 +8,14 @@ import "./ApartmentDetails.css";
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import "react-multiple-select-dropdown-lite/dist/index.css";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { DateRange } from "react-date-range";
 import { format } from "date-fns";
 import { MapContainer, TileLayer, useMap, Popup, Marker } from "react-leaflet";
 import L from "leaflet";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import MultiSelect from "react-multiple-select-dropdown-lite";
 
 function ApartmentDetails() {
@@ -28,6 +29,8 @@ function ApartmentDetails() {
 
   const [apartment, setApartment] = useState(null);
   const [service, setService] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const navigate = useNavigate();
 
   /**AXIOS REQUESTS */
   useEffect(() => {
@@ -42,7 +45,7 @@ function ApartmentDetails() {
             .get(`http://localhost:9090/user/services/${el}`)
             .then((response) => {
               return response.data;
-              console.Console('services : '+response.data)
+              console.Console("services : " + response.data);
             })
             .catch((error) => {
               console.log(error);
@@ -52,7 +55,6 @@ function ApartmentDetails() {
           setService(res);
           console.log(res);
         });
-
       })
       .catch((error) => {
         console.log(error);
@@ -111,15 +113,15 @@ function ApartmentDetails() {
   }, []);
   localStorage.setItem("serviceNames", JSON.stringify(serviceNames));
 
-    /**EXTRACT IDS FROM SERVICES*/
-const valueStrIds = value.split(",").map(String);
-const serviceIds = valueStrIds.reduce((acc, curr) => {
-  if (service.some((s) => s.id === curr)) {
-    return [...acc, curr];
-  }
-  return acc;
-}, []);
-localStorage.setItem("serviceIds", JSON.stringify(serviceIds));
+  /**EXTRACT IDS FROM SERVICES*/
+  const valueStrIds = value.split(",").map(String);
+  const serviceIds = valueStrIds.reduce((acc, curr) => {
+    if (service.some((s) => s.id === curr)) {
+      return [...acc, curr];
+    }
+    return acc;
+  }, []);
+  localStorage.setItem("serviceIds", JSON.stringify(serviceIds));
 
   /**CALCULATE THE DIFFRENCE BETWEEN 2 DATES */
   const startDate = date[0].startDate;
@@ -137,13 +139,65 @@ localStorage.setItem("serviceIds", JSON.stringify(serviceIds));
   localStorage.setItem("totalPrice", JSON.stringify(totalPrice));
 
   /**STORING THE DATES LOCALLY */
-  localStorage.setItem("startDate", JSON.stringify(format(startDate, "dd/MM/yyyy")));
-  localStorage.setItem("endDate", JSON.stringify(format(endDate, "dd/MM/yyyy")));
+  localStorage.setItem(
+    "startDate",
+    JSON.stringify(format(startDate, "dd/MM/yyyy"))
+  );
+  localStorage.setItem(
+    "endDate",
+    JSON.stringify(format(endDate, "dd/MM/yyyy"))
+  );
 
-  localStorage.setItem("checkIn", JSON.stringify(format(startDate, "yyyy-MM-dd")));
-  localStorage.setItem("checkOut", JSON.stringify(format(endDate, "yyyy-MM-dd")));
+  localStorage.setItem(
+    "checkIn",
+    JSON.stringify(format(startDate, "yyyy-MM-dd"))
+  );
+  localStorage.setItem(
+    "checkOut",
+    JSON.stringify(format(endDate, "yyyy-MM-dd"))
+  );
 
+  /**CHECK IF  THE USER IS LOGGEDIN AND HIS ACCOUNT IS ENBALED */
 
+  const handleCheckUser = () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+      const isVerified = user.isVerified;
+  
+      if (user && (isVerified === true)) {
+        // user is logged in and account is verified
+        navigate('/confirmation')
+      } else if (user && (isVerified === false)) {
+        // user is logged in but account is not verified
+        console.log('account not verified')
+        toast.error("❌ Your account is disabled please contact the admin", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      } else {
+        // user is not logged in
+        toast.error("❌ Login before making any further actions", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        navigate('/login')
+      }
+  } else {
+    navigate('/login')
+  }
+  };
 
   /*
    *RENDERING COMPONENT
@@ -156,6 +210,18 @@ localStorage.setItem("serviceIds", JSON.stringify(serviceIds));
           <Navbar />
           <div className="apartment_details_content">
             <div className="upper__space"></div>
+            <ToastContainer
+                    position="top-right"
+                    autoClose={2000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="light"
+                  />
             {/** Apartment Details */}
 
             <div className="row">
@@ -278,11 +344,11 @@ localStorage.setItem("serviceIds", JSON.stringify(serviceIds));
                     <p>Total price :€{totalPrice}</p>
                   </div>
                   <div className="row custom-button-reservation-row">
-                    <a href="/confirmation">
-                      <button className="btn btn-dark custom-button-reservation">
+                    
+                      <button className="btn btn-dark custom-button-reservation" onClick={handleCheckUser}>
                         RESERVE
                       </button>
-                    </a>
+                    
                   </div>
                 </div>
               </div>

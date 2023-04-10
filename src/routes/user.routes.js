@@ -102,8 +102,6 @@ userRouter
       multer("img", 512 * 1024),
 
       httpAddAppartment,
-
-
    );
 //add service
 userRouter

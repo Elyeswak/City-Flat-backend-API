@@ -50,6 +50,7 @@ function RequestsPage() {
               <tr>
                 <th>#</th>
                 <th>Apartment</th>
+                <th>Booking Date</th>
                 <th>check-in</th>
                 <th>check-out</th>
                 <th>Total price</th>
@@ -61,6 +62,7 @@ function RequestsPage() {
                 <tr key={index}>
                   <td>{index + 1}</td>
                   <td>{order.appartment.name}</td>
+                  <td>{moment(order.createdAt).format("DD MMMM YYYY")}</td>
                   <td>{moment(order.checkIn).format("DD MMMM YYYY")}</td>
                   <td>{moment(order.checkOut).format("DD MMMM YYYY")}</td>
                   <td>€ {order.totalPrice}</td>

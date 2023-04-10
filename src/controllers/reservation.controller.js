@@ -607,15 +607,14 @@ function orderFormat(Order) {
       totalPrice: Order.totalPrice,
       checkIn: Order.checkIn,
       checkOut: Order.checkOut,
-      
       servicesFee: Order.servicesFee,
       nightsFee: Order.nightsFee,
-      
       state: Order.state,
       services: Order.services,
       User: Order.User,
       appartment: Order.appartment,
-      transactionId: Order.transactionId
+      transactionId: Order.transactionId,
+      createdAt : Order.createdAt
    };
 }
 

@@ -23,6 +23,14 @@ export function httpLoginUser(req, res) {
                message: 'user not found!',
             });
          } else {
+
+
+           if(user.isVerified == false) {
+            return res.status(406).json({
+               message: 'user not email not verified !',
+            });
+   }
+
             bcrypt
                .compare(req.body.password, user.password)
                .then((valid) => {
@@ -57,7 +65,7 @@ export function httpRegisterUser(req, res) {
       userDb
          .findOne({})
          .or([
-            { name: req.body.name.toLowerCase() },
+            { name: req.body.name },
             { email: req.body.email },
          ])
          .then((exists) => {
@@ -66,7 +74,7 @@ export function httpRegisterUser(req, res) {
             } else {
                const newUser = req.body;
 
-               newUser.name = newUser.name.toLowerCase();
+               newUser.name = newUser.name;
                newUser.password = bcrypt.hashSync(req.body.password, 10);
               
                if(req.file){

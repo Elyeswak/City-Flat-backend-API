@@ -17,6 +17,9 @@ import AccountPage from "./components/Account/AccountPage";
 import Payment from "./components/Payment/Payment";
 import RequestsPage from "./components/Requests/RequestsPage";
 import AdminDash from "./components/AdminDashboard/AdminDash";
+import OrdersDash from "./components/AdminDashboard/OrdersDash";
+import AppartmentDash from "./components/AdminDashboard/AppartmentDash";
+import UsersDash from "./components/AdminDashboard/UsersDash";
 
 function App() {
   return (
@@ -38,6 +41,9 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/admndash" element={<AdminDash />} />
+          <Route path="/ordersdash" element={<OrdersDash />} />
+          <Route path="/appartdash" element={<AppartmentDash />} />
+          <Route path="/userdash" element={<UsersDash />} />
         </Routes>
       </BrowserRouter>
     </div>

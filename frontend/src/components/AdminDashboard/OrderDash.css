@@ -60,3 +60,7 @@
   float: right;
   text-align: left;
 }
+
+.orderId {
+  cursor: pointer;
+}

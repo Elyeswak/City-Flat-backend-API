@@ -2,5 +2,30 @@
     background: none !important;
     outline: none !important;
     border: none !important;
-    margin-right: auto;
+    position: absolute;
+    left: 0;
+}
+
+.offcanvas {
+    background-color: #2b2e30 !important;
+}
+
+.btn-close {
+    background-color: white !important;
+}
+
+.sidebar-menu {
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 100%;
+}
+
+.sidebar-menu li a {
+    color: whitesmoke !important;
+}
+
+.sidebar-menu li a:hover {
+    color: rgba(245, 245, 245, 0.66) !important;
 }

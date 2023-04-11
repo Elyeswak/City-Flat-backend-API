@@ -104,8 +104,6 @@ userRouter
       multer("img", 512 * 1024),
 
       httpAddAppartment,
-
-
    );
 //add service
 userRouter
@@ -165,7 +163,7 @@ userRouter
    );
 //get accepted bookedDates
 userRouter
-   .route('/orders/bookeddates')
+   .route('/orders/bookeddates/:param')
    .get(
 
 

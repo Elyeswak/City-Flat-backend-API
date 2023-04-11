@@ -36,7 +36,7 @@ function RequestsPage() {
     const orderId = order.id;
     localStorage.setItem("orderId", orderId);
     // redirect to payment page
-   // window.location.href = "/payment";
+    window.location.href = "/paynow";
   }
 
   return (
@@ -50,6 +50,7 @@ function RequestsPage() {
               <tr>
                 <th>#</th>
                 <th>Apartment</th>
+                <th>Booking Date</th>
                 <th>check-in</th>
                 <th>check-out</th>
                 <th>Total price</th>
@@ -61,6 +62,7 @@ function RequestsPage() {
                 <tr key={index}>
                   <td>{index + 1}</td>
                   <td>{order.appartment.name}</td>
+                  <td>{moment(order.createdAt).format("DD MMMM YYYY")}</td>
                   <td>{moment(order.checkIn).format("DD MMMM YYYY")}</td>
                   <td>{moment(order.checkOut).format("DD MMMM YYYY")}</td>
                   <td>€ {order.totalPrice}</td>
@@ -84,7 +86,7 @@ function RequestsPage() {
                         </Badge>
                         <a
                           href="#"
-                          class="link link--metis pay-now"
+                          className="link link--metis pay-now"
                           onClick={(e) => handlePayNowClick(e, order)}
                         >
                           <span>PAY NOW</span>

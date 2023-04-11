@@ -4,17 +4,20 @@ import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/footer";
 import CarouselPage from "../../utils/Carousel";
 import Rate from "../Rate/Rate";
+import moment from "moment";
+import {extendMoment} from "moment-range";
 import "./ApartmentDetails.css";
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import "react-multiple-select-dropdown-lite/dist/index.css";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { DateRange } from "react-date-range";
 import { format } from "date-fns";
 import { MapContainer, TileLayer, useMap, Popup, Marker } from "react-leaflet";
 import L from "leaflet";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import MultiSelect from "react-multiple-select-dropdown-lite";
 
 function ApartmentDetails() {
@@ -28,15 +31,21 @@ function ApartmentDetails() {
 
   const [apartment, setApartment] = useState(null);
   const [service, setService] = useState([]);
+  const [bookedDates, setBookedDates] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const navigate = useNavigate();
 
   /**AXIOS REQUESTS */
+
   useEffect(() => {
+    // fetch apartment data
     axios
       .get(`http://localhost:9090/user/appartments/${params.id}`)
       .then((response) => {
         setApartment(response.data);
         localStorage.setItem("apartment", JSON.stringify(response.data));
-
+  
+        // fetch services data
         const servicePromises = response.data.services.map((el) => {
           return axios
             .get(`http://localhost:9090/user/services/${el}`)
@@ -47,15 +56,30 @@ function ApartmentDetails() {
               console.log(error);
             });
         });
-        Promise.all(servicePromises).then((res) => {
-          setService(res);
-          console.log(res);
+  
+        // fetch booked dates data
+        const bookedDatesPromise = axios
+          .get(`http://localhost:9090/user/orders/bookeddates/${params.id}`)
+          .then((response) => {
+            return response.data;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+  
+        Promise.all([bookedDatesPromise, ...servicePromises]).then((res) => {
+          const [bookedDates, ...services] = res;
+          setBookedDates(bookedDates);
+          setService(services);
+          console.log("Booked Dates: ", bookedDates);
+          console.log("Services: ", services);
         });
       })
       .catch((error) => {
         console.log(error);
       });
   }, [params.id]);
+  
 
   /*
    * SELECT SERVICES
@@ -109,15 +133,15 @@ function ApartmentDetails() {
   }, []);
   localStorage.setItem("serviceNames", JSON.stringify(serviceNames));
 
-    /**EXTRACT IDS FROM SERVICES*/
-const valueStrIds = value.split(",").map(String);
-const serviceIds = valueStrIds.reduce((acc, curr) => {
-  if (service.some((s) => s.id === curr)) {
-    return [...acc, curr];
-  }
-  return acc;
-}, []);
-localStorage.setItem("serviceIds", JSON.stringify(serviceIds));
+  /**EXTRACT IDS FROM SERVICES*/
+  const valueStrIds = value.split(",").map(String);
+  const serviceIds = valueStrIds.reduce((acc, curr) => {
+    if (service.some((s) => s.id === curr)) {
+      return [...acc, curr];
+    }
+    return acc;
+  }, []);
+  localStorage.setItem("serviceIds", JSON.stringify(serviceIds));
 
   /**CALCULATE THE DIFFRENCE BETWEEN 2 DATES */
   const startDate = date[0].startDate;
@@ -135,18 +159,92 @@ localStorage.setItem("serviceIds", JSON.stringify(serviceIds));
   localStorage.setItem("totalPrice", JSON.stringify(totalPrice));
 
   /**STORING THE DATES LOCALLY */
-  localStorage.setItem("startDate", JSON.stringify(format(startDate, "dd/MM/yyyy")));
-  localStorage.setItem("endDate", JSON.stringify(format(endDate, "dd/MM/yyyy")));
+  localStorage.setItem(
+    "startDate",
+    JSON.stringify(format(startDate, "dd/MM/yyyy"))
+  );
+  localStorage.setItem(
+    "endDate",
+    JSON.stringify(format(endDate, "dd/MM/yyyy"))
+  );
 
-  localStorage.setItem("checkIn", JSON.stringify(format(startDate, "yyyy-MM-dd")));
-  localStorage.setItem("checkOut", JSON.stringify(format(endDate, "yyyy-MM-dd")));
+  localStorage.setItem(
+    "checkIn",
+    JSON.stringify(format(startDate, "yyyy-MM-dd"))
+  );
+  localStorage.setItem(
+    "checkOut",
+    JSON.stringify(format(endDate, "yyyy-MM-dd"))
+  );
 
+  /**CHECK IF  THE USER IS LOGGEDIN AND HIS ACCOUNT IS ENBALED */
 
+  const handleCheckUser = () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+      const isVerified = user.isVerified;
+  
+      if (user && (isVerified === true)) {
+        // user is logged in and account is verified
+        navigate('/confirmation')
+      } else if (user && (isVerified === false)) {
+        // user is logged in but account is not verified
+        console.log('account not verified')
+        toast.error("❌ Your account is disabled please contact the admin", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      } else {
+        // user is not logged in
+        toast.error("❌ Login before making any further actions", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        navigate('/login')
+      }
+  } else {
+    navigate('/login')
+  }
+  };
 
-  /*
-   *RENDERING COMPONENT
-   */
+/**DISABLED BOOKED DATES */
+// const formattedDates = bookedDates.map(({ start, end }) => {
+//   const startDate = new Date(start).toISOString().substring(0, 10);
+//   const endDate = new Date(end).toISOString().substring(0, 10);
+//   return [startDate, endDate];
+// });
 
+// const output = [formattedDates];
+// console.log('output'+output);
+
+const disabledDates = bookedDates.flatMap(({ start, end }) => {
+  const startDate = new Date(start);
+  const endDate = new Date(end);
+  const dates = [];
+  let currentDate = new Date(startDate);
+
+  while (currentDate <= endDate) {
+    dates.push(new Date(currentDate));
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+
+  return dates;
+});
+
+console.log('disabled : '+ disabledDates)
+/**RENDERING COMPONENT*/
   return (
     <>
       {apartment && (
@@ -154,6 +252,18 @@ localStorage.setItem("serviceIds", JSON.stringify(serviceIds));
           <Navbar />
           <div className="apartment_details_content">
             <div className="upper__space"></div>
+            <ToastContainer
+                    position="top-right"
+                    autoClose={2000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="light"
+                  />
             {/** Apartment Details */}
 
             <div className="row">
@@ -238,6 +348,7 @@ localStorage.setItem("serviceIds", JSON.stringify(serviceIds));
                     ranges={date}
                     className="date"
                     minDate={new Date()}
+                    disabledDates={disabledDates}
                   />
                 </div>
               </div>
@@ -276,11 +387,11 @@ localStorage.setItem("serviceIds", JSON.stringify(serviceIds));
                     <p>Total price :€{totalPrice}</p>
                   </div>
                   <div className="row custom-button-reservation-row">
-                    <a href="/confirmation">
-                      <button className="btn btn-dark custom-button-reservation">
+                    
+                      <button className="btn btn-dark custom-button-reservation" onClick={handleCheckUser}>
                         RESERVE
                       </button>
-                    </a>
+                    
                   </div>
                 </div>
               </div>

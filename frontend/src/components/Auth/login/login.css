@@ -23,6 +23,27 @@ main {
   align-items: center;
   justify-content: center;
 }
+.go-home {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  font-family: font-alethia-pro !important;
+}
+
+.go-home-space{
+  position: absolute;
+  height: 100%;
+  width: 45%;
+  top: 0;
+  left: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  transition: 0.8s ease-in-out;
+
+}
 
 .box {
   position: relative;
@@ -410,6 +431,22 @@ main.sign-up-mode .carousel_login {
 
   .text-slider {
     width: 100%;
+  }
+
+  .go-home {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+
+  
+  }
+  
+  .go-home-space{
+  height: 100px;
+  position: relative;
+  left: 25%;
   }
 }
 

@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/footer";
 import Rate from "../Rate/Rate";
 import "./paynow.css";
+import { format } from "date-fns";
+import moment from "moment";
 import {
   faBowlFood,
   faCar,
@@ -14,17 +16,34 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import StripeCheckout from "./StripeCheckout";
 import PaypalCheckout from "./PaypalCheckout";
+import axios from "axios";
 
 export default function Paynow() {
-  /**GET ALL ITEMS FROM LOCAL STORAGE */
-  const apartment = JSON.parse(localStorage.getItem("apartment"));
-  const servicesPrice = JSON.parse(localStorage.getItem("servicesPrice"));
-  const apartmentPrice = JSON.parse(localStorage.getItem("apartmentPrice"));
-  const totalPrice = JSON.parse(localStorage.getItem("totalPrice"));
-  const startDate = JSON.parse(localStorage.getItem("startDate"));
-  const endDate = JSON.parse(localStorage.getItem("endDate"));
-  const serviceNames = JSON.parse(localStorage.getItem("serviceNames"));
-  const diffInDays = JSON.parse(localStorage.getItem("diffInDays"));
+const [order,setOrderData] = useState('')
+
+  /**GET ORDER DETAILS */
+const orderID = localStorage.getItem("orderId");
+console.log(orderID)
+const user = JSON.parse(localStorage.getItem("user"));
+const token = user.token;
+
+useEffect(() => {
+  axios
+    .get(`http://localhost:9090/user/reservations/getOneOrder/${orderID}`, {
+      headers: {
+        Authorization: `Bearer ${token}`, // if authentication is required
+      },
+    })
+    .then((response) => {
+      setOrderData(response.data);
+       // handle response data
+    })
+    .catch((error) => {
+      console.log(error.response.data); // handle error
+    });
+}, []);
+
+console.log(order)
 
   /**DISPLAY ICONS ACCORDING TO THE SERVICES */
   const serviceIcons = {
@@ -67,21 +86,15 @@ export default function Paynow() {
             <div className="col payment_col">
               <div className="card__body__payment">
                 <h4>RESERVATION DETAILS</h4>
-                <h5>NIGHTS :{diffInDays}</h5>
+                
                 <h5>
-                  FROM <strong>{startDate}</strong> TO{" "}
-                  <strong>{endDate}</strong>.
+                  FROM <strong>{moment(order.checkIn).format("DD MMMM YYYY")}</strong> TO
+                  <strong> {moment(order.checkOut).format("DD MMMM YYYY")}</strong>.
                 </h5>
                 <hr />
                 <h4>SERVICES</h4>
                 <div className="row services">
-                  {serviceNames.map((serviceName) => (
-                    <div className="col col-sm-2" key={serviceName}>
-                      {serviceIcons[serviceName]}
-                      <br />
-                      <p className="service_title">{serviceName}</p>
-                    </div>
-                  ))}
+                  
                 </div>
               </div>
             </div>
@@ -91,9 +104,9 @@ export default function Paynow() {
             >
               <div className="card_infos_payment">
                 <div className="card__body">
-                  <h4>{apartment.name}</h4>
+                  <h4></h4>
                   <strong style={{ marginBottom: "7%" }}>
-                    {apartment.description}
+                  {order.description}
                   </strong>
                   <Rate rating={rating} onRating={(rate) => setRating(rate)} />
                   <img
@@ -102,9 +115,9 @@ export default function Paynow() {
                     src="./interior-design-ga22c634af_19201.png"
                   />
                   <h4>PAYMENT DETAILS:</h4>
-                  <p>NIGHTS FEES: €{apartmentPrice}</p>
-                  <p>SERVICES FEES: €{servicesPrice}</p>
-                  <p>TOTAL PRICE: €{totalPrice}</p>
+                  <p>NIGHTS FEES: €{order.nightsFee}</p>
+                  <p>SERVICES FEES: €{order.servicesFee}</p>
+                  <p>TOTAL PRICE: €{order.totalPrice}</p>
                   <button
                     className="btn btn-dark custom-confirm-button w-50"
                     onClick={animateDisplay}
@@ -139,9 +152,9 @@ export default function Paynow() {
                       </svg>
                     </button>
                     {payMeth === "stripe" ? (
-                      <StripeCheckout totalPrice={totalPrice} />
+                      <StripeCheckout totalPrice={order.totalPrice} />
                     ) : payMeth === "paypal" ? (
-                      <PaypalCheckout totalPrice={totalPrice} />
+                      <PaypalCheckout totalPrice={order.totalPrice} />
                     ) : null}
                   </div>
                 </div>

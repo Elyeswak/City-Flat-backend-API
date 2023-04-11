@@ -21,8 +21,9 @@ function PaymentForm(props) {
    */
   const TOTAL = props.price;
 
+  const orderID = localStorage.getItem("orderId");
   const Order = {
-    id: "642ea11037c0fca5fbd1dfbe",
+    id: orderID,
   };
 
   const [year, month] = cardExpDate.split("-");
@@ -66,6 +67,9 @@ function PaymentForm(props) {
   };
 
   return (
+
+
+<>
     <form onSubmit={handleSubmit} className="form d-flex flex-column px-5">
       <div className="form-row d-flex flex-column">
         <div className="form-group col">
@@ -110,6 +114,7 @@ function PaymentForm(props) {
         Pay
       </button>
     </form>
+    </>
   );
 }
 

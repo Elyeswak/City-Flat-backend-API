@@ -33,12 +33,8 @@ export async function httpGetMyReservations(req, res) {
 
       const reservations = await reservationDb
     
-      .find()
-      .populate({
-        path: 'Order',
-        match: { User: req.user.id },
-        populate: { path: 'appartment' }
-      })
+      .find({User:foundUser})
+    
          .populate('Order').populate('Card');
 
       res.status(200).json(reservationListFormat(reservations));
@@ -548,7 +544,7 @@ export async function httpGetAllOrdersForUser(req, res) {
      const userId = req.user.id;
      console.log(userId);
      
-     const orders = await  orderDb.find({ user: userId }).populate('appartment').populate('User');
+     const orders = await  orderDb.find({ User: userId }).populate('appartment').populate('User');
      
      if (!orders || orders.length === 0) {
        return res.status(404).json({ error: 'No orders found for this user!' });

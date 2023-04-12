@@ -1,27 +1,61 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/footer";
+import axios from "axios";
 import { Modal, Button, Form } from "react-bootstrap";
 import PhoneInput from "react-phone-number-input";
 import "./AccountPage.css";
 
 function AccountPage() {
   const user = JSON.parse(localStorage.getItem("user"));
-  console.log(user);
+  const userId = user.id;
+  const userToken = user.token;
 
+ const [User, setUser] = useState("");
   const [showModal, setShowModal] = useState(false);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [number, setNumber] = useState("");
-  const [address, setAddress] = useState("");
+  const [name, setName] = useState(user.name);
+ 
+  const [email, setEmail] = useState(user.email);
+  const [address, setAddress] = useState(user.address);
+  const [number, setNumber] = useState(user.number);
+
 
   function handleShowModal() {
     setShowModal(true);
   }
 
   function handleSaveProfile() {
-    
+    // Define the updated user object
+    const updatedUser = {
+      name: name,
+      email: email,
+      number: number,
+      address: address,
+      token :userToken
+    };
+    // Make the Axios PUT request to update the user
+    axios
+      .put(`http://localhost:9090/user/${userId}`, updatedUser, {
+        headers: {
+          Authorization: `Bearer ${userToken}`, // authentication is required
+        },
+      })
+      .then((response) => {
+        // Handle successful response
+        console.log(response.data)
+        const data = response.data ;
+        data ["token"] = userToken;
+        console.log(data)
+        localStorage.setItem('user', JSON.stringify(data));
+        setShowModal(false);
+        
+      })
+      .catch((error) => {
+        // Handle error
+        console.error(error);
+      });
   }
+
 
   return (
     <div>
@@ -39,8 +73,8 @@ function AccountPage() {
                     style={{ width: 150 }}
                   />
                   <h5 className="my-3">{user.name}</h5>
-                  <p className="text-muted mb-1">Full Stack Developer</p>
-                  <p className="text-muted mb-4">Bay Area, San Francisco, CA</p>
+                  
+                  <p className="text-muted mb-4">{user.address}</p>
                   <div className="d-flex justify-content-center mb-2">
                     <button
                       type="button"
@@ -63,18 +97,9 @@ function AccountPage() {
                     <Form.Label>Full Name</Form.Label>
                     <Form.Control
                       type="text"
-                      placeholder={user.name}
+                      placeholder="Enter Your Name"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                    />
-                  </Form.Group>
-                  <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control
-                      type="email"
-                      placeholder={user.email}
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
                     />
                   </Form.Group>
                   <Form.Group className="mb-3" controlId="formBasicPhone">
@@ -145,7 +170,7 @@ function AccountPage() {
                     </div>
                     <div className="col-sm-9">
                       <p className="text-muted mb-0">
-                        Bay Area, San Francisco, CA
+                        {user.address}
                       </p>
                     </div>
                   </div>

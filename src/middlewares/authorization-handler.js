@@ -10,7 +10,7 @@ export function ensureUser(req, res, next) {
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
         req.user = {
             id: decodedToken.user.id,
-            name: decodedToken.user.name,
+            // name: decodedToken.user.name,
             email: decodedToken.user.email,
             role: decodedToken.user.role,
         };

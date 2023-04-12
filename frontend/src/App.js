@@ -16,6 +16,7 @@ import Paynow from "./components/Payment/Paynow";
 import AccountPage from "./components/Account/AccountPage";
 import Payment from "./components/Payment/Payment";
 import RequestsPage from "./components/Requests/RequestsPage";
+import ContactUs from "./components/ContactUs/ContactUs";
 import TestPage from './testpage/testpage'
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
           <Route path="/paynow" element={<Paynow />} />
           <Route path="/details/:id" element={<ApartmentDetails />} />
           <Route path="/requests" element={<RequestsPage />} />
+          <Route path="/help" element={<ContactUs/>} />
           <Route path="/account" element={<AccountPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />

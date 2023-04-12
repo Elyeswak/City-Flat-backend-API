@@ -546,7 +546,7 @@ export async function httpGetAllOrdersForUser(req, res) {
      const userId = req.user.id;
      console.log(userId);
      
-     const orders = await  orderDb.find({ user: userId }).populate('appartment').populate('User');
+     const orders = await  orderDb.find({ User: userId }).populate('appartment').populate('User');
      
      if (!orders || orders.length === 0) {
        return res.status(404).json({ error: 'No orders found for this user!' });

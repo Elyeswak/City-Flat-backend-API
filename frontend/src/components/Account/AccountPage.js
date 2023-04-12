@@ -4,6 +4,9 @@ import Footer from "../Footer/footer";
 import axios from "axios";
 import { Modal, Button, Form } from "react-bootstrap";
 import PhoneInput from "react-phone-number-input";
+import Table from "react-bootstrap/Table";
+import moment from "moment";
+import Badge from "react-bootstrap/Badge";
 import "./AccountPage.css";
 
 function AccountPage() {
@@ -11,14 +14,14 @@ function AccountPage() {
   const userId = user.id;
   const userToken = user.token;
 
- const [User, setUser] = useState("");
+  const [reservations, setReservations] = useState([]);
+  const [orders, setOrders] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [name, setName] = useState(user.name);
- 
-  const [email, setEmail] = useState(user.email);
+  const [email, setEmail] = useState(user.name);
+
   const [address, setAddress] = useState(user.address);
   const [number, setNumber] = useState(user.number);
-
 
   function handleShowModal() {
     setShowModal(true);
@@ -28,10 +31,9 @@ function AccountPage() {
     // Define the updated user object
     const updatedUser = {
       name: name,
-      email: email,
       number: number,
       address: address,
-      token :userToken
+      token: userToken,
     };
     // Make the Axios PUT request to update the user
     axios
@@ -42,13 +44,12 @@ function AccountPage() {
       })
       .then((response) => {
         // Handle successful response
-        console.log(response.data)
-        const data = response.data ;
-        data ["token"] = userToken;
-        console.log(data)
-        localStorage.setItem('user', JSON.stringify(data));
+        console.log(response.data);
+        const data = response.data;
+        data["token"] = userToken;
+        console.log(data);
+        localStorage.setItem("user", JSON.stringify(data));
         setShowModal(false);
-        
       })
       .catch((error) => {
         // Handle error
@@ -56,6 +57,39 @@ function AccountPage() {
       });
   }
 
+  /**GET ALL RESERVATION FOR THE LOGGEDIN USER */
+  useEffect(() => {
+    axios
+      .get("http://localhost:9090/user/reservations/getall", {
+        headers: {
+          Authorization: `Bearer ${userToken}`, // if authentication is required
+        },
+      })
+      .then((response) => {
+        setReservations(response.data);
+        console.log(response.data); // handle response data
+      })
+      .catch((error) => {
+        console.log(error.response.data); // handle error
+      });
+  }, []);
+
+  /**GET ALL ORDERS FOR THE LOGGEDIN USER */
+  useEffect(() => {
+    axios
+      .get("http://localhost:9090/user/orders/GetallUO", {
+        headers: {
+          Authorization: `Bearer ${userToken}`, // if authentication is required
+        },
+      })
+      .then((response) => {
+        setOrders(response.data);
+        console.log(response.data); // handle response data
+      })
+      .catch((error) => {
+        console.log(error.response.data); // handle error
+      });
+  }, []);
 
   return (
     <div>
@@ -67,13 +101,13 @@ function AccountPage() {
               <div className="card mb- color-white">
                 <div className="card-body text-center">
                   <img
-                    src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
+                    src="https://newprofilepic2.photo-cdn.net//assets/images/article/profile.jpg"
                     alt="avatar"
                     className="rounded-circle img-fluid"
                     style={{ width: 150 }}
                   />
                   <h5 className="my-3">{user.name}</h5>
-                  
+
                   <p className="text-muted mb-4">{user.address}</p>
                   <div className="d-flex justify-content-center mb-2">
                     <button
@@ -169,9 +203,7 @@ function AccountPage() {
                       <p className="mb-0">Address</p>
                     </div>
                     <div className="col-sm-9">
-                      <p className="text-muted mb-0">
-                        {user.address}
-                      </p>
+                      <p className="text-muted mb-0">{user.address}</p>
                     </div>
                   </div>
                 </div>
@@ -181,6 +213,54 @@ function AccountPage() {
                   <div className="card mb-4 mb-md-0 color-white">
                     <div className="card-body">
                       <p className="mb-4">My orders</p>
+                      <Table responsive className="reservations_table">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Apartment</th>
+                            <th>Date</th>
+                            <th>Total price</th>
+                            <th>Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {orders.map((order, index) => (
+                            <tr key={index}>
+                              <td>{index + 1}</td>
+                              <td>{order.appartment.name}</td>
+                              <td>
+                                {moment(order.createdAt).format("DD MMMM YYYY")}
+                              </td>
+                              <td>€ {order.totalPrice}</td>
+                              <td>
+                                {order.state === "PENDING" && (
+                                  <div>
+                                    <Badge bg="warning" pill text="dark">
+                                      PENDING
+                                    </Badge>
+                                  </div>
+                                )}
+                                {order.state === "ACCEPTED" && (
+                                  <div>
+                                    <div className="badge_status"></div>
+                                    <div className="pay_btn"></div>
+                                    <Badge bg="success" pill text="dark">
+                                      ACCEPTED
+                                    </Badge>
+                                  </div>
+                                )}
+                                {order.state === "DECLINED" && (
+                                  <div>
+                                    <Badge bg="danger" pill text="dark">
+                                      DECLINED
+                                    </Badge>
+                                  </div>
+                                )}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </Table>
                     </div>
                   </div>
                 </div>
@@ -188,6 +268,30 @@ function AccountPage() {
                   <div className="card mb-4 mb-md-0 color-white">
                     <div className="card-body">
                       <p className="mb-4">My reservations</p>
+                      <Table responsive className="reservations_table">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Reservation code</th>
+                            <th>Date</th>
+                            <th>Total price</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {reservations.map((reservation, index) => (
+                            <tr key={index}>
+                              <td>{index + 1}</td>
+                              <td>{reservation.code}</td>
+                              <td>
+                                {moment(reservation.createdAt).format(
+                                  "DD MMMM YYYY"
+                                )}
+                              </td>
+                              <td>€ {reservation.Order.totalPrice}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </Table>
                     </div>
                   </div>
                 </div>

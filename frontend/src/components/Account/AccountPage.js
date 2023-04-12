@@ -1,43 +1,27 @@
 import React, { useState } from "react";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/footer";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
+import { Modal, Button, Form } from "react-bootstrap";
+import PhoneInput from "react-phone-number-input";
 import "./AccountPage.css";
-
-function MyVerticallyCenteredModal(props) {
-  return (
-    <Modal
-      {...props}
-      size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-    >
-      <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">
-          Modal heading
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <h4>Centered Modal</h4>
-        <p>
-          Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-          dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-          consectetur ac, vestibulum at eros.
-        </p>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button onClick={props.onHide}>Close</Button>
-      </Modal.Footer>
-    </Modal>
-  );
-}
 
 function AccountPage() {
   const user = JSON.parse(localStorage.getItem("user"));
   console.log(user);
 
-  const [modalShow, setModalShow] = React.useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [number, setNumber] = useState("");
+  const [address, setAddress] = useState("");
+
+  function handleShowModal() {
+    setShowModal(true);
+  }
+
+  function handleSaveProfile() {
+    
+  }
 
   return (
     <div>
@@ -61,19 +45,70 @@ function AccountPage() {
                     <button
                       type="button"
                       className="btn btn-outline-primary ms-1 edit-profile"
-                      
+                      onClick={handleShowModal}
                     >
                       EDIT MY PROFILE
                     </button>
-
-                    <MyVerticallyCenteredModal
-                      show={modalShow}
-                      onHide={() => setModalShow(false)}
-                    />
                   </div>
                 </div>
               </div>
             </div>
+            <Modal show={showModal} onHide={() => setShowModal(false)}>
+              <Modal.Header closeButton>
+                <Modal.Title>Edit Profile</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Form>
+                  <Form.Group className="mb-3" controlId="formBasicName">
+                    <Form.Label>Full Name</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder={user.name}
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    />
+                  </Form.Group>
+                  <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Label>Email address</Form.Label>
+                    <Form.Control
+                      type="email"
+                      placeholder={user.email}
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </Form.Group>
+                  <Form.Group className="mb-3" controlId="formBasicPhone">
+                    <Form.Label>Phone Number</Form.Label>
+
+                    <PhoneInput
+                      id="number"
+                      name="number"
+                      value={number}
+                      onChange={(e) => setNumber(e.target.value)}
+                      placeholder={`+${user.number}`}
+                    />
+                  </Form.Group>
+                  <Form.Group className="mb-3" controlId="formBasicAddress">
+                    <Form.Label>Address</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder={user.address}
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
+                    />
+                  </Form.Group>
+                </Form>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={() => setShowModal(false)}>
+                  Close
+                </Button>
+                <Button variant="primary" onClick={handleSaveProfile}>
+                  Save Changes
+                </Button>
+              </Modal.Footer>
+            </Modal>
+
             <div className="col-lg-8">
               <div className="card mb-4 color-white">
                 <div className="card-body">

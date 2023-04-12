@@ -20,7 +20,7 @@ import AdminDash from "./components/AdminDashboard/AdminDash";
 import OrdersDash from "./components/AdminDashboard/OrdersDash";
 import AppartmentDash from "./components/AdminDashboard/AppartmentDash";
 import UsersDash from "./components/AdminDashboard/UsersDash";
-
+import ContactUs from "./components/ContactUs/ContactUs"
 import TestPage from './testpage/testpage'
 
 function App() {

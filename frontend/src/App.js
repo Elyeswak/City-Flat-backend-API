@@ -16,7 +16,11 @@ import Paynow from "./components/Payment/Paynow";
 import AccountPage from "./components/Account/AccountPage";
 import Payment from "./components/Payment/Payment";
 import RequestsPage from "./components/Requests/RequestsPage";
-import ContactUs from "./components/ContactUs/ContactUs";
+import AdminDash from "./components/AdminDashboard/AdminDash";
+import OrdersDash from "./components/AdminDashboard/OrdersDash";
+import AppartmentDash from "./components/AdminDashboard/AppartmentDash";
+import UsersDash from "./components/AdminDashboard/UsersDash";
+
 import TestPage from './testpage/testpage'
 
 function App() {
@@ -39,6 +43,10 @@ function App() {
           <Route path="/account" element={<AccountPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/admndash" element={<AdminDash />} />
+          <Route path="/ordersdash" element={<OrdersDash />} />
+          <Route path="/appartdash" element={<AppartmentDash />} />
+          <Route path="/userdash" element={<UsersDash />} />
           <Route path="/test" element={<TestPage />} />
         </Routes>
       </BrowserRouter>

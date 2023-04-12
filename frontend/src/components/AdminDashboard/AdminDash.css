@@ -1,0 +1,9 @@
+.div-denied {
+    width: 100vw;
+    height: 100vh;
+}
+
+.div-denied h1 {
+    text-transform: uppercase;
+}
+

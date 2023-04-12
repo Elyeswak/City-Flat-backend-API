@@ -396,8 +396,6 @@ export function httpDeclineOrder(req, res) {
 }
 
 export function httpAdminDeclineOrder(req, res) {
-
-
    findOneOrderByFilter(req.params.param)
       .then((foundOrder) => {
          if (!foundOrder) {
@@ -420,7 +418,7 @@ export function httpAdminDeclineOrder(req, res) {
 
                            sendDeclineReservationEmail(founUser, foundOrder, foundAppart);
                            orderDb
-                              .findByIdAndUpdate(foundOrder._id, {
+                              .deleteOne(foundOrder._id, {
                                  $set: {
                                     accepted: false,
                                     state: "DECLINED",

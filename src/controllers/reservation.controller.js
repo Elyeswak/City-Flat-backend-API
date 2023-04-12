@@ -420,13 +420,13 @@ export function httpAdminDeclineOrder(req, res) {
 
                            sendDeclineReservationEmail(founUser, foundOrder, foundAppart);
                            orderDb
-                              .findByIdAndUpdate(foundOrder._id, {
+                              .deleteOne(foundOrder._id, {
                                  $set: {
                                     accepted: false,
                                     state: "DECLINED",
                                  },
                               })
-                              .then((reservation) => {
+                              .then((order) => {
                                  const notification = {
                                     user: foundOrder.User._id,
                                     message: 'Your reservation for :'+foundOrder.appartment.name +" reservation code : "+foundOrder.id+"has been declined by our admin .",

@@ -248,7 +248,7 @@ check your CityFlat App`;
    const htmlToSend = template({
       title: title,
       message: message,
-      code: reservation.code,
+      code: order.name,
    });
    const mailOptions = {
       from: process.env.EMAIL,

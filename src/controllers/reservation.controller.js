@@ -33,12 +33,8 @@ export async function httpGetMyReservations(req, res) {
 
       const reservations = await reservationDb
     
-      .find()
-      .populate({
-        path: 'Order',
-        match: { User: req.user.id },
-        populate: { path: 'appartment' }
-      })
+      .find({User:foundUser})
+    
          .populate('Order').populate('Card');
 
       res.status(200).json(reservationListFormat(reservations));
@@ -424,7 +420,7 @@ export function httpAdminDeclineOrder(req, res) {
                                     state: "DECLINED",
                                  },
                               })
-                              .then((reservation) => {
+                              .then((order) => {
                                  const notification = {
                                     user: foundOrder.User._id,
                                     message: 'Your reservation for :'+foundOrder.appartment.name +" reservation code : "+foundOrder.id+"has been declined by our admin .",

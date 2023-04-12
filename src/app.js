@@ -15,6 +15,7 @@ import morgan from 'morgan';
 import { userRouter } from './routes/user.routes.js';
 import { appartmentRouter } from './routes/appartment.routes.js';
 import { paypalRouter} from './routes/paypal.routes.js';
+import { HelpRouter } from './routes/help.routes.js';
 import startNotificationCleanup from "./utils/notificationCleanup.js";
 import bookedDatesCleanup from "./utils/bookedDatesCleanup.js";
 
@@ -73,6 +74,8 @@ app.use('/appartments',appartmentRouter);
 
 
 app.use('/paypal',paypalRouter);
+app.use('/help',HelpRouter);
+
 
 /** Error handlers */
 app.use(notFoundError);

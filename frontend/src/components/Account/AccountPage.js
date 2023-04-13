@@ -60,7 +60,7 @@ function AccountPage() {
   /**GET ALL RESERVATION FOR THE LOGGEDIN USER */
   useEffect(() => {
     axios
-      .get("http://localhost:9090/user/reservations/getall", {
+      .get("http://localhost:9090/user/reservations/getallmy", {
         headers: {
           Authorization: `Bearer ${userToken}`, // if authentication is required
         },

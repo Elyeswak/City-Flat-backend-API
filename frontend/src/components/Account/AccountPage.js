@@ -7,6 +7,10 @@ import PhoneInput from "react-phone-number-input";
 import Table from "react-bootstrap/Table";
 import moment from "moment";
 import Badge from "react-bootstrap/Badge";
+import validator from "validator";
+import { isValidNumber } from "libphonenumber-js";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./AccountPage.css";
 
 function AccountPage() {
@@ -18,16 +22,33 @@ function AccountPage() {
   const [orders, setOrders] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [name, setName] = useState(user.name);
-  const [email, setEmail] = useState(user.name);
-
   const [address, setAddress] = useState(user.address);
-  const [number, setNumber] = useState(user.number);
+  const [number, setNumber] = useState();
+  const [isValidPhoneNumber, setIsValidNumber] = useState(false);
+  const [isValidName, setIsValidName] = useState(false);
+ 
+
+
+  const onChangeName = (e) => {
+    const name = e.target.value;
+    setName(name);
+    setIsValidName(
+      /^[a-zA-Z\s'"]+$/.test(name) && name.length < 50 && name.length > 5
+    );
+  };
+
+  const onChangeNumber = (e) => {
+    const number = document.getElementById("number").value;
+    setNumber(number);
+    setIsValidNumber(isValidNumber(number));
+  };
+
 
   function handleShowModal() {
     setShowModal(true);
   }
 
-  function handleSaveProfile() {
+  /*function handleSaveProfile() {
     // Define the updated user object
     const updatedUser = {
       name: name,
@@ -55,7 +76,64 @@ function AccountPage() {
         // Handle error
         console.error(error);
       });
-  }
+  }*/
+
+  const handleSaveProfile = async (event) => {
+    event.preventDefault(); // prevent form submission
+  
+    if (!name || !number || !address) {
+      toast.error("❌ Please fill all required fields!", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      return;
+    }
+  
+    if (!/^[a-zA-Z0-9,\s]{6,50}$/.test(address)) {
+      toast.error("❌ Invalid address! Address should only contain alphanumeric characters and spaces and be between 6 to 50 characters long.", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      return;
+    }
+  
+    const phoneNumber = number.replace("+", "");
+    const Number = phoneNumber.replace(/\s/g, "");
+  
+    try {
+      const response = await axios.put(`http://localhost:9090/user/${userId}`, {
+        name: name,
+        number: Number,
+        address: address,
+        token: userToken,
+      }, {
+        headers: {
+          Authorization: `Bearer ${userToken}`, // authentication is required
+        },
+      });
+      console.log(response.data);
+      const data = response.data;
+      data["token"] = userToken;
+      console.log(data);
+      localStorage.setItem("user", JSON.stringify(data));
+      setShowModal(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
 
   /**GET ALL RESERVATION FOR THE LOGGEDIN USER */
   useEffect(() => {
@@ -94,6 +172,18 @@ function AccountPage() {
   return (
     <div>
       <Navbar />
+      <ToastContainer
+                      position="top-right"
+                      autoClose={2000}
+                      hideProgressBar={false}
+                      newestOnTop={false}
+                      closeOnClick
+                      rtl={false}
+                      pauseOnFocusLoss
+                      draggable
+                      pauseOnHover
+                      theme="light"
+                    />
       <section style={{ backgroundColor: "#000" }}>
         <div className="container py-5">
           <div className="row">
@@ -121,6 +211,7 @@ function AccountPage() {
                 </div>
               </div>
             </div>
+
             <Modal show={showModal} onHide={() => setShowModal(false)}>
               <Modal.Header closeButton>
                 <Modal.Title>Edit Profile</Modal.Title>
@@ -133,7 +224,7 @@ function AccountPage() {
                       type="text"
                       placeholder="Enter Your Name"
                       value={name}
-                      onChange={(e) => setName(e.target.value)}
+                      onChange={onChangeName}
                     />
                   </Form.Group>
                   <Form.Group className="mb-3" controlId="formBasicPhone">
@@ -143,7 +234,7 @@ function AccountPage() {
                       id="number"
                       name="number"
                       value={number}
-                      onChange={(e) => setNumber(e.target.value)}
+                      onChange={onChangeNumber}
                       placeholder={`+${user.number}`}
                     />
                   </Form.Group>
@@ -194,7 +285,7 @@ function AccountPage() {
                       <p className="mb-0">Phone</p>
                     </div>
                     <div className="col-sm-9">
-                      <p className="text-muted mb-0">+{user.number}</p>
+                      <p className="text-muted mb-0">{user.number}</p>
                     </div>
                   </div>
                   <hr />

@@ -54,6 +54,7 @@ function Signup() {
     setIsValidNumber(isValidNumber(number));
   };
 
+  
   const onChangeEmail = (e) => {
     const email = e.target.value;
     setEmail(email);

@@ -60,12 +60,9 @@ const UserSchema = new Schema(
       required: false,
       minlength: 6,
       maxlength: 50,
-      // validate: {
-      //   validator: function (v) {
-      //     return /^[a-zA-Z0-9 ]{6,50}$/.test(v);
-      //   },
-      //   message: "Address should only contain alphanumeric characters and spaces and numbers be between 6 to 50 characters long.",
-      // },
+     
+      
+      
     },
     isVerified: { type: Boolean, default: false },
     verifCode: String,
@@ -146,13 +143,7 @@ UserSchema.pre("save", async function (next) {
         }
       }
   
-      // validate address field
-      // if (this.isModified("address")) {
-      //   const addressRegex = /^[a-zA-Z0-9 ]{6,50}$/;
-      //   if (!addressRegex.test(this.address)) {
-      //     throw new Error("Address should only contain alphanumeric characters and spaces and numbers be between 6 to 50 characters long.");
-      //   }
-      // }
+    
   
       next();
     } catch (err) {

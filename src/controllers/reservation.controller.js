@@ -26,18 +26,22 @@ export async function httpGetMyReservations(req, res) {
    console.log(req.user);
 
    try {
-      const foundUser = await findOneUserByFilter(req.user.id);
+      const foundUser = await userDb.findOne(req.user);
       if (!foundUser) {
          return res.status(404).json({ error: 'User not found!' });
       }
 
       const reservations = await reservationDb
-    
-      .find({User:foundUser})
-    
-         .populate('Order').populate('Card');
+         .find()
+         .populate({
+            path: 'Order',
+            populate: { path: 'User' }
+         })
+         .populate('Card');
 
-      res.status(200).json(reservationListFormat(reservations));
+      const filteredReservations = reservations.filter(reservation => reservation.Order.User.id === foundUser.id);
+
+      res.status(200).json(reservationListFormat(filteredReservations));
    } catch (err) {
       console.error(err);
       res.status(500).json({ error: err.message });

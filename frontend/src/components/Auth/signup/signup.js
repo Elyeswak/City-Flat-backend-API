@@ -54,6 +54,7 @@ function Signup() {
     setIsValidNumber(isValidNumber(number));
   };
 
+  
   const onChangeEmail = (e) => {
     const email = e.target.value;
     setEmail(email);
@@ -336,7 +337,7 @@ function Signup() {
                       </div>
 
                       <div className="input-wrap">
-                        <label className="label-form" htmlFor="email">
+                        <label className="label-form" htmlFor="enumbermail">
                           Phone Number
                         </label>
                         <PhoneInput

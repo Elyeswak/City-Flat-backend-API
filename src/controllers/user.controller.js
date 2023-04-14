@@ -267,7 +267,6 @@ function addTokenToUser(user) {
    const payload = {
       user: {
          id: user._id,
-    
          email: user.email,
          role: user.role,
       },

@@ -3,7 +3,7 @@ import "./OrderDash.css";
 import Table from "react-bootstrap/Table";
 import moment from "moment";
 import axios from "axios";
-import Sidebar from "./SideBar";
+import Sidebar from "./Sidebar";
 import OrderDetailsModal from "./OrderDetailsModal";
 
 export default function OrdersDash() {

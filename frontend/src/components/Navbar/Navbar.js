@@ -157,7 +157,7 @@ function Navbar() {
                 </a>
                 <hr />
                 <a href="/account"><button className="button-31">Account</button></a>
-                <button className="button-31">Help</button>
+                <a href="/help"><button className="button-31">Help</button></a>
                 <button className="button-31" onClick={handleLogout}>
                   Logout
                 </button>

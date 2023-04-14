@@ -8,6 +8,13 @@
   flex-direction: column;
 }
 
+.rdrCalendarWrapper .rdrDayDisabled {
+  background-color: #d7d7d7;
+  border-radius: 1px;
+  
+}
+
+
 .apartment_details_content {
   padding: 3%;
 }

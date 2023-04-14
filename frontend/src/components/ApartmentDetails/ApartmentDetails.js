@@ -4,8 +4,6 @@ import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/footer";
 import CarouselPage from "../../utils/Carousel";
 import Rate from "../Rate/Rate";
-import moment from "moment";
-import {extendMoment} from "moment-range";
 import "./ApartmentDetails.css";
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
@@ -71,8 +69,6 @@ function ApartmentDetails() {
           const [bookedDates, ...services] = res;
           setBookedDates(bookedDates);
           setService(services);
-          console.log("Booked Dates: ", bookedDates);
-          console.log("Services: ", services);
         });
       })
       .catch((error) => {
@@ -220,15 +216,6 @@ function ApartmentDetails() {
   };
 
 /**DISABLED BOOKED DATES */
-// const formattedDates = bookedDates.map(({ start, end }) => {
-//   const startDate = new Date(start).toISOString().substring(0, 10);
-//   const endDate = new Date(end).toISOString().substring(0, 10);
-//   return [startDate, endDate];
-// });
-
-// const output = [formattedDates];
-// console.log('output'+output);
-
 const disabledDates = bookedDates.flatMap(({ start, end }) => {
   const startDate = new Date(start);
   const endDate = new Date(end);
@@ -243,7 +230,7 @@ const disabledDates = bookedDates.flatMap(({ start, end }) => {
   return dates;
 });
 
-console.log('disabled : '+ disabledDates)
+
 /**RENDERING COMPONENT*/
   return (
     <>
@@ -349,6 +336,7 @@ console.log('disabled : '+ disabledDates)
                     className="date"
                     minDate={new Date()}
                     disabledDates={disabledDates}
+                    
                   />
                 </div>
               </div>

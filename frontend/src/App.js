@@ -20,6 +20,7 @@ import AdminDash from "./components/AdminDashboard/AdminDash";
 import OrdersDash from "./components/AdminDashboard/OrdersDash";
 import AppartmentDash from "./components/AdminDashboard/AppartmentDash";
 import UsersDash from "./components/AdminDashboard/UsersDash";
+import ContactUs from "./components/ContactUs/ContactUs"
 import TestPage from './testpage/testpage'
 import ServicesDash from "./components/AdminDashboard/ServicesDash";
 
@@ -39,6 +40,7 @@ function App() {
           <Route path="/paynow" element={<Paynow />} />
           <Route path="/details/:id" element={<ApartmentDetails />} />
           <Route path="/requests" element={<RequestsPage />} />
+          <Route path="/help" element={<ContactUs/>} />
           <Route path="/account" element={<AccountPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />

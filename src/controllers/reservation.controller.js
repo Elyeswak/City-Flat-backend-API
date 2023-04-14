@@ -26,22 +26,22 @@ export async function httpGetMyReservations(req, res) {
    console.log(req.user);
 
    try {
-      const foundUser = await findOneUserByFilter(req.user.id);
+      const foundUser = await userDb.findOne(req.user);
       if (!foundUser) {
          return res.status(404).json({ error: 'User not found!' });
       }
 
       const reservations = await reservationDb
-    
-      .find()
-      .populate({
-        path: 'Order',
-        match: { User: req.user.id },
-        populate: { path: 'appartment' }
-      })
-         .populate('Order').populate('Card');
+         .find()
+         .populate({
+            path: 'Order',
+            populate: { path: 'User' }
+         })
+         .populate('Card');
 
-      res.status(200).json(reservationListFormat(reservations));
+      const filteredReservations = reservations.filter(reservation => reservation.Order.User.id === foundUser.id);
+
+      res.status(200).json(reservationListFormat(filteredReservations));
    } catch (err) {
       console.error(err);
       res.status(500).json({ error: err.message });
@@ -424,7 +424,7 @@ export function httpAdminDeclineOrder(req, res) {
                                     state: "DECLINED",
                                  },
                               })
-                              .then((reservation) => {
+                              .then((order) => {
                                  const notification = {
                                     user: foundOrder.User._id,
                                     message: 'Your reservation for :'+foundOrder.appartment.name +" reservation code : "+foundOrder.id+"has been declined by our admin .",
@@ -546,7 +546,7 @@ export async function httpGetAllOrdersForUser(req, res) {
      const userId = req.user.id;
      console.log(userId);
      
-     const orders = await  orderDb.find({ user: userId }).populate('appartment').populate('User');
+     const orders = await  orderDb.find({ User: userId }).populate('appartment').populate('User');
      
      if (!orders || orders.length === 0) {
        return res.status(404).json({ error: 'No orders found for this user!' });

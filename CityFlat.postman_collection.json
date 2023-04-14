@@ -91,7 +91,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \r\n \"Order\": {\r\n    \"id\": \"6421723ad4d003e8797296cd\"\r\n    \r\n  },\r\n\r\n  \"Card\": {\r\n   \r\n      \"number\": \"4242424242424242\",\r\n      \"exp_month\": \"12\",\r\n      \"exp_year\": \"2024\",\r\n      \"cvc\": \"123\"\r\n    \r\n  }\r\n}",
+							"raw": "{\r\n  \r\n \"Order\": {\r\n    \"id\": \"642d70f9a5a71305615ecfd8\"\r\n    \r\n  },\r\n\r\n  \"Card\": {\r\n   \r\n      \"number\": \"4242424242424242\",\r\n      \"exp_month\": \"12\",\r\n      \"exp_year\": \"2024\",\r\n      \"cvc\": \"123\"\r\n    \r\n  }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -136,7 +136,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \r\n  \"Order\": {\r\n      \"isConfirmed\":false,\r\n    \"appartment\": {\r\n     \"name\": \"Tokyo appartment\",\r\n    \"description\": \"An Amazing  appartment\",\r\n    \"pricePerNight\": 120,\r\n    \"bookedDates\": [],\r\n    \"location\": \"7ayNozha \",\r\n    \"rooms\": 4\r\n    \r\n    },\r\n    \"description\": \"elyes reservation \",\r\n    \"checkIn\": \"2023-03-12\",\r\n    \"checkOut\": \"2023-03-14\",\r\n    \"servicesFee\": 150,\r\n    \"nightsFee\": 250,\r\n    \"services\": [\r\n      {\r\n        \"name\": \"cleaning\",\r\n        \"description\": \"balhzoojgg\",\r\n        \"pricePerNight\": 120\r\n      }\r\n    ]\r\n  }\r\n \r\n}",
+							"raw": "{\r\n   \"appartment\":\"642d6d96c78168c44f0e7ac0\",\r\n    \"description\": \"elyes order \",\r\n    \"checkIn\": \"2023-03-12\",\r\n    \"checkOut\": \"2023-03-14\",\r\n    \"servicesFee\": 150,\r\n    \"nightsFee\": 250,\r\n    \"services\": [\r\n     \"63b2eb9a9edd0a74ec227479\",\r\n     \"63b2ec0b9edd0a74ec227483\"\r\n\r\n       \r\n    ]\r\n  }\r\n ",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -607,6 +607,68 @@
 						"header": [],
 						"url": {
 							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get myOrders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get one order",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get bookedates(accepted orders)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post payment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9090/Onlinepayment/payment",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"Onlinepayment",
+								"payment"
+							]
 						}
 					},
 					"response": []
@@ -1202,33 +1264,82 @@
 			]
 		},
 		{
-			"name": "post payment",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "Help",
+			"item": [
+				{
+					"name": "add help message",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\r\n\"message\":\"hello world\"\r\n\r\n\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9090/help/messages/sendmessage",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"help",
+								"messages",
+								"sendmessage"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:9090/Onlinepayment/payment",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "9090",
-					"path": [
-						"Onlinepayment",
-						"payment"
-					]
+				{
+					"name": "getone{id}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteone",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9090/help/messages/6436973ad325c76ea9696431",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"help",
+								"messages",
+								"6436973ad325c76ea9696431"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		}
 	]
 }

@@ -137,7 +137,7 @@ userRouter
    .get(httpGetAllServices);
 //reservations
 userRouter
-   .route('/reservations/getall')
+   .route('/reservations/getallmy')
    .get(ensureUser, httpGetMyReservations);
 //admin get all reservations
 userRouter

@@ -21,6 +21,7 @@ import OrdersDash from "./components/AdminDashboard/OrdersDash";
 import AppartmentDash from "./components/AdminDashboard/AppartmentDash";
 import UsersDash from "./components/AdminDashboard/UsersDash";
 import TestPage from './testpage/testpage'
+import ServicesDash from "./components/AdminDashboard/ServicesDash";
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
           <Route path="/admndash" element={<AdminDash />} />
           <Route path="/ordersdash" element={<OrdersDash />} />
           <Route path="/appartdash" element={<AppartmentDash />} />
+          <Route path="/servdash" element={<ServicesDash />} />
           <Route path="/userdash" element={<UsersDash />} />
           <Route path="/test" element={<TestPage />} />
         </Routes>

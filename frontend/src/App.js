@@ -22,6 +22,7 @@ import AppartmentDash from "./components/AdminDashboard/AppartmentDash";
 import UsersDash from "./components/AdminDashboard/UsersDash";
 import ContactUs from "./components/ContactUs/ContactUs"
 import TestPage from './testpage/testpage'
+import Notifications from "./components/Notifications/Notifications";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
           <Route path="/requests" element={<RequestsPage />} />
           <Route path="/help" element={<ContactUs/>} />
           <Route path="/account" element={<AccountPage />} />
+          <Route path="/notifications" element={<Notifications/>} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/admndash" element={<AdminDash />} />

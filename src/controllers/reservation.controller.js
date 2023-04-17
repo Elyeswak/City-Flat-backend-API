@@ -278,9 +278,12 @@ console.log("total price :"+order.totalPrice);
                                                 
                                                    reservationDb.create(newReservation)
                                                       .then((result) => {
-                                                         orderDb.findOneAndUpdate(order.id, { $set: {
-                                                            isPaied:true,
-                                                         }},).then((orderF)=>{
+                                                         orderDb.findByIdAndUpdate(order.id, {
+                                                            $set: {
+                                                               isPaied:true
+                                                            },
+                                                         }).then((orderF)=>{
+                                                            console.log(orderF);
 
                                                             findOneReservationByFilter(result._id);
                                                             updateBookedDates(newReservation.Order.appartment.id, newReservation.Order.checkIn, newReservation.Order.checkOut, res);

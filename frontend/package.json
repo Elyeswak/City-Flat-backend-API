@@ -22,6 +22,7 @@
     "framer-motion": "^10.11.2",
     "leaflet": "^1.9.3",
     "libphonenumber-js": "^1.10.26",
+    "mdb-react-ui-kit": "^6.0.0",
     "moment": "^2.29.4",
     "moment-range": "^4.0.2",
     "react": "^18.2.0",

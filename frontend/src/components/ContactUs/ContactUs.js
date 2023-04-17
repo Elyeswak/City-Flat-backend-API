@@ -6,6 +6,8 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
 function ContactUs() {
 
@@ -95,6 +97,7 @@ function ContactUs() {
               <form onSubmit={handleSubmit}>
                 <h3>DO YOU NEED HELP?</h3>
                 <div className="form-group">
+                  <strong style={{float:"left", margin:"2%", fontFamily:"font-alethia-pro"}}>Please enter your message here.</strong>
                   <textarea
                     name="message"
                     value={values.message}
@@ -104,12 +107,12 @@ function ContactUs() {
                     style={{ width: "100%", height: 150, marginBottom: "20px" }}
                   />
                   <div className="form-group" style={{ marginBottom: "20px" }}>
-                    <input
+                    <button
                       type="submit"
                       name="btnSubmit"
                       className="btnContact"
-                      defaultValue="SEND"
-                    />
+                     value="SEND "
+                    > SEND <FontAwesomeIcon icon={faPaperPlane}/> </button>
                   </div>
                 </div>
               </form>

@@ -36,7 +36,8 @@ export async function addCard(customerId, token) {
   return card;
 }
 
-export async function createPaymentIntent(amount, customerId, paymentMethod) {
+export async function createPaymentIntent(amount, customerId, paymentMethod,orderid) {
+  console.log("hethi mta ayoub "+ orderid);
   try {
     const paymentIntent = await stripe.paymentIntents.create({
       amount: amount,
@@ -44,7 +45,10 @@ export async function createPaymentIntent(amount, customerId, paymentMethod) {
       customer: customerId,
       payment_method: paymentMethod,
       off_session: true,
-      confirm: true
+      confirm: true,
+      metadata: {
+        orderId: String(orderid),
+      },
     });
 
     return paymentIntent;
@@ -54,7 +58,7 @@ export async function createPaymentIntent(amount, customerId, paymentMethod) {
   }
 }
 
-export async function httpMakePayment(req, res, amount, customerId, reservationId,tokenid) {
+export async function httpMakePayment(req, res, amount, customerId, reservationId,tokenid,orderId) {
  
 
   try {
@@ -62,9 +66,8 @@ export async function httpMakePayment(req, res, amount, customerId, reservationI
       amount * 100, // Stripe requires the amount to be in cents
       customerId,
       String(tokenid),
-      {
-        reservationId: reservationId,
-      }
+   
+      orderId
     );
 
     res.status(200).json({

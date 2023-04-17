@@ -2,6 +2,7 @@ import express from 'express';
 import multer from "../middlewares/multer_config.js";
 import passport from "passport";
 import { stripeWebhookMiddleware } from "../middlewares/stripe_handler.js";
+import orderdb from '../models/order.model.js';
 import paypal from 'paypal-rest-sdk';
 import {
 
@@ -204,7 +205,14 @@ userRouter
 
       switch (event.type) {
          case 'payment_intent.succeeded':
-            // Handle payment succeeded event
+            const paymentIntent = event.data.object;
+            const orderId = paymentIntent.metadata.orderId;
+            try {
+               const order =  orderdb.findByIdAndUpdate(orderId, { isPaied: true });
+               console.log(`Order ${orderId} updated: isPaid = true`);
+             } catch (err) {
+               console.error(`Error updating order ${orderId}: ${err.message}`);
+             }
             break;
 
          case 'payment_intent.payment_failed':

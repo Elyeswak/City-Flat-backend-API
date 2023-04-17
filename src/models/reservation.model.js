@@ -13,7 +13,11 @@ const ReservationSchema = new Schema({
       },
  
 
-  
+  paied:  {
+
+    type:Boolean,
+    default:false,
+  },
       transactionId:{
         type:String,
        },

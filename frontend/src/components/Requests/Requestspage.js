@@ -162,64 +162,70 @@ function RequestsPage() {
                       </div>
                     )}
                   </td>
+
                   <td>
-                    {order.state === "PENDING" && (
+                    {order.isPaied === true ? (
+                      <span>Already Paid</span>
+                    ) : (
                       <div>
-                        <button
-                          type="button"
-                          className="btn"
-                          style={{
-                            backgroundColor: "#dc3444",
-                            borderRadius: "5%",
-                            fontSize: "12px",
-                          }}
-                          onClick={() => handleCancelClick(order.id)}
-                        >
-                          <span>DELETE</span>
-                        </button>
-                      </div>
-                    )}
-                    {order.state === "ACCEPTED" && (
-                      <div>
-                        <button
-                          type="button"
-                          className="btn"
-                          style={{
-                            backgroundColor: "#cc770e",
-                            borderRadius: "10%",
-                            fontSize: "12px",
-                          }}
-                          onClick={(e) => handlePayNowClick(e, order)}
-                        >
-                          <span style={{color:"white"}}>PAY</span>
+                        {order.state === "PENDING" && (
+                          <div>
+                            <button
+                              type="button"
+                              className="btn"
+                              style={{
+                                backgroundColor: "#dc3444",
+                                borderRadius: "16px",
+                                fontSize: "12px",
+                              }}
+                              onClick={() => handleCancelClick(order.id)}
+                            >
+                              <span style={{ color: "white" }}>DELETE</span>
+                            </button>
+                          </div>
+                        )}
+                        {order.state === "ACCEPTED" && (
+                          <div>
+                            <button
+                              type="button"
+                              className="btn"
+                              style={{
+                                backgroundColor: "#23639e",
+                                borderRadius: "16px",
+                                fontSize: "12px",
+                              }}
+                              onClick={(e) => handlePayNowClick(e, order)}
+                            >
+                              <span style={{ color: "white" }}>PAY NOW</span>
+                            </button>
 
-                        </button>
-
-                        <a
-                          style={{
-                            marginLeft: "3%",
-                          }}
-                          className="link--metis link"
-                          onClick={() => handleCancelClick(order.id)}
-                        >
-                          <span>CANCEL</span>
-                        </a>
-                      </div>
-                    )}
-                    {order.state === "DECLINED" && (
-                      <div>
-                        <button
-                          type="button"
-                          className="btn"
-                          style={{
-                            backgroundColor: "#dc3444",
-                            borderRadius: "5%",
-                            fontSize: "12px",
-                          }}
-                          onClick={() => handleCancelClick(order.id)}
-                        >
-                          <span>DELETE</span>
-                        </button>
+                            <a
+                              style={{
+                                marginLeft: "3%",
+                              }}
+                              className="link--metis link"
+                              onClick={() => handleCancelClick(order.id)}
+                            >
+                              <span>CANCEL</span>
+                            </a>
+                          </div>
+                        )}
+                        {order.state === "DECLINED" && (
+                          <div>
+                            <button
+                              type="button"
+                              className="btn"
+                              style={{
+                                backgroundColor: "#dc3444",
+                                borderRadius: "16px",
+                                fontSize: "12px",
+                              }}
+                              onClick={() => handleCancelClick(order.id)}
+                            >
+                              <span style={{ color: "white" }}>DELETE</span>
+                            </button>
+                          </div>
+                        )}
                       </div>
                     )}
                   </td>

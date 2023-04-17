@@ -625,7 +625,7 @@ function orderFormat(Order) {
       totalPrice: Order.totalPrice,
       checkIn: Order.checkIn,
       checkOut: Order.checkOut,
-      
+      isPaied : Order.isPaied,
       servicesFee: Order.servicesFee,
       nightsFee: Order.nightsFee,
       

@@ -169,16 +169,13 @@ function RequestsPage() {
                           type="button"
                           className="btn"
                           style={{
-                            backgroundColor: "#c41d1d",
-                            borderRadius: "50%",
+                            backgroundColor: "#dc3444",
+                            borderRadius: "5%",
                             fontSize: "12px",
                           }}
                           onClick={() => handleCancelClick(order.id)}
                         >
-                          <FontAwesomeIcon
-                            icon={faTrashAlt}
-                            style={{ color: "white" }}
-                          />
+                          <span>DELETE</span>
                         </button>
                       </div>
                     )}
@@ -188,22 +185,21 @@ function RequestsPage() {
                           type="button"
                           className="btn"
                           style={{
-                            backgroundColor: "#1912cc",
-                            borderRadius: "50%",
+                            backgroundColor: "#cc770e",
+                            borderRadius: "10%",
                             fontSize: "12px",
                           }}
                           onClick={(e) => handlePayNowClick(e, order)}
                         >
-                          <FontAwesomeIcon
-                            icon={faCreditCardAlt}
-                            style={{ color: "white" }}
-                          />
+                          <span style={{color:"white"}}>PAY</span>
+
                         </button>
 
                         <a
                           style={{
                             marginLeft: "3%",
                           }}
+                          className="link--metis link"
                           onClick={() => handleCancelClick(order.id)}
                         >
                           <span>CANCEL</span>
@@ -216,16 +212,13 @@ function RequestsPage() {
                           type="button"
                           className="btn"
                           style={{
-                            backgroundColor: "#c41d1d",
-                            borderRadius: "50%",
+                            backgroundColor: "#dc3444",
+                            borderRadius: "5%",
                             fontSize: "12px",
                           }}
                           onClick={() => handleCancelClick(order.id)}
                         >
-                          <FontAwesomeIcon
-                            icon={faTrashAlt}
-                            style={{ color: "white" }}
-                          />
+                          <span>DELETE</span>
                         </button>
                       </div>
                     )}

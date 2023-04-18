@@ -83,8 +83,8 @@ const Testpage = () => {
         )}
       />
       <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
-        <output>€{values[0]}</output>
-        <output>€{values[1]}</output>
+        <output>{values[0]}</output>
+        <output>{values[1]}</output>
       </div>
     </div>
   );

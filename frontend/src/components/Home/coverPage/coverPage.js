@@ -6,11 +6,12 @@ import "./coverPage.css";
 
 import { Range, getTrackBackground } from "react-range";
 
+/**PRICE VARIABLES */
 const PRICE_STEP = 10;
 const MIN_PRICE = 0;
 const MAX_PRICE = 1000;
 
-/**rooms consts */
+/**ROOMS VARIABLES */
 const ROOM_STEP = 1;
 const ROOM_MIN = 1;
 const ROOM_MAX = 7;
@@ -18,12 +19,14 @@ const ROOM_MAX = 7;
 function CoverPage() {
   const [openFilter, setOpenFilter] = useState(false);
 
-  const [values, setValues] = useState([100, 900]);
+  const [priceValues, setPriceValues] = useState([100, 900]);
+
+  const handlePriceChange = (newPriceValues) => {
+    setPriceValues(newPriceValues);
+  };
   const [roomCount, setRoomCount] = useState(1);
 
-  const handleChange = (newValues) => {
-    setValues(newValues);
-  };
+
   let menuRef = useRef();
 
   /*Filter useEffect*/
@@ -92,11 +95,11 @@ function CoverPage() {
                         }}
                       >
                         <Range
-                          values={values}
+                          values={priceValues}
                           step={PRICE_STEP}
                           min={MIN_PRICE}
                           max={MAX_PRICE}
-                          onChange={handleChange}
+                          onChange={handlePriceChange}
                           renderTrack={({ props, children }) => (
                             <div
                               onMouseDown={props.onMouseDown}
@@ -115,7 +118,7 @@ function CoverPage() {
                                   width: "100%",
                                   borderRadius: "4px",
                                   background: getTrackBackground({
-                                    values,
+                                    values: priceValues,
                                     colors: ["#ccc", "#e8ca23", "#ccc"],
                                     min: MIN_PRICE,
                                     max: MAX_PRICE,
@@ -161,8 +164,8 @@ function CoverPage() {
                             width: "100%",
                           }}
                         >
-                          <output>€{values[0]}</output>
-                          <output>€{values[1]}</output>
+                          <output>€{priceValues[0]}</output>
+                          <output>€{priceValues[1]}</output>
                         </div>
                       </div>
                     </div>

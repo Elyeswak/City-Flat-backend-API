@@ -6,13 +6,20 @@ import "./coverPage.css";
 
 import { Range, getTrackBackground } from "react-range";
 
-const STEP = 10;
-const MIN = 0;
-const MAX = 1000;
+const PRICE_STEP = 10;
+const MIN_PRICE = 0;
+const MAX_PRICE = 1000;
+
+/**rooms consts */
+const ROOM_STEP = 1;
+const ROOM_MIN = 1;
+const ROOM_MAX = 7;
 
 function CoverPage() {
   const [openFilter, setOpenFilter] = useState(false);
+
   const [values, setValues] = useState([100, 900]);
+  const [roomCount, setRoomCount] = useState(1);
 
   const handleChange = (newValues) => {
     setValues(newValues);
@@ -81,14 +88,14 @@ function CoverPage() {
                         style={{
                           display: "flex",
                           justifyContent: "center",
-                          flexWrap: "wrap"
+                          flexWrap: "wrap",
                         }}
                       >
                         <Range
                           values={values}
-                          step={STEP}
-                          min={MIN}
-                          max={MAX}
+                          step={PRICE_STEP}
+                          min={MIN_PRICE}
+                          max={MAX_PRICE}
                           onChange={handleChange}
                           renderTrack={({ props, children }) => (
                             <div
@@ -109,9 +116,9 @@ function CoverPage() {
                                   borderRadius: "4px",
                                   background: getTrackBackground({
                                     values,
-                                    colors: ["#ccc", "#548BF4", "#ccc"],
-                                    min: MIN,
-                                    max: MAX,
+                                    colors: ["#ccc", "#e8ca23", "#ccc"],
+                                    min: MIN_PRICE,
+                                    max: MAX_PRICE,
                                   }),
                                   alignSelf: "center",
                                 }}
@@ -140,7 +147,7 @@ function CoverPage() {
                                   height: "16px",
                                   width: "5px",
                                   backgroundColor: isDragged
-                                    ? "#548BF4"
+                                    ? "#e8ca23"
                                     : "#CCC",
                                 }}
                               />
@@ -195,14 +202,80 @@ function CoverPage() {
                       <div className="col-sm"></div>
                       <div className="col-sm">
                         <p>ROOMS</p>
-                        <input
-                          type="range"
-                          className="form-range"
-                          id="customRange1"
-                          min="0"
-                          max="7"
-                          step="1"
-                        />
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            
+                          }}
+                        >
+                          <Range
+                            values={[roomCount]}
+                            step={ROOM_STEP}
+                            min={ROOM_MIN}
+                            max={ROOM_MAX}
+                            onChange={(newValues) => setRoomCount(newValues[0])}
+                            renderTrack={({ props, children }) => (
+                              <div
+                                onMouseDown={props.onMouseDown}
+                                onTouchStart={props.onTouchStart}
+                                style={{
+                                  ...props.style,
+                                  height: "36px",
+                                  display: "flex",
+                                  width: "100%",
+                                }}
+                              >
+                                <div
+                                  ref={props.ref}
+                                  style={{
+                                    height: "5px",
+                                    width: "100%",
+                                    borderRadius: "4px",
+                                    background: getTrackBackground({
+                                      values: [roomCount],
+                                      colors: ["#e8ca23", "#ccc"],
+                                      min: ROOM_MIN,
+                                      max: ROOM_MAX,
+                                    }),
+                                    alignSelf: "center",
+                                  }}
+                                >
+                                  {children}
+                                </div>
+                              </div>
+                            )}
+                            renderThumb={({ props, isDragged }) => (
+                              <div
+                                {...props}
+                                style={{
+                                  ...props.style,
+                                  height: "42px",
+                                  width: "42px",
+                                  borderRadius: "4px",
+                                  backgroundColor: "#FFF",
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  boxShadow: "0px 2px 6px #AAA",
+                                }}
+                              >
+                                <div
+                                  style={{
+                                    height: "16px",
+                                    width: "5px",
+                                    backgroundColor: isDragged
+                                      ? "#e8ca23"
+                                      : "#CCC",
+                                  }}
+                                />
+                              </div>
+                            )}
+                          />
+                          <output style={{ marginTop: "30px" }}>
+                            {roomCount}
+                          </output>
+                        </div>
                       </div>
                       <div className="col-sm"></div>
                     </div>

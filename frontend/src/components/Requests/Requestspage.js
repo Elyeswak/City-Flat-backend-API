@@ -8,13 +8,7 @@ import Swal from "sweetalert2";
 import moment from "moment";
 import Badge from "react-bootstrap/Badge";
 import axios from "axios";
-import { MDBBtn, MDBIcon } from "mdb-react-ui-kit";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCancel,
-  faCreditCardAlt,
-  faTrashAlt,
-} from "@fortawesome/free-solid-svg-icons";
+
 
 function RequestsPage() {
   const [orders, setOrders] = useState([]);

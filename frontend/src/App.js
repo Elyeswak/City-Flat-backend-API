@@ -22,6 +22,7 @@ import AppartmentDash from "./components/AdminDashboard/AppartmentDash";
 import UsersDash from "./components/AdminDashboard/UsersDash";
 import ContactUs from "./components/ContactUs/ContactUs"
 import TestPage from './testpage/testpage'
+import ServicesDash from "./components/AdminDashboard/ServicesDash";
 import Notifications from "./components/Notifications/Notifications";
 import FilteringResults from "./components/Home/FilteringPage/FilteringResults";
 
@@ -50,6 +51,7 @@ function App() {
           <Route path="/admndash" element={<AdminDash />} />
           <Route path="/ordersdash" element={<OrdersDash />} />
           <Route path="/appartdash" element={<AppartmentDash />} />
+          <Route path="/servdash" element={<ServicesDash />} />
           <Route path="/userdash" element={<UsersDash />} />
           <Route path="/test" element={<TestPage />} />
         </Routes>

@@ -55,19 +55,22 @@ function Sidebar(props) {
         </Offcanvas.Header>
         <Offcanvas.Body>
           <ul className="sidebar-menu">
-            <li className="fs-1">
+            <li className="fs-4">
               <Link to={"/"}>Home</Link>
             </li>
-            <li className="fs-1">
+            <li className="fs-4">
               <Link to={"/ordersdash"}>Orders</Link>
             </li>
-            <li className="fs-1">
+            <li className="fs-4">
               <Link to={"/appartdash"}>Appartments</Link>
             </li>
-            <li className="fs-1">
+            <li className="fs-4">
+              <Link to={"/servdash"}>Services</Link>
+            </li>
+            <li className="fs-4">
               <Link to={"/userdash"}>Users</Link>
             </li>
-            <li className="fs-1">
+            <li className="fs-4">
               <a href="#" onClick={handleOpenHelpModal}>
                 Help
               </a>

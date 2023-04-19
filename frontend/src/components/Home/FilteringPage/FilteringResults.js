@@ -7,12 +7,23 @@ import { Link } from "react-router-dom";
 
 function FilteringResults({ filteredData }) {
   const [rating, setRating] = useState(0);
+
+  if (!filteredData) {
+    return(
+      <></>
+    )
+  }
   return (
+
     <section className="luxury__collection__page">
       <motion.div
         whileInView={{ y: [100, 50, 0], opacity: [0, 0, 1] }}
         transition={{ duration: 0.5 }}
       >
+        <div className="luxury_collection_items_title">
+          <h2>SEARCH RESULTS</h2>
+          <div className="line-in-middle"></div>
+        </div>
         <div className="luxury_collection_items_content">
           <div className="luxury_collection_content">
             <div className="row">

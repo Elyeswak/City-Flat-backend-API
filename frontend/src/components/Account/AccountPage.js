@@ -26,8 +26,6 @@ function AccountPage() {
   const [number, setNumber] = useState();
   const [isValidPhoneNumber, setIsValidNumber] = useState(false);
   const [isValidName, setIsValidName] = useState(false);
- 
-
 
   const onChangeName = (e) => {
     const name = e.target.value;
@@ -42,7 +40,6 @@ function AccountPage() {
     setNumber(number);
     setIsValidNumber(isValidNumber(number));
   };
-
 
   function handleShowModal() {
     setShowModal(true);
@@ -80,7 +77,7 @@ function AccountPage() {
 
   const handleSaveProfile = async (event) => {
     event.preventDefault(); // prevent form submission
-  
+
     if (!name || !number || !address) {
       toast.error("❌ Please fill all required fields!", {
         position: "top-right",
@@ -94,35 +91,42 @@ function AccountPage() {
       });
       return;
     }
-  
+
     if (!/^[a-zA-Z0-9,\s]{6,50}$/.test(address)) {
-      toast.error("❌ Invalid address! Address should only contain alphanumeric characters and spaces and be between 6 to 50 characters long.", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      toast.error(
+        "❌ Invalid address! Address should only contain alphanumeric characters and spaces and be between 6 to 50 characters long.",
+        {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        }
+      );
       return;
     }
-  
+
     const phoneNumber = number.replace("+", "");
     const Number = phoneNumber.replace(/\s/g, "");
-  
+
     try {
-      const response = await axios.put(`http://localhost:9090/user/${userId}`, {
-        name: name,
-        number: Number,
-        address: address,
-        token: userToken,
-      }, {
-        headers: {
-          Authorization: `Bearer ${userToken}`, // authentication is required
+      const response = await axios.put(
+        `http://localhost:9090/user/${userId}`,
+        {
+          name: name,
+          number: Number,
+          address: address,
+          token: userToken,
         },
-      });
+        {
+          headers: {
+            Authorization: `Bearer ${userToken}`, // authentication is required
+          },
+        }
+      );
       console.log(response.data);
       const data = response.data;
       data["token"] = userToken;
@@ -133,7 +137,6 @@ function AccountPage() {
       console.error(error);
     }
   };
-  
 
   /**GET ALL RESERVATION FOR THE LOGGEDIN USER */
   useEffect(() => {
@@ -173,17 +176,17 @@ function AccountPage() {
     <div>
       <Navbar />
       <ToastContainer
-                      position="top-right"
-                      autoClose={2000}
-                      hideProgressBar={false}
-                      newestOnTop={false}
-                      closeOnClick
-                      rtl={false}
-                      pauseOnFocusLoss
-                      draggable
-                      pauseOnHover
-                      theme="light"
-                    />
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <section style={{ backgroundColor: "#000" }}>
         <div className="container py-5">
           <div className="row">

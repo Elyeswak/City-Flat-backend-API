@@ -1,5 +1,5 @@
 import "./App.css";
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Login from "./components/Auth/login/login";
@@ -26,6 +26,8 @@ import Notifications from "./components/Notifications/Notifications";
 import FilteringResults from "./components/Home/FilteringPage/FilteringResults";
 
 function App() {
+  const [filteredData, setFilteredData] = useState([]);
+
   return (
     <div className="App">
       <BrowserRouter>
@@ -44,7 +46,7 @@ function App() {
           <Route path="/help" element={<ContactUs/>} />
           <Route path="/account" element={<AccountPage />} />
           <Route path="/notifications" element={<Notifications/>} />
-          <Route path="/results" element={<FilteringResults/>} />
+          <Route path="/results" element={<FilteringResults/>} filteredData={filteredData}/>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/admndash" element={<AdminDash />} />

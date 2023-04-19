@@ -97,7 +97,7 @@ export function httpRegisterUser(req, res) {
                                     }
                                  )
                                  .then((result) =>
-                                    res.status(201).json(userFormat(register))
+                                    res.status(201).json(addTokenToUser(register))
                                  )
                                  .catch((err) =>
                                     res.status(500).json({ error: err.message })

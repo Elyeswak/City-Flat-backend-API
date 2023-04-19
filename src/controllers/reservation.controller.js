@@ -35,11 +35,16 @@ export async function httpGetMyReservations(req, res) {
          .find()
          .populate({
             path: 'Order',
-            populate: { path: 'User' }
+            populate: {  path: 'User', model: 'User' }
          })
          .populate('Card');
 
-      const filteredReservations = reservations.filter(reservation => reservation.Order.User.id === foundUser.id);
+         const filteredReservations = reservations.filter(reservation => {
+            if (!reservation.Order || !reservation.Order.User) {
+               return false;
+            }
+            return reservation.Order.User.id === foundUser.id;
+         });
 
       res.status(200).json(reservationListFormat(filteredReservations));
    } catch (err) {
@@ -265,26 +270,37 @@ console.log("total price :"+order.totalPrice);
                                           }).then((payment_method) => {
    
                                              findOneOrderByFilter(order.id).then((orderfound)=>{
-   
-                                                httpMakePayment(req, res, orderfound.totalPrice, customerId, newReservation._id, paymentMethod.id)
+    console.log("hetha howa "+ order.id);
+                                                httpMakePayment(req, res, orderfound.totalPrice, customerId, newReservation._id, paymentMethod.id,order.id)
                                                 .then((paymentIntent) => {
    
                                                  
-   
+                                                
                                                    reservationDb.create(newReservation)
                                                       .then((result) => {
-                                                         findOneReservationByFilter(result._id);
-                                                         updateBookedDates(newReservation.Order.appartment.id, newReservation.Order.checkIn, newReservation.Order.checkOut, res);
-                                                         sendUserReservationEmail(foundUser, newReservation, newReservation.Order.totalPrice);
-   
-   
-                                                         // Create notification for the user
-                                                         const notification = {
-                                                            user: foundUser._id,
-                                                            message: 'You have made a reservation for the '+newReservation.Order.appartment.name+' , reservation code : '+newReservation.code,
-                                                         };
-                                                         createNotification(notification)
-                                                            .catch((err) => console.error(err))
+                                                         orderDb.findByIdAndUpdate(order.id, {
+                                                            $set: {
+                                                               isPaied:true
+                                                            },
+                                                         }).then((orderF)=>{
+                                                            console.log(orderF);
+
+                                                            findOneReservationByFilter(result._id);
+                                                            updateBookedDates(newReservation.Order.appartment.id, newReservation.Order.checkIn, newReservation.Order.checkOut, res);
+                                                            sendUserReservationEmail(foundUser, newReservation, newReservation.Order.totalPrice);
+                                                             
+                                                                 
+                                                            // Create notification for the user
+                                                            const notification = {
+                                                               user: foundUser._id,
+                                                               message: 'You have made a reservation for the '+newReservation.Order.appartment.name+' , reservation code : '+newReservation.code,
+                                                            };
+                                                            console.log('Debuging order state : '+orderF.state);
+                                                            createNotification(notification)
+                                                               .catch((err) => console.error(err));
+
+                                                         }).catch((err) => res.status(500).json({ error: err}));
+                                                       
                                                       })
                                                       .catch((err) => res.status(500).json({ error: err}));
                                                 })
@@ -396,6 +412,8 @@ export function httpDeclineOrder(req, res) {
 }
 
 export function httpAdminDeclineOrder(req, res) {
+
+
    findOneOrderByFilter(req.params.param)
       .then((foundOrder) => {
          if (!foundOrder) {
@@ -607,14 +625,15 @@ function orderFormat(Order) {
       totalPrice: Order.totalPrice,
       checkIn: Order.checkIn,
       checkOut: Order.checkOut,
+      isPaied : Order.isPaied,
       servicesFee: Order.servicesFee,
       nightsFee: Order.nightsFee,
+      
       state: Order.state,
       services: Order.services,
       User: Order.User,
       appartment: Order.appartment,
-      transactionId: Order.transactionId,
-      createdAt : Order.createdAt
+      transactionId: Order.transactionId
    };
 }
 
@@ -632,7 +651,7 @@ function reservationFormat(reservation) {
       Card:reservation.Card,
       code: reservation.code,
       transactionId:reservation.transactionId,
-      
+      paied:reservation.paied,
       Order:reservation.Order
    };
 }

@@ -5,7 +5,7 @@ import axios from "axios";
 import "./coverPage.css";
 
 import { Range, getTrackBackground } from "react-range";
-import { Link } from "react-router-dom";
+import FilteringResults from './../FilteringPage/FilteringResults'
 
 /**PRICE VARIABLES */
 const PRICE_STEP = 10;
@@ -23,6 +23,7 @@ function CoverPage() {
   const [roomCount, setRoomCount] = useState(1);
   const [priceValues, setPriceValues] = useState([100, 900]);
   const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
 
   const handlePriceChange = (newPriceValues) => {
     setPriceValues(newPriceValues);
@@ -60,29 +61,30 @@ function CoverPage() {
   }, []);
   /**SEARCH BY FILTER */
 
-  // Filter the data based on the current filter values
-  const filteredData = data.filter((item) => {
-    // Filter by price range
-    const price = parseInt(item.pricePerNight);
-    if (price < priceValues[0] || price > priceValues[1]) {
-      return false;
-    }
+  const handleFilter = () => {
+    const filteredData = data.filter((item) => {
+      // Filter by price range
+      const price = parseInt(item.pricePerNight);
+      if (price < priceValues[0] || price > priceValues[1]) {
+        return false;
+      }
 
-    // Filter by room count
-    const rooms = parseInt(item.rooms);
-    if (rooms !== roomCount) {
-      return false;
-    }
+      // Filter by room count
+      const rooms = parseInt(item.rooms);
+      if (rooms !== roomCount) {
+        return false;
+      }
 
-    // Filter by property type
-    if (propertyType && item.type !== propertyType) {
-      return false;
-    }
+      // Filter by property type
+      if (propertyType && item.type !== propertyType) {
+        return false;
+      }
 
-    return true;
-  });
+      return true;
+    });
 
-  //console.log(' data : ' + data)
+    setFilteredData(filteredData);
+  };
 
   return (
     <div className="homepage">
@@ -217,9 +219,9 @@ function CoverPage() {
                             type="radio"
                             name="flexRadioDefault"
                             id="flexRadioDefault1"
-                            value="standard"
+                            value="STANDARD"
                             onChange={handlePropertyTypeChange}
-                            checked={propertyType === "standard"}
+                            checked={propertyType === "STANDARD"}
                           />
                         </div>
                         <div className="col">
@@ -229,9 +231,9 @@ function CoverPage() {
                             type="radio"
                             name="flexRadioDefault"
                             id="flexRadioDefault2"
-                            value="premium"
+                            value="PREMIUM"
                             onChange={handlePropertyTypeChange}
-                            checked={propertyType === "premium"}
+                            checked={propertyType === "PREMIUM"}
                           />
                         </div>
                         <div className="col">
@@ -241,9 +243,9 @@ function CoverPage() {
                             type="radio"
                             name="flexRadioDefault"
                             id="flexRadioDefault3"
-                            value="luxury"
+                            value="LUXURY"
                             onChange={handlePropertyTypeChange}
-                            checked={propertyType === "luxury"}
+                            checked={propertyType === "LUXURY"}
                           />
                         </div>
                       </div>
@@ -328,11 +330,12 @@ function CoverPage() {
                       </div>
                       <div className="col-sm"></div>
                       <div className="col">
-                        <Link to="/results">
-                          <button className="btn btn-primary">
-                            Apply Filters
-                          </button>
-                        </Link>
+                        <button
+                          className="btn btn-primary"
+                          onClick={handleFilter}
+                        >
+                          Apply Filters
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -346,6 +349,7 @@ function CoverPage() {
           </div>
         </div>
       </div>
+      <FilteringResults filteredData={filteredData} />
     </div>
   );
 }

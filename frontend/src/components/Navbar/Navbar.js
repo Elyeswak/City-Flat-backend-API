@@ -122,7 +122,7 @@ function Navbar() {
                       whileTap={{ scale: 0.8 }}
                       transition={{ duration: 0.7 }}
                     >
-                      <a href="/contact" className="link__item">
+                      <a href="/help" className="link__item">
                         CONTACT
                       </a>
                     </motion.li>
@@ -150,7 +150,7 @@ function Navbar() {
               }`}
             >
               <div className="dropdown__list">
-                <button className="button-31">Notifications</button>
+                <a href="/notifications"><button className="button-31">Notifications</button></a>
                 <a href="/requests"><button className="button-31">Orders</button></a>
                 <a href="/wishlist">
                   <button className="button-31">Wishlist</button>

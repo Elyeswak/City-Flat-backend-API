@@ -23,7 +23,7 @@ function AccountPage() {
   const [showModal, setShowModal] = useState(false);
   const [name, setName] = useState(user.name);
   const [address, setAddress] = useState(user.address);
-  const [number, setNumber] = useState();
+  const [number, setNumber] = useState(user.number);
   const [isValidPhoneNumber, setIsValidNumber] = useState(false);
   const [isValidName, setIsValidName] = useState(false);
  
@@ -47,36 +47,6 @@ function AccountPage() {
   function handleShowModal() {
     setShowModal(true);
   }
-
-  /*function handleSaveProfile() {
-    // Define the updated user object
-    const updatedUser = {
-      name: name,
-      number: number,
-      address: address,
-      token: userToken,
-    };
-    // Make the Axios PUT request to update the user
-    axios
-      .put(`http://localhost:9090/user/${userId}`, updatedUser, {
-        headers: {
-          Authorization: `Bearer ${userToken}`, // authentication is required
-        },
-      })
-      .then((response) => {
-        // Handle successful response
-        console.log(response.data);
-        const data = response.data;
-        data["token"] = userToken;
-        console.log(data);
-        localStorage.setItem("user", JSON.stringify(data));
-        setShowModal(false);
-      })
-      .catch((error) => {
-        // Handle error
-        console.error(error);
-      });
-  }*/
 
   const handleSaveProfile = async (event) => {
     event.preventDefault(); // prevent form submission

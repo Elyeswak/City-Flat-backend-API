@@ -4,22 +4,23 @@ import appartmentDb from '../models/appartment.model.js';
 import userDb from '../models/user.model.js';
 import { validationResult } from 'express-validator';
 import { findOneUserByFilter, userFormat } from '../controllers/user.controller.js';
-import Notification from "../models/notification.model.js";
+
 
 // create notification
 const createNotification = async (notification) => {
-  const newNotification = new Notification(notification);
+  const newNotification = new notificationDb(notification);
   return await newNotification.save();
 };
-
 // get all notifications for a user
 const getAllNotificationsForUser = async (userId) => {
-  return await Notification.find({ user: userId }).sort({ createdAt: -1 });
+
+  return await notificationDb.find({ user: userId }).sort({ createdAt: -1 });
 };
 
 export async function getNotificationsForUser(req, res) {
   try {
     const userId = req.user.id;
+ 
     const notifications = await getAllNotificationsForUser(userId);
     
     if (!notifications || notifications.length === 0) {
@@ -33,13 +34,13 @@ export async function getNotificationsForUser(req, res) {
   }
 }
 
-export async function getNotificationForUser(req, res) {
+ async function getNotificationForUser(req, res) {
   try {
     const userId = req.user.id;
-    const notificationId = req.params.notificationId;
+    const notificationId = req.params.param;
     
     const notification = await getNotificationByIdForUser(notificationId, userId);
-    
+    console.log(userId);
     res.status(200).json(notificationFormat(notification));
   } catch (err) {
     console.error(err);
@@ -48,9 +49,9 @@ export async function getNotificationForUser(req, res) {
 }
 
 //getone
-const getNotificationByIdForUser = async (notificationId, userId) => {
+ const getNotificationByIdForUser = async (notificationId, userId) => {
   try {
-    const notification = await Notification.findOne({ _id: notificationId, user: userId });
+    const notification = await notificationDb.findById(notificationId);
     if (!notification) {
       throw new Error(`Notification ${notificationId} not found for user ${userId}`);
     }
@@ -62,31 +63,68 @@ const getNotificationByIdForUser = async (notificationId, userId) => {
 };
 // mark all notifications as read for a user
 const markAllNotificationsAsReadForUser = async (userId) => {
-  await Notification.updateMany({ user: userId }, { read: true });
+  await notificationDb.updateMany({ user: userId }, { read: true });
 };
 
-const markNotificationAsReadForUser = async (notificationId, userId) => {
+export async function markAllNotificationsAsRead(req, res) {
   try {
-    await Notification.updateOne({ _id: notificationId, user: userId }, { read: true });
-    console.log(`Notification ${notificationId} marked as read for user ${userId}`);
+    const userId = req.user.id;
+
+    await markAllNotificationsAsReadForUser(userId);
+
+    res.status(200).json({ message: 'All notifications marked as read for user.' });
   } catch (err) {
-    console.error(`Error marking notification ${notificationId} as read for user ${userId}:`, err);
+    console.error(err);
+    res.status(500).json({ error: err });
+  }
+}
+async function markNotificationAsReadForUser (req,res){
+  var notificationId=req.params.param;
+  try {
+    await notificationDb.updateOne({ _id: notificationId},{$set:  { read: true }}).then((updated)=>{
+if(updated){
+  console.log(updated);
+  res.status(200).json(updated);
+}
+    
+    });
+    
+  } catch (err) {
+    res.status(500).json({message:err.message});
   }
 };
 
 // delete all notifications for a user
-const deleteAllNotificationsForUser = async (userId) => {
-  await Notification.deleteMany({ user: userId });
-};
+async function deleteAllNotificationsForUser(req, res) {
+  const userId = req.user.id;
 
+  try {
+    const result = await notificationDb.deleteMany({ user: userId });
+    res.status(200).json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: err.message });
+  }
+}
 // delete a notification by ID
-const deleteNotificationById = async (notificationId) => {
-  await Notification.findByIdAndDelete(notificationId);
+async function deleteNotificationById(req,res) {
+  var notificationId= req.params.param;
+  await notificationDb.findByIdAndDelete(notificationId).then((value)=>{
+
+if(value){
+
+  res.status(200).json(value);
+}
+
+  }).catch((err)=>{
+
+    res.status(500).json({message:err.message});
+  });
 };
 
 // update a notification by ID
 const updateNotificationById = async (notificationId, updatedNotification) => {
-  return await Notification.findByIdAndUpdate(notificationId, updatedNotification, {
+  return await notificationDb.findByIdAndUpdate(notificationId, updatedNotification, {
     new: true,
   });
 };
@@ -113,7 +151,7 @@ export function notificationFormat(notification) {
 
 export {
   createNotification,
-  getAllNotificationsForUser,
+  getNotificationForUser,
   markAllNotificationsAsReadForUser,
   deleteAllNotificationsForUser,
   deleteNotificationById,

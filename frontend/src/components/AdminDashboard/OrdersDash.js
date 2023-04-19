@@ -8,7 +8,7 @@ import OrderDetailsModal from "./OrderDetailsModal";
 
 export default function OrdersDash() {
   const [orders, setOrders] = useState([]);
-  const [AcceptedOrders, setAcceptedOrders] = useState([]);
+  const [acceptedOrders, setAcceptedOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [declinedOrders, setDeclinedOrders] = useState([]);
@@ -34,47 +34,70 @@ export default function OrdersDash() {
       });
   }, [acceptedOrdersUpdated]);
 
+  const [confirmingAccept, setConfirmingAccept] = useState(false);
+  const [confirmingDecline, setConfirmingDecline] = useState(false);
+
   const handleDecline = (orderId) => {
-    axios
-      .delete(`http://localhost:9090/user/order/adminDecline/${orderId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        // remove the declined order from the orders array
-        const updatedOrders = orders.filter((order) => order.id !== orderId);
-        setOrders(updatedOrders);
+    if (confirmingDecline) {
+      axios
+        .delete(`http://localhost:9090/user/order/adminDecline/${orderId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          // remove the declined order from the orders array
+          const updatedOrders = orders.filter((order) => order.id !== orderId);
+          setOrders(updatedOrders);
 
-        // add the declined order to the declinedOrders array
-        // const declinedOrder = orders.find((order) => order.id === orderId);
-        // setDeclinedOrders([...declinedOrders, declinedOrder]);
+          // add the declined order to the declinedOrders array
+          // const declinedOrder = orders.find((order) => order.id === orderId);
+          // setDeclinedOrders([...declinedOrders, declinedOrder]);
 
-        console.log(response.data); // handle response data
-      })
-      .catch((e) => {
-        console.log(e.message); // handle error
-      });
+          console.log(response.data); // handle response data
+        })
+        .catch((e) => {
+          console.log(e.message); // handle error
+        })
+        .finally(() => {
+          setConfirmingDecline(false);
+        });
+    } else {
+      setConfirmingDecline(true);
+      setTimeout(() => {
+        setConfirmingDecline(false);
+      }, 3000);
+    }
   };
 
   const handleAccept = (orderId) => {
-    axios
-      .post(`http://localhost:9090/user/order/accept/${orderId}`, null, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        // remove the accepted order from the orders array
-        const acceptedOrder = orders.find((order) => order.id === orderId);
-        setAcceptedOrders([...AcceptedOrders, acceptedOrder]);
-        const acceptedOrdersUpdated = new Date();
-        setAcceptedOrdersUpdated(acceptedOrdersUpdated);
-        console.log(response.data); // handle response data
-      })
-      .catch((e) => {
-        console.log(e.message); // handle error
-      });
+    if (confirmingAccept) {
+      axios
+        .post(`http://localhost:9090/user/order/accept/${orderId}`, null, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          // remove the accepted order from the orders array
+          const acceptedOrder = orders.find((order) => order.id === orderId);
+          setAcceptedOrders([...acceptedOrders, acceptedOrder]);
+          const acceptedOrdersUpdated = new Date();
+          setAcceptedOrdersUpdated(acceptedOrdersUpdated);
+          console.log(response.data); // handle response data
+        })
+        .catch((e) => {
+          console.log(e.message); // handle error
+        })
+        .finally(() => {
+          setConfirmingAccept(false);
+        });
+    } else {
+      setConfirmingAccept(true);
+      setTimeout(() => {
+        setConfirmingAccept(false);
+      }, 3000);
+    }
   };
 
   const handleShowDetails = (order) => {
@@ -126,7 +149,7 @@ export default function OrdersDash() {
                           disabled={order.state === "DECLINED"}
                           onClick={() => handleAccept(order.id)}
                         >
-                          Accept
+                          {confirmingAccept ? "Confirm" : "Accept"}
                         </button>
                       </div>
                     </td>
@@ -138,7 +161,7 @@ export default function OrdersDash() {
                           className="btn btn-danger rounded-pill"
                           onClick={() => handleDecline(order.id)}
                         >
-                          Decline
+                          {confirmingDecline ? "Confirm" : "Decline"}
                         </button>
                       </div>
                     </td>

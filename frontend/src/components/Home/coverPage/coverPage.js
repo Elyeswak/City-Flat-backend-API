@@ -5,6 +5,7 @@ import axios from "axios";
 import "./coverPage.css";
 
 import { Range, getTrackBackground } from "react-range";
+import { Link } from "react-router-dom";
 
 /**PRICE VARIABLES */
 const PRICE_STEP = 10;
@@ -18,14 +19,18 @@ const ROOM_MAX = 7;
 
 function CoverPage() {
   const [openFilter, setOpenFilter] = useState(false);
-
+  const [propertyType, setPropertyType] = useState("");
+  const [roomCount, setRoomCount] = useState(1);
   const [priceValues, setPriceValues] = useState([100, 900]);
+  const [data, setData] = useState([]);
 
   const handlePriceChange = (newPriceValues) => {
     setPriceValues(newPriceValues);
   };
-  const [roomCount, setRoomCount] = useState(1);
 
+  const handlePropertyTypeChange = (event) => {
+    setPropertyType(event.target.value);
+  };
 
   let menuRef = useRef();
 
@@ -44,7 +49,40 @@ function CoverPage() {
     };
   });
 
+  useEffect(() => {
+    axios
+      .get("http://localhost:9090/appartments/getAllAppart")
+      .then((result) => {
+        setData(result.data);
+        console.log(result.data);
+      })
+      .catch((error) => console.log(error));
+  }, []);
   /**SEARCH BY FILTER */
+
+  // Filter the data based on the current filter values
+  const filteredData = data.filter((item) => {
+    // Filter by price range
+    const price = parseInt(item.pricePerNight);
+    if (price < priceValues[0] || price > priceValues[1]) {
+      return false;
+    }
+
+    // Filter by room count
+    const rooms = parseInt(item.rooms);
+    if (rooms !== roomCount) {
+      return false;
+    }
+
+    // Filter by property type
+    if (propertyType && item.type !== propertyType) {
+      return false;
+    }
+
+    return true;
+  });
+
+  //console.log(' data : ' + data)
 
   return (
     <div className="homepage">
@@ -179,6 +217,9 @@ function CoverPage() {
                             type="radio"
                             name="flexRadioDefault"
                             id="flexRadioDefault1"
+                            value="standard"
+                            onChange={handlePropertyTypeChange}
+                            checked={propertyType === "standard"}
                           />
                         </div>
                         <div className="col">
@@ -187,7 +228,10 @@ function CoverPage() {
                             className="form-check-input"
                             type="radio"
                             name="flexRadioDefault"
-                            id="flexRadioDefault1"
+                            id="flexRadioDefault2"
+                            value="premium"
+                            onChange={handlePropertyTypeChange}
+                            checked={propertyType === "premium"}
                           />
                         </div>
                         <div className="col">
@@ -196,7 +240,10 @@ function CoverPage() {
                             className="form-check-input"
                             type="radio"
                             name="flexRadioDefault"
-                            id="flexRadioDefault1"
+                            id="flexRadioDefault3"
+                            value="luxury"
+                            onChange={handlePropertyTypeChange}
+                            checked={propertyType === "luxury"}
                           />
                         </div>
                       </div>
@@ -209,7 +256,6 @@ function CoverPage() {
                           style={{
                             display: "flex",
                             justifyContent: "center",
-                            
                           }}
                         >
                           <Range
@@ -281,6 +327,13 @@ function CoverPage() {
                         </div>
                       </div>
                       <div className="col-sm"></div>
+                      <div className="col">
+                        <Link to="/results">
+                          <button className="btn btn-primary">
+                            Apply Filters
+                          </button>
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 </div>

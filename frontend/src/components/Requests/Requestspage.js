@@ -10,7 +10,7 @@ import Badge from "react-bootstrap/Badge";
 import axios from "axios";
 
 
-function RequestsPage() {
+function Requestspage() {
   const [orders, setOrders] = useState([]);
 
   /**GET ALL ORDERS FOR THE LOGGED IN USER */
@@ -243,4 +243,4 @@ function RequestsPage() {
   
 }
 
-export default RequestsPage;
+export default Requestspage;

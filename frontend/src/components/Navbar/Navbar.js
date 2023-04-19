@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./Navbar.css";
 import { motion } from "framer-motion";
-
+import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faNavicon,
@@ -15,7 +15,34 @@ function Navbar() {
   const [openMenu, setOpenMenu] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
+  const [isAdmin, setIsAdmin] = useState(true);
+  const [User, setUser] = useState(null);
+  const [locUser, setLocUser] = useState(null);
 
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    setLocUser(JSON.parse(user));
+    if (locUser) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  console.log(locUser)
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:9090/user/${locUser.id}`
+        );
+        setUser(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchUser();
+  }, [locUser]);
 
   let menuRef = useRef();
 
@@ -33,20 +60,12 @@ function Navbar() {
     };
   });
 
-  useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (user) {
-      setIsLoggedIn(true);
-    }
-  }, []);
-
   const handleLogout = (e) => {
     e.preventDefault();
     localStorage.clear(); // clear local storage
     setIsLoggedIn(false); // set isLoggedIn state to false
     navigate("/login");
   };
-  
 
   return (
     <nav className="nav">
@@ -150,14 +169,27 @@ function Navbar() {
               }`}
             >
               <div className="dropdown__list">
-                <a href="/notifications"><button className="button-31">Notifications</button></a>
-                <a href="/requests"><button className="button-31">Orders</button></a>
+                <a href="/notifications">
+                  <button className="button-31">Notifications</button>
+                </a>
+                <a href="/requests">
+                  <button className="button-31">Orders</button>
+                </a>
                 <a href="/wishlist">
                   <button className="button-31">Wishlist</button>
                 </a>
                 <hr />
-                <a href="/account"><button className="button-31">Account</button></a>
-                <a href="/help"><button className="button-31">Help</button></a>
+                <a href="/account">
+                  <button className="button-31">Account</button>
+                </a>
+                <a href="/help">
+                  <button className="button-31">Help</button>
+                </a>
+                {isAdmin ? (
+                  <a href="/admndash">
+                    <button className="button-31">Dashboard</button>
+                  </a>
+                ) : null}
                 <button className="button-31" onClick={handleLogout}>
                   Logout
                 </button>

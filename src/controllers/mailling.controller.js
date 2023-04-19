@@ -166,7 +166,7 @@ export function sendReservationEmail(user,reservation) {
 
    const template = handlebars.compile(emailReservationTemplateSource);
    const title = 'CityFlat Reservation feedback';
-   const message = `Hi there ${user.username}, We're excited to inform you that your reservation is accepted for ${reservation.appartment.name}.
+   const message = `Hi there ${user.name}, We're excited to inform you that your reservation is accepted for ${reservation.appartment.name}.
 your reservation code is : ${reservation.code}.
 check your CityFlat App`;
 

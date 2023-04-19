@@ -66,6 +66,15 @@ import {
    getAcceptedBookings,
 } from '../controllers/reservation.controller.js';
 
+import {
+   getNotificationsForUser,
+   markAllNotificationsAsReadForUser,
+   deleteAllNotificationsForUser,
+   deleteNotificationById,
+   getNotificationForUser,
+   updateNotificationById,
+   markNotificationAsReadForUser} from '../controllers/notification.controller.js';
+
 /** Defining the router */
 const userRouter = express.Router();
 
@@ -244,6 +253,23 @@ userRouter
 
 
       });
+
+   //notifications
+//get all notif for user/update all notif as read
+   userRouter
+   .route('/notifications/usernotif')
+   .get(ensureUser,getNotificationsForUser)
+   .put(ensureUser,markAllNotificationsAsReadForUser)
+   .delete(ensureUser,deleteAllNotificationsForUser);
+
+   userRouter
+   .route('/notifications/:param')
+    .get(ensureUser,getNotificationForUser)
+   .delete(ensureUser,deleteNotificationById)
+   .put(ensureUser,markNotificationAsReadForUser);
+
+
+    
 
 
 

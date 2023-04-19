@@ -25,6 +25,7 @@ const OrdernSchema = new Schema({
         type: Number,
         required: true
     },
+    
     isPaied:{
         type:Boolean,
         default:false,

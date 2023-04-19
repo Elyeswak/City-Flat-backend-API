@@ -5,21 +5,21 @@ export function ensureUser(req, res, next) {
   try {
     //console.log(req.headers.authorization);
 
-    const token = req.headers.authorization.split(" ")[1];
-    //console.log(req);
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = {
-      id: decodedToken.user.id,
-      email: decodedToken.user.email,
-      role: decodedToken.user.role,
-    };
-    next();
-  } catch (err) {
-    res.status(401).json({
-      //message: 'Auth failed',
-      message: err.message,
-    });
-  }
+        const token = req.headers.authorization.split(' ')[1];
+        //console.log(req);
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = {
+            id: decodedToken.user.id,
+            email: decodedToken.user.email,
+            role: decodedToken.user.role,
+        };
+        next();
+    } catch (err) {
+        res.status(401).json({
+            //message: 'Auth failed',
+            message: err.message,
+        });
+    }
 }
 export function ensureLoggedIn(req, res, next) {
   try {

@@ -628,7 +628,7 @@ function orderFormat(Order) {
       isPaied : Order.isPaied,
       servicesFee: Order.servicesFee,
       nightsFee: Order.nightsFee,
-      
+      isPaied:Order.isPaied,
       state: Order.state,
       services: Order.services,
       User: Order.User,

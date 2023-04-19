@@ -9,6 +9,137 @@
 			"name": "user",
 			"item": [
 				{
+					"name": "notifications",
+					"item": [
+						{
+							"name": "get all notifications for user",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": ""
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "mark all user notif as read",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQwNzNlOWJjZGJlNzhkYjE5ZTg3OTc3IiwiZW1haWwiOiJlbHllcy5rYWJvdXNAZXNwcml0LnRuIiwicm9sZSI6IkFETUlOIn0sImlhdCI6MTY4MTkwMjY4NiwiZXhwIjoxNjgyNTA3NDg2fQ.99GnMzlogwuSCHvUAZOqFzBOANYyvDs_A2lLRPHNgwc",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:9090/user/notifications/usernotif",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9090",
+									"path": [
+										"user",
+										"notifications",
+										"usernotif"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete all",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQwNzNlOWJjZGJlNzhkYjE5ZTg3OTc3IiwiZW1haWwiOiJlbHllcy5rYWJvdXNAZXNwcml0LnRuIiwicm9sZSI6IkFETUlOIn0sImlhdCI6MTY4MTkwMjY4NiwiZXhwIjoxNjgyNTA3NDg2fQ.99GnMzlogwuSCHvUAZOqFzBOANYyvDs_A2lLRPHNgwc",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:9090/user/notifications/usernotif",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9090",
+									"path": [
+										"user",
+										"notifications",
+										"usernotif"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get one",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": ""
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete one",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:9090/user/notifications/643fcec59e92e263d5e7ef76",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9090",
+									"path": [
+										"user",
+										"notifications",
+										"643fcec59e92e263d5e7ef76"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update one",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:9090/user/notifications/643fcec59e92e263d5e7ef76",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9090",
+									"path": [
+										"user",
+										"notifications",
+										"643fcec59e92e263d5e7ef76"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
 					"name": "login",
 					"request": {
 						"method": "POST",
@@ -300,11 +431,21 @@
 					"response": []
 				},
 				{
-					"name": "Get all my reservations",
+					"name": "Get all reservations",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQwNzNlOWJjZGJlNzhkYjE5ZTg3OTc3IiwibmFtZSI6ImVseWVza2Fib3VzIiwiZW1haWwiOiJlbHllcy5rYWJvdXNAZXNwcml0LnRuIiwicm9sZSI6IkFETUlOIn0sImlhdCI6MTY4MDg2NzY2NiwiZXhwIjoxNjgxNDcyNDY2fQ.o1Qnb78Nslu2Gmxz78KteTpGBYGUZVfxhP1ejkzq3CA",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -315,7 +456,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n \"name\":\"nader\",\r\n \"email\":\"nader.kabous@gmail.com\",\r\n \"number\":\"52618224\",\r\n \"password\":\"123456\",\r\n \"birthday\": \"1996-04-18\"\r\n\r\n     \r\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -323,7 +464,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:9090/user/elyeskabous",
+							"raw": "http://localhost:9090/user/reservations/getallReservations",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -331,7 +472,57 @@
 							"port": "9090",
 							"path": [
 								"user",
-								"elyeskabous"
+								"reservations",
+								"getallReservations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get my reservations",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQwNzNlOWJjZGJlNzhkYjE5ZTg3OTc3IiwibmFtZSI6ImVseWVza2Fib3VzIiwiZW1haWwiOiJlbHllcy5rYWJvdXNAZXNwcml0LnRuIiwicm9sZSI6IkFETUlOIn0sImlhdCI6MTY4MDg2NzY2NiwiZXhwIjoxNjgxNDcyNDY2fQ.o1Qnb78Nslu2Gmxz78KteTpGBYGUZVfxhP1ejkzq3CA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjNhZDlmNmRjMjNkYmJkYTU4ZmFjODczIiwibmFtZSI6ImVseWVza2Fib3VzIiwiZW1haWwiOiJlbHllcy5rYWJvdXNAZ21haWwuY29tIiwicm9sZSI6IlVTRVIifSwiaWF0IjoxNjcyMzIyOTI5LCJleHAiOjE2NzI5Mjc3Mjl9.kP2w_hJC3hhD_pbGAKWPEezngWI_pqQplVUEqczC6FA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9090/user/reservations/getall",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"user",
+								"reservations",
+								"getall"
 							]
 						}
 					},

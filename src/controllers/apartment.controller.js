@@ -238,7 +238,7 @@ export function appartsListFormat(apparts) {
  
 
  //Appartment format
-function appartFormat(appartment) {
+export function appartFormat(appartment) {
     return {
        id: appartment._id,
        name: appartment.name,

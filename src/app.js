@@ -16,6 +16,7 @@ import { userRouter } from './routes/user.routes.js';
 import { appartmentRouter } from './routes/appartment.routes.js';
 import { paypalRouter} from './routes/paypal.routes.js';
 import { HelpRouter } from './routes/help.routes.js';
+import { searchRouter} from './routes/search.routes.js';
 import startNotificationCleanup from "./utils/notificationCleanup.js";
 import bookedDatesCleanup from "./utils/bookedDatesCleanup.js";
 
@@ -75,7 +76,7 @@ app.use('/appartments',appartmentRouter);
 
 app.use('/paypal',paypalRouter);
 app.use('/help',HelpRouter);
-
+app.use('/searchApart',searchRouter);
 
 /** Error handlers */
 app.use(notFoundError);

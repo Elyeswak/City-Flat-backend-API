@@ -870,6 +870,44 @@
 			"name": "appartments",
 			"item": [
 				{
+					"name": "search/filters",
+					"item": [
+						{
+							"name": "search by name ",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": ""
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "search by type",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": ""
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "filter by price",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": ""
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
 					"name": "add apartments",
 					"request": {
 						"auth": {

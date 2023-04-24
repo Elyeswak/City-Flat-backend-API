@@ -5,11 +5,13 @@ import Rate from "../Rate/Rate";
 import "./ConfirmationPage.css";
 import {
   faBowlFood,
+  faBrush,
   faCar,
   faParking,
   faShirt,
   faToolbox,
   faTools,
+  faTrashArrowUp,
 } from "@fortawesome/free-solid-svg-icons";
 import { format } from "date-fns";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -43,6 +45,7 @@ function PaymentPage() {
     Maintenance: <FontAwesomeIcon icon={faTools} />,
     Parking: <FontAwesomeIcon icon={faParking} />,
     Laundry: <FontAwesomeIcon icon={faShirt} />,
+    Cleaning: <FontAwesomeIcon icon={faTrashArrowUp} />,
   };
 
 

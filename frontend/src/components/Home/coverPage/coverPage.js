@@ -84,6 +84,7 @@ function CoverPage() {
     });
 
     setFilteredData(filteredData);
+    localStorage.setItem("filteredData", JSON.stringify(filteredData));
   };
 
   return (

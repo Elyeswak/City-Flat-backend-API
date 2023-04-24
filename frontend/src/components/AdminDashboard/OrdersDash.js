@@ -128,7 +128,7 @@ export default function OrdersDash() {
               </tr>
             </thead>
             <tbody>
-              {orders.map((order, index) => (
+              {orders && orders.map((order, index) => (
                 <tr key={index}>
                   <td>{index + 1}</td>
                   <td>{order.appartment.name}</td>

@@ -22,12 +22,16 @@ function Navbar() {
   useEffect(() => {
     const user = localStorage.getItem("user");
     setLocUser(JSON.parse(user));
+  }, []);
+
+  useEffect(() => {
     if (locUser) {
       setIsLoggedIn(true);
     }
-  }, []);
+  }, [locUser])
+  
 
-  console.log(locUser)
+  console.log("local user", locUser)
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -43,7 +47,8 @@ function Navbar() {
 
     fetchUser();
   }, [locUser]);
-
+  console.log("fetched user", User)
+  console.log("is logged in", isLoggedIn)
   let menuRef = useRef();
 
   useEffect(() => {

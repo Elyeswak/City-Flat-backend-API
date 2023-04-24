@@ -62,12 +62,6 @@ export function httpGetAllApparts(req, res) {
        })
        .catch((err) => res.status(500).json({ error: err.message }));
  }
-///
- export function httpGetAllservices(req,res){
-
-
-
- }
 
 //Update one appartment with filter
  export function httpUpdateOneAppartment(req, res) {

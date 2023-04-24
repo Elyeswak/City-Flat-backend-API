@@ -97,7 +97,7 @@ export function httpUpdateOneService(req, res) {
             .catch((err) => res.status(500).json({ error: err.message }));
     }
 }
-//delete one appartment with filter
+//delete one service with filter
 export function httpDeleteOneService(req, res) {
     findOneServiceByFilter(req.params.param)
         .then((foundService) => {

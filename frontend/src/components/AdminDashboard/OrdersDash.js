@@ -110,10 +110,8 @@ export default function OrdersDash() {
     setShowModal(false);
   };
 
-  console.log(selectedOrder);
-
   return (
-    <div className="orders__page">
+    <div className="orders__page bg-dark">
       <Sidebar />
 
       <div className="orders_page_content">

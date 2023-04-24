@@ -1,0 +1,20 @@
+.appart-dash-cont {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+.appart-dash-nav {
+    list-style-type: none;
+    position: absolute;
+    top: 50px;
+    left: 0;
+}
+
+.appart-dash-nav li{
+    cursor: pointer;
+}
+
+.appart-dash-nav li:hover{
+    color: rgba(245, 245, 245, 0.659);
+}

@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Form, Button } from "react-bootstrap";
+import { ToastContainer, toast } from "react-toastify";
+import validator from "validator";
 
 function AddApartmentForm({ onSubmit }) {
   const [name, setName] = useState("");
@@ -12,9 +14,247 @@ function AddApartmentForm({ onSubmit }) {
   const [img, setImg] = useState("");
   const [services, setSrv] = useState([]);
   const [foundSrv, setFoundSrv] = useState([]);
+  const [nameError, setNameError] = useState("");
+  const [priceError, setPriceError] = useState("");
+  const [descError, setDescError] = useState("");
+  const [locationError, setLocationError] = useState("");
+  const [typeError, setTypeError] = useState("");
+  const [roomsError, setRoomsError] = useState("");
+  const [imageError, setImageError] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    //name field validation
+    if (!name) {
+      setNameError("❌ Please enter a name for the appartment.");
+      toast.error("❌ Please enter a name for the appartment.", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      setTimeout(() => {
+        setNameError("");
+      }, 3000);
+
+      return;
+    } else if (!validator.isAlpha(name.replace(/\s/g, ""))) {
+      setNameError("❌ Name must contain only letters and spaces.");
+      toast.error("❌ Name must contain only letters and spaces.", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      setTimeout(() => {
+        setNameError("");
+      }, 3000);
+
+      return;
+    }
+    //pricePerNight field validation
+    if (!pricePerNight) {
+      setPriceError("❌ Please enter a price per night for the appartment.");
+      toast.error("❌ Please enter a price per night for the appartment.", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      setTimeout(() => {
+        setPriceError("");
+      }, 3000);
+
+      return;
+    } else if (pricePerNight <= 0) {
+      setPriceError("❌ Price per night value cannot be negative or zero");
+      toast.error("❌ Price per night value cannot be negative or zero", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      setTimeout(() => {
+        setPriceError("");
+      }, 3000);
+
+      return;
+    }
+    //description field validation
+    if (!description) {
+      setDescError("❌ Please enter a description for the appartment.");
+      toast.error("❌ Please enter a description for the appartment.", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      setTimeout(() => {
+        setDescError("");
+      }, 3000);
+
+      return;
+    } else if (description.length < 10) {
+      setDescError("❌ Description value must be at least 10 characters long");
+      toast.error("❌ Description value must be at least 10 characters long", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      setTimeout(() => {
+        setDescError("");
+      }, 3000);
+
+      return;
+    }
+    //location field validation
+    if (!location) {
+      setLocationError("❌ Please enter a location for the appartment.");
+      toast.error("❌ Please enter a location for the appartment.", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      setTimeout(() => {
+        setLocationError("");
+      }, 3000);
+
+      return;
+    } else if (location.length < 5) {
+      setLocationError("❌ Location value must be at least 5 characters long");
+      toast.error("❌ Location value must be at least 5 characters long", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      setTimeout(() => {
+        setLocationError("");
+      }, 3000);
+
+      return;
+    }
+    //type field validation
+    if (type === "") {
+      setTypeError("❌ Please select a type for the appartment.");
+      toast.error("❌ Please select a type for the appartment.", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      setTimeout(() => {
+        setTypeError("");
+      }, 3000);
+
+      return;
+    }
+    //rooms field validation
+    if (!rooms) {
+      setRoomsError("❌ Please enter number of rooms for the appartment.");
+      toast.error("❌ Please enter number of rooms for the appartment.", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      setTimeout(() => {
+        setRoomsError("");
+      }, 3000);
+
+      return;
+    } else if (rooms <= 0) {
+      setRoomsError("❌ Rooms value cannot be negative or zero");
+      toast.error("❌ Rooms value cannot be negative or zero", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      setTimeout(() => {
+        setRoomsError("");
+      }, 3000);
+
+      return;
+    }
+    //image field validation
+    if (img === "") {
+      setImageError("❌ Please choose an image for the appartment.");
+      toast.error("❌ Please choose an image for the appartment.", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      setTimeout(() => {
+        setImageError("");
+      }, 3000);
+
+      return;
+    }
+
     onSubmit({
       name,
       description,
@@ -25,6 +265,17 @@ function AddApartmentForm({ onSubmit }) {
       services,
       img,
     });
+
+    // if (postSuccess) {
+    //   setName("");
+    //   setDescription("");
+    //   setPricePerNight("");
+    //   setLocation("");
+    //   setRooms("");
+    //   setType("");
+    //   setImg("");
+    //   setSrv([]);
+    // }
   };
 
   useEffect(() => {
@@ -36,10 +287,37 @@ function AddApartmentForm({ onSubmit }) {
       })
       .catch((error) => {
         console.log(error);
+        toast.error("❌ An error occured while trying to get the services!", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       });
   }, []);
+
   return (
-    <Form onSubmit={handleSubmit} className="row gy-3 text-start mx-auto mt-5 py-5">
+    <Form
+      onSubmit={handleSubmit}
+      className="row gy-3 text-start mx-auto mt-5 py-5"
+      id="addAppartForm"
+    >
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <Form.Group controlId="formName" className="col-6">
         <Form.Label>Name</Form.Label>
         <Form.Control
@@ -47,8 +325,10 @@ function AddApartmentForm({ onSubmit }) {
           placeholder="Enter name"
           value={name}
           onChange={(event) => setName(event.target.value)}
-          required
         />
+        {nameError !== "" ? (
+          <div className="invalid-feedback d-block">{nameError}</div>
+        ) : null}
       </Form.Group>
 
       <Form.Group controlId="formPrice" className="col-6">
@@ -58,8 +338,10 @@ function AddApartmentForm({ onSubmit }) {
           placeholder="Enter price per night"
           value={pricePerNight}
           onChange={(event) => setPricePerNight(event.target.value)}
-          required
         />
+        {priceError && (
+          <div className="invalid-feedback d-block">{priceError}</div>
+        )}
       </Form.Group>
       <Form.Group controlId="formDescription" className="col-12">
         <Form.Label>Description</Form.Label>
@@ -69,8 +351,10 @@ function AddApartmentForm({ onSubmit }) {
           placeholder="Enter description"
           value={description}
           onChange={(event) => setDescription(event.target.value)}
-          required
         />
+        {descError && (
+          <div className="invalid-feedback d-block">{descError}</div>
+        )}
       </Form.Group>
 
       <Form.Group controlId="formLocation" className="col-6">
@@ -80,8 +364,10 @@ function AddApartmentForm({ onSubmit }) {
           placeholder="Enter location"
           value={location}
           onChange={(event) => setLocation(event.target.value)}
-          required
         />
+        {locationError && (
+          <div className="invalid-feedback d-block">{locationError}</div>
+        )}
       </Form.Group>
 
       <Form.Group controlId="formType" className="col-6">
@@ -90,13 +376,17 @@ function AddApartmentForm({ onSubmit }) {
           as="select"
           value={type}
           onChange={(event) => setType(event.target.value)}
-          required
         >
-          <option value="" selected>Select type</option>
+          <option value="" selected>
+            Select type
+          </option>
           <option value="STANDARD">Standard</option>
           <option value="PREMIUM">Premium</option>
           <option value="LUXURY">Luxury</option>
         </Form.Control>
+        {typeError && (
+          <div className="invalid-feedback d-block">{typeError}</div>
+        )}
       </Form.Group>
 
       <Form.Group controlId="formRooms" className="col-6">
@@ -106,8 +396,10 @@ function AddApartmentForm({ onSubmit }) {
           placeholder="Enter number of rooms"
           value={rooms}
           onChange={(event) => setRooms(event.target.value)}
-          required
         />
+        {roomsError && (
+          <div className="invalid-feedback d-block">{roomsError}</div>
+        )}
       </Form.Group>
 
       <Form.Group controlId="services" className="col-6">
@@ -143,8 +435,10 @@ function AddApartmentForm({ onSubmit }) {
           placeholder="Enter image of appartment"
           value={img}
           onChange={(event) => setImg(event.target.value)}
-          required
         />
+        {imageError && (
+          <div className="invalid-feedback d-block">{imageError}</div>
+        )}
       </Form.Group>
 
       <Button variant="primary" type="submit" className="w-25 mx-auto mt-3">

@@ -91,7 +91,7 @@ userRouter
 userRouter
    .route('/reset/:param')
    .get(httpResetPasswordByEmail)
-   .post(ensureLoggedIn, httpResetPassword);
+   .post(ensureUser, httpResetPassword);
 
 userRouter
    .route('/verify/:param')

@@ -208,7 +208,9 @@ function ApartmentDetails() {
           progress: undefined,
           theme: "light",
         });
-        navigate('/login')
+        setTimeout(() => {
+          navigate('/login');
+        }, 2600);
       }
   } else {
     navigate('/login')

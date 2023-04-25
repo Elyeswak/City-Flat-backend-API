@@ -183,7 +183,7 @@ function Login() {
                           Remember me{" "}
                         </div>
                         <div className="forgot-password">
-                          <a href="/">Forgot password?</a>
+                          <a href="/forget-password">Forgot password?</a>
                         </div>
                       </div>
                       <button className="sign-btn"> LOGIN </button>

@@ -25,6 +25,8 @@ import TestPage from './testpage/testpage'
 import ServicesDash from "./components/AdminDashboard/ServicesDash";
 import Notifications from "./components/Notifications/Notifications";
 import FilteringResults from "./components/Home/FilteringPage/FilteringResults";
+import ForgetPassword from "./components/Auth/forget-password/ForgetPassword";
+import ResetPassword from "./components/Auth/reset-password/ResetPassword";
 
 function App() {
   const [filteredData, setFilteredData] = useState([]);
@@ -50,6 +52,8 @@ function App() {
           <Route path="/results" element={<FilteringResults/>} filteredData={filteredData}/>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/forget-password" element={<ForgetPassword/>} />
+          <Route path="/reset-password" element={<ResetPassword/>} />
           <Route path="/admndash" element={<AdminDash />} />
           <Route path="/ordersdash" element={<OrdersDash />} />
           <Route path="/appartdash" element={<AppartmentDash />} />

@@ -2,10 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
-import "./coverPage.css";
-import { Link } from "react-router-dom";
 import { Range, getTrackBackground } from "react-range";
 import FilteringResults from "./../FilteringPage/FilteringResults";
+import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+import { useAnimation } from "framer-motion";
+import "./coverPage.css";
 
 /**PRICE VARIABLES */
 const PRICE_STEP = 10;
@@ -87,18 +89,37 @@ function CoverPage() {
     localStorage.setItem("filteredData", JSON.stringify(filteredData));
   };
 
+  /**MOTION ANIMATION*/
+  const { ref, inView } = useInView();
+  const animation = useAnimation();
+  useEffect(() => {
+    if (inView) {
+      animation.start({
+        x: 0,
+        opacity: 1,
+        transition: { duration: 0.7 },
+      });
+    } else {
+      animation.start({ x: -100, opacity: 0 });
+    }
+  }, [animation, inView]);
+
   return (
     <>
       <div className="homepage">
         <div className="borders">
           <div className="container">
             <div className="header__cover">
-              <div>
+              <motion.div
+                ref={ref}
+                initial={{ x: -100, opacity: 0 }}
+                animate={animation}
+              >
                 <h1 className="title__cover">
                   BOOK YOUR NEXT GETAWAY AND LET US <br /> TAKE CARE OF THE
                   REST!
                 </h1>
-              </div>
+              </motion.div>
 
               <form className="search">
                 <input

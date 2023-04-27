@@ -30,7 +30,7 @@ function ApartmentDetails() {
   const [apartment, setApartment] = useState(null);
   const [service, setService] = useState([]);
   const [bookedDates, setBookedDates] = useState([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+ // const [isLoggedIn, setIsLoggedIn] = useState(false)
   const navigate = useNavigate();
 
   /**AXIOS REQUESTS */

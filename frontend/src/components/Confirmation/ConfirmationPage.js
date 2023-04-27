@@ -50,6 +50,7 @@ function PaymentPage() {
     Cleaning: <FontAwesomeIcon icon={faTrashArrowUp} />,
   };
 
+  
 
   const apartmentID = apartment.id
 

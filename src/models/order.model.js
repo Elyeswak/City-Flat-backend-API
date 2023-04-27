@@ -31,7 +31,7 @@ const OrdernSchema = new Schema({
     },
   
   
-    services: [{ type: Schema.Types.Array, ref: 'Service', required: false, }],
+    services: [{ type: Schema.Types.ObjectId, ref: 'Service', required: false, }],
   
     state: {
         type: String,

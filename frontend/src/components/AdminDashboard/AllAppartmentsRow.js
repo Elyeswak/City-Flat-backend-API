@@ -20,7 +20,7 @@ export default function AllAppartmentsRow({
   const [rooms, setRooms] = useState(appart.rooms);
   const [type, setType] = useState(appart.type);
   const [img, setImg] = useState("");
-  const [services, setSrv] = useState([].concat(...appart.services));
+  const [services, setSrv] = useState(appart.services);
   const [foundSrv, setFoundSrv] = useState([]);
   const [nameError, setNameError] = useState("");
   const [priceError, setPriceError] = useState("");
@@ -125,7 +125,7 @@ export default function AllAppartmentsRow({
       location: location,
       rooms: rooms,
       type: type,
-      services: services.map((str) => [str]),
+      services: services,
       img: img,
     };
 
@@ -337,7 +337,7 @@ export default function AllAppartmentsRow({
                     key={service.id}
                     type="checkbox"
                     label={service.name}
-                    checked={services.includes(service.id)}
+                    checked={services && services.includes(service.id)}
                     value={service.id}
                     onChange={(event) => {
                       const serviceId = event.target.value;

@@ -30,7 +30,7 @@ function ApartmentDetails() {
   const [apartment, setApartment] = useState(null);
   const [service, setService] = useState([]);
   const [bookedDates, setBookedDates] = useState([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
   /**AXIOS REQUESTS */
@@ -42,7 +42,7 @@ function ApartmentDetails() {
       .then((response) => {
         setApartment(response.data);
         localStorage.setItem("apartment", JSON.stringify(response.data));
-  
+
         // fetch services data
         const servicePromises = response.data.services.map((el) => {
           return axios
@@ -54,7 +54,7 @@ function ApartmentDetails() {
               console.log(error);
             });
         });
-  
+
         // fetch booked dates data
         const bookedDatesPromise = axios
           .get(`http://localhost:9090/user/orders/bookeddates/${params.id}`)
@@ -64,18 +64,19 @@ function ApartmentDetails() {
           .catch((error) => {
             console.log(error);
           });
-  
+
         Promise.all([bookedDatesPromise, ...servicePromises]).then((res) => {
           const [bookedDates, ...services] = res;
           setBookedDates(bookedDates);
           setService(services);
         });
+        console.log(service)
       })
       .catch((error) => {
         console.log(error);
       });
   }, [params.id]);
-  
+
 
   /*
    * SELECT SERVICES
@@ -90,8 +91,8 @@ function ApartmentDetails() {
   /**SERVICES OF THE APARTMENT */
   const options = service.map((service) => {
     return {
-      label: service.name,
-      value: service.id,
+      label: service && service.name,
+      value: service && service.id,
     };
   });
 
@@ -176,16 +177,16 @@ function ApartmentDetails() {
   /**CHECK IF  THE USER IS LOGGEDIN AND HIS ACCOUNT IS ENBALED */
 
   const handleCheckUser = () => {
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
       const isVerified = user.isVerified;
-  
-      if (user && (isVerified === true)) {
+
+      if (user && isVerified === true) {
         // user is logged in and account is verified
-        navigate('/confirmation')
-      } else if (user && (isVerified === false)) {
+        navigate("/confirmation");
+      } else if (user && isVerified === false) {
         // user is logged in but account is not verified
-        console.log('account not verified')
+        console.log("account not verified");
         toast.error("❌ Your account is disabled please contact the admin", {
           position: "top-right",
           autoClose: 2000,
@@ -208,30 +209,29 @@ function ApartmentDetails() {
           progress: undefined,
           theme: "light",
         });
-        navigate('/login')
+        navigate("/login");
       }
-  } else {
-    navigate('/login')
-  }
+    } else {
+      navigate("/login");
+    }
   };
 
-/**DISABLED BOOKED DATES */
-const disabledDates = bookedDates.flatMap(({ start, end }) => {
-  const startDate = new Date(start);
-  const endDate = new Date(end);
-  const dates = [];
-  let currentDate = new Date(startDate);
+  /**DISABLED BOOKED DATES */
+  const disabledDates = bookedDates.flatMap(({ start, end }) => {
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    const dates = [];
+    let currentDate = new Date(startDate);
 
-  while (currentDate <= endDate) {
-    dates.push(new Date(currentDate));
-    currentDate.setDate(currentDate.getDate() + 1);
-  }
+    while (currentDate <= endDate) {
+      dates.push(new Date(currentDate));
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
 
-  return dates;
-});
+    return dates;
+  });
 
-
-/**RENDERING COMPONENT*/
+  /**RENDERING COMPONENT*/
   return (
     <>
       {apartment && (
@@ -240,17 +240,17 @@ const disabledDates = bookedDates.flatMap(({ start, end }) => {
           <div className="apartment_details_content">
             <div className="upper__space"></div>
             <ToastContainer
-                    position="top-right"
-                    autoClose={2000}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
-                    theme="light"
-                  />
+              position="top-right"
+              autoClose={2000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light"
+            />
             {/** Apartment Details */}
 
             <div className="row">
@@ -294,7 +294,7 @@ const disabledDates = bookedDates.flatMap(({ start, end }) => {
                       <div className="services_selection">
                         <MultiSelect
                           onChange={handleOnchange}
-                          options={options}
+                          options={options && options}
                           placeholder="Choose Services"
                         />
                       </div>
@@ -336,7 +336,6 @@ const disabledDates = bookedDates.flatMap(({ start, end }) => {
                     className="date"
                     minDate={new Date()}
                     disabledDates={disabledDates}
-                    
                   />
                 </div>
               </div>
@@ -375,11 +374,12 @@ const disabledDates = bookedDates.flatMap(({ start, end }) => {
                     <p>Total price :€{totalPrice}</p>
                   </div>
                   <div className="row custom-button-reservation-row">
-                    
-                      <button className="btn btn-dark custom-button-reservation" onClick={handleCheckUser}>
-                        RESERVE
-                      </button>
-                    
+                    <button
+                      className="btn btn-dark custom-button-reservation"
+                      onClick={handleCheckUser}
+                    >
+                      RESERVE
+                    </button>
                   </div>
                 </div>
               </div>

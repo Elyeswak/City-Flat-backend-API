@@ -48,7 +48,7 @@ const AppartmentSchema = new Schema(
         },
       },
       reviews: [{ type: Schema.Types.Array, ref: 'Review', required: false }],
-      services: [{ type: Schema.Types.Array, ref: 'Service', required: false }],
+      services: [{ type: Schema.Types.ObjectId, ref: 'Service', required: false }],
       img: {
         type: String,
         required: false,

@@ -63,7 +63,7 @@ export function httpGetAllApparts(req, res) {
        .catch((err) => res.status(500).json({ error: err.message }));
  }
 ///
- export function httpGetAllservices(req,res){
+ export function httpaddServiceToApart(req,res){
 
 
 
@@ -221,7 +221,7 @@ export async function findOneAppartByFilter(appartFilter) {
 
             { name: appartFilter },
         ],
-    });
+    }).populate('services');
 }
 //appartment object format to get all appartments
 export function appartsListFormat(apparts) {

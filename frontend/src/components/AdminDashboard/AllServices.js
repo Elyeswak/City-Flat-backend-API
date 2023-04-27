@@ -34,6 +34,7 @@ export default function AllServices() {
         <Table responsive className="text-light">
           <thead>
             <tr>
+              <th>#</th>
               <th>Name</th>
               <th>Night price</th>
               <th colSpan={2}>Appartment action</th>

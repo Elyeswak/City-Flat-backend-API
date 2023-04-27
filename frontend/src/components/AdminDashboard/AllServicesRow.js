@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
+import "./ServicesDash.css";
 
 export default function AllServicesRow({
   index,
@@ -46,7 +47,10 @@ export default function AllServicesRow({
     }
   };
   return (
-    <tr key={index + 1}>
+    <tr key={index + 1} className="services-dash-row">
+      <td className="services-dash-row-index">
+        {index + 1} <span>🖋️</span>
+      </td>
       <td>{srv.name}</td>
       <td>£ {srv.pricePerNight}</td>
       <td>

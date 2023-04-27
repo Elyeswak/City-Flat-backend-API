@@ -51,7 +51,7 @@ paypalRouter
     });
 
 paypalRouter
-    .get('/pay', async (req, res) => {
+    .post('/pay', async (req, res) => {
 
         amount = req.body.price;
 

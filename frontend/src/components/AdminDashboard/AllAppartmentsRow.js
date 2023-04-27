@@ -20,7 +20,7 @@ export default function AllAppartmentsRow({
   const [rooms, setRooms] = useState(appart.rooms);
   const [type, setType] = useState(appart.type);
   const [img, setImg] = useState("");
-  const [services, setSrv] = useState(appart.services);
+  const [services, setSrv] = useState([].concat(...appart.services));
   const [foundSrv, setFoundSrv] = useState([]);
   const [nameError, setNameError] = useState("");
   const [priceError, setPriceError] = useState("");
@@ -29,13 +29,6 @@ export default function AllAppartmentsRow({
   const [typeError, setTypeError] = useState("");
   const [roomsError, setRoomsError] = useState("");
   const [imageError, setImageError] = useState("");
-  const [editedAppart, setEditedAppart] = useState({
-    name: appart.name,
-    pricePerNight: appart.pricePerNight,
-    location: appart.location,
-    type: appart.type,
-    rooms: appart.rooms,
-  });
 
   useEffect(() => {
     // fetch all services
@@ -58,10 +51,6 @@ export default function AllAppartmentsRow({
         });
       });
   }, []);
-
-  const handleEditChange = (e) => {
-    setEditedAppart({ ...editedAppart, [e.target.name]: e.target.value });
-  };
 
   const handleShowEditModal = () => setShowEditModal(true);
   const handleCloseEditModal = () => setShowEditModal(false);
@@ -126,6 +115,65 @@ export default function AllAppartmentsRow({
       }, 3000);
     }
   };
+
+  const handleSaveChanges = (e) => {
+    e.preventDefault();
+    const updatedAppart = {
+      name: name,
+      description: description,
+      pricePerNight: pricePerNight,
+      location: location,
+      rooms: rooms,
+      type: type,
+      services: services.map((str) => [str]),
+      img: img,
+    };
+
+    axios
+      .put(
+        `http://localhost:9090/user/appartments/${appart.id}`,
+        updatedAppart,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((response) => {
+        // Update the apartment data in the state
+        const updatedApparts = allAppartments.map((a) =>
+          a.id === appart.id ? response.data : a
+        );
+        setAllAppartments(updatedApparts);
+
+        toast.success("✅ Changes saved successfully", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+
+        handleCloseEditModal();
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("❌ An error occured while trying to save the changes!", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
+  };
+
   return (
     <>
       <ToastContainer
@@ -180,7 +228,11 @@ export default function AllAppartmentsRow({
           <p>Location: {appart.location}</p>
           <p>Type: {appart.type}</p>
           <p>Rooms: {appart.rooms}</p> */}
-          <Form className="row gy-3 text-start mx-auto" id="addAppartForm">
+          <Form
+            className="row gy-3 text-start mx-auto"
+            id="addAppartForm"
+            onSubmit={handleSaveChanges}
+          >
             <ToastContainer
               position="top-right"
               autoClose={2000}

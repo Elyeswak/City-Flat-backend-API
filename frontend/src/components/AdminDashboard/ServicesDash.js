@@ -37,22 +37,22 @@ export default function ServicesDash() {
   return (
     <>
       <Sidebar />
-      <div className="appart-dash-cont bg-dark text-light">
-        <ul className="appart-dash-nav">
+      <div className="services-dash-cont bg-dark text-light">
+        <ul className="services-dash-nav d-flex">
           <li
             onClick={() => {
               setShow("all");
             }}
             className=""
           >
-            All services
+            <button className="btn btn-primary me-3">All services</button>
           </li>
           <li
             onClick={() => {
               setShow("add");
             }}
           >
-            Add service
+            <button className="btn btn-success">➕ Add</button>
           </li>
         </ul>
         {show === "all" ? (

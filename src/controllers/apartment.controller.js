@@ -215,7 +215,7 @@ export async function findOneAppartByFilter(appartFilter) {
 
             { name: appartFilter },
         ],
-    });
+    }).populate('services');
 }
 //appartment object format to get all appartments
 export function appartsListFormat(apparts) {

@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 import servicetDb from '../models/service.model.js';
+
 import { validationResult } from 'express-validator';
+import appartmentDb from '../models/appartment.model.js';
 
 
 //add a service
@@ -97,26 +99,29 @@ export function httpUpdateOneService(req, res) {
             .catch((err) => res.status(500).json({ error: err.message }));
     }
 }
-//delete one service with filter
-export function httpDeleteOneService(req, res) {
-    findOneServiceByFilter(req.params.param)
-        .then((foundService) => {
-            if (!foundService) {
-                res.status(404).json({ error: 'Service not found!' });
-            } else {
-                servicetDb
-                    .findByIdAndDelete(foundService._id)
-                    .then((result) => {
-                        res.status(200).json({
-                            message: `${foundService.name} deleted successfully`,
-                        });
-                    })
-                    .catch((err) => res.status(500).json({ error: err.message }));
-            }
-        })
-        .catch((err) => res.status(500).json({ error: err.message }));
-}
+//delete one service
 
+export async function httpDeleteOneService(req, res) {
+    try {
+      const  serviceId  = req.params.param;
+  
+      // Find the Service to delete
+      const service = await servicetDb.findByIdAndDelete(serviceId);
+  
+      // Find all Apartments that have the Service
+      const apartmentsWithService = await appartmentDb.find({ services: serviceId });
+  
+      // Remove the Service ID from the services array of each Apartment found
+      await appartmentDb.updateMany(
+        { _id: { $in: apartmentsWithService.map((apartment) => apartment._id) } },
+        { $pull: { services: serviceId } }
+      );
+  
+      res.status(200).json({ message: 'Service deleted successfully' });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
 
 export async function findOneServiceByFilter(serviceFilter) {
     var serviceId = null;

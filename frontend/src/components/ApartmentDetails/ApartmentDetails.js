@@ -42,18 +42,19 @@ function ApartmentDetails() {
       .then((response) => {
         setApartment(response.data);
         localStorage.setItem("apartment", JSON.stringify(response.data));
+        setService(response.data.services);
 
-        // fetch services data
-        const servicePromises = response.data.services.map((el) => {
-          return axios
-            .get(`http://localhost:9090/user/services/${el}`)
-            .then((response) => {
-              return response.data;
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        });
+        // // fetch services data
+        // const servicePromises = response.data.services.map((el) => {
+        //   return axios
+        //     .get(`http://localhost:9090/user/services/${el}`)
+        //     .then((response) => {
+        //       return response.data;
+        //     })
+        //     .catch((error) => {
+        //       console.log(error);
+        //     });
+        // });
 
         // fetch booked dates data
         const bookedDatesPromise = axios
@@ -65,10 +66,10 @@ function ApartmentDetails() {
             console.log(error);
           });
 
-        Promise.all([bookedDatesPromise, ...servicePromises]).then((res) => {
-          const [bookedDates, ...services] = res;
+        Promise.all([bookedDatesPromise]).then((res) => {
+          const [bookedDates] = res;
           setBookedDates(bookedDates);
-          setService(services);
+          
         });
         console.log(service)
       })
@@ -91,8 +92,8 @@ function ApartmentDetails() {
   /**SERVICES OF THE APARTMENT */
   const options = service.map((service) => {
     return {
-      label: service && service.name,
-      value: service && service.id,
+      label: service.name,
+      value: service.id,
     };
   });
 
@@ -294,7 +295,7 @@ function ApartmentDetails() {
                       <div className="services_selection">
                         <MultiSelect
                           onChange={handleOnchange}
-                          options={options && options}
+                          options={options}
                           placeholder="Choose Services"
                         />
                       </div>

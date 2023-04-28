@@ -63,15 +63,11 @@ export default function AllServicesRow({
     };
 
     axios
-      .put(
-        `http://localhost:9090/user/services/${srv.id}`,
-        updatedSrv,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
+      .put(`http://localhost:9090/user/services/${srv.id}`, updatedSrv, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         // Update the apartment data in the state
         const updatedSrv = allServices.map((a) =>
@@ -122,26 +118,30 @@ export default function AllServicesRow({
       />
       <tr key={index + 1} className="services-dash-row">
         <td className="services-dash-row-index" onClick={handleShowEditModal}>
-          {index + 1} <span>🖋️</span>
+          {index + 1}
         </td>
         <td>{srv.name}</td>
         <td>£ {srv.pricePerNight}</td>
-        <td>
-          <div>
+        <td className="d-flex justify-content-center">
+          <div className="me-2">
             <button
-              className="btn btn-danger rounded-pill"
+              className="btn btn-danger"
               onClick={() => handleDelete(srv.id)}
             >
-              {confirmingDelete ? "Confirm" : "Delete"}
+              {confirmingDelete ? "✔️" : "🗑️"}
             </button>
           </div>
-        </td>
-        <td>
           <button
-            className="btn btn-info rounded-pill ml-2"
+            className="btn btn-secondary me-2"
+            onClick={handleShowEditModal}
+          >
+            🖋️
+          </button>
+          <button
+            className="btn btn-primary"
             onClick={() => handleShowDetails(srv)}
           >
-            Details
+            ℹ️
           </button>
         </td>
       </tr>

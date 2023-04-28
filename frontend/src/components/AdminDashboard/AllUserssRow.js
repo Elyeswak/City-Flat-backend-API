@@ -16,12 +16,9 @@ export default function AllUserssRow({ index, usr, allUsers, setAllUsers }) {
     const isChecked = event.target.checked;
     setVerified(isChecked);
     console.log(verified);
-  };
 
-  const handleUserUpdate = (e) => {
-    e.preventDefault();
     const updatedUser = {
-      isVerified: verified,
+      isVerified: isChecked,
     };
 
     axios
@@ -143,31 +140,24 @@ export default function AllUserssRow({ index, usr, allUsers, setAllUsers }) {
         <td>{name}</td>
         <td>{email}</td>
         <td>{number}</td>
-        <td className="d-flex justify-content-center">
+        <td>{verified ? "Actif" : "Inactif"}</td>
+        <td className="d-flex justify-content-center align-items-center">
           <div className="me-2">
             <button
-              className="btn btn-danger rounded-pill"
+              className="btn btn-danger"
               onClick={() => handleDelete(usr.id)}
             >
-              {confirmingDelete ? "Confirm" : "Delete"}
+              {confirmingDelete ? "✔️" : "🗑️"}
             </button>
           </div>
-          <form
-            onSubmit={handleUserUpdate}
-            className="d-flex align-items-center"
-          >
-            <label className="switch">
-              <input
-                type="checkbox"
-                checked={verified}
-                onChange={handleCheckboxChange}
-              />
-              <span className="slider" />
-            </label>
-            <button className="btn btn-warning text-light ms-2" type="submit">
-              Apply
-            </button>
-          </form>
+          <label className="switch">
+            <input
+              type="checkbox"
+              checked={verified}
+              onChange={handleCheckboxChange}
+            />
+            <span className="slider" />
+          </label>
         </td>
       </tr>
     </>

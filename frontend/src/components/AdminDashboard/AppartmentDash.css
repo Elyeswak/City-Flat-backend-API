@@ -6,7 +6,7 @@
 .appart-dash-nav {
   list-style-type: none;
   position: absolute;
-  top: 88px;
+  top: 3rem;
   left: 0;
 }
 
@@ -28,4 +28,9 @@
 
 .appart-dash-row:hover .appart-dash-row-index span {
   display: inline-block;
+}
+
+.all-apparts-cont {
+  width: max-content;
+  margin: 0 auto;
 }

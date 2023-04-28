@@ -38,6 +38,7 @@ export default function ServicesDash() {
     <>
       <Sidebar />
       <div className="services-dash-cont bg-dark text-light">
+        <h1 className="text-light text-center">Services Dashboard</h1>
         <ul className="services-dash-nav d-flex">
           <li
             onClick={() => {

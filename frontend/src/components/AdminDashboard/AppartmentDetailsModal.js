@@ -3,7 +3,7 @@ import Modal from "react-bootstrap/Modal";
 import moment from "moment";
 import "./AppartmentsDetails.css";
 import axios from "axios";
-import { Table } from "react-bootstrap";
+import { Carousel, Table } from "react-bootstrap";
 
 export default function AppartmentDetailsModal(props) {
   const { appartment, show, handleClose } = props;
@@ -69,7 +69,18 @@ export default function AppartmentDetailsModal(props) {
               </tbody>
             </Table>
           </div>
-          <img src={appartment.img} />
+          {/* <img src={appartment.img} className="img-fluid" /> */}
+          <Carousel>
+            <Carousel.Item>
+              <img src={appartment.img} className="img-fluid" />
+            </Carousel.Item>
+            <Carousel.Item>
+              <img src={appartment.img} className="img-fluid" />
+            </Carousel.Item>
+            <Carousel.Item>
+              <img src={appartment.img} className="img-fluid" />
+            </Carousel.Item>
+          </Carousel>
         </div>
       </Modal.Body>
     </Modal>

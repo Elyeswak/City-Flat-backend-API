@@ -25,7 +25,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgb(200, 175, 54);
+  background-color: rgb(200, 54, 54);
   -webkit-transition: .4s;
   transition: .4s;
 }
@@ -43,11 +43,11 @@
 }
 
 input:checked + .slider {
-  background-color: #52f321;
+  background-color: #249900;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #52f321;
+  box-shadow: 0 0 1px #249900;
 }
 
 input:checked + .slider:before {
@@ -58,4 +58,9 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+.userDashContainer .dash-table {
+  width: fit-content;
+  margin: 0 auto;
 }

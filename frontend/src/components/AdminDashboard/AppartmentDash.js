@@ -94,6 +94,7 @@ export default function AppartmentDash() {
         theme="light"
       />
       <div className="appart-dash-cont bg-dark text-light">
+        <h1 className="text-light text-center">Appartments Dashboard</h1>
         <ul className="appart-dash-nav d-flex">
           <li
             onClick={() => {

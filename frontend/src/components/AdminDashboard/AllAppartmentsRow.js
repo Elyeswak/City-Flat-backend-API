@@ -188,32 +188,33 @@ export default function AllAppartmentsRow({
         pauseOnHover
         theme="light"
       />
-      <tr key={index} className="appart-dash-row">
-        <td className="appart-dash-row-index" onClick={handleShowEditModal}>
-          {index + 1}
-          <span>🖋️</span>
-        </td>
+      <tr key={index}>
+        <td>{index + 1}</td>
         <td>{appart.name}</td>
         <td>£ {appart.pricePerNight}</td>
         <td>{appart.location}</td>
         <td>{appart.type}</td>
         <td>{appart.rooms}</td>
-        <td>
-          <div>
+        <td className="d-flex justify-content-center">
+          <div className="me-2">
             <button
-              className="btn btn-danger rounded-pill"
+              className="btn btn-danger"
               onClick={() => handleDelete(appart.id)}
             >
-              {confirmingDelete ? "Confirm" : "Delete"}
+              {confirmingDelete ? "✔️" : "🗑️"}
             </button>
           </div>
-        </td>
-        <td>
           <button
-            className="btn btn-info rounded-pill ml-2"
+            className="btn btn-secondary me-2"
+            onClick={handleShowEditModal}
+          >
+            🖋️
+          </button>
+          <button
+            className="btn btn-primary"
             onClick={() => handleShowDetails(appart)}
           >
-            Details
+            ℹ️
           </button>
         </td>
       </tr>
@@ -359,7 +360,7 @@ export default function AllAppartmentsRow({
             <Form.Group controlId="formImg" className="col-12">
               <Form.Label>Image</Form.Label>
               <Form.Control
-                type="file"
+                type="text"
                 placeholder="Enter image of appartment"
                 value={img}
                 onChange={(event) => setImg(event.target.value)}

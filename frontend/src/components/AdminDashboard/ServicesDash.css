@@ -29,3 +29,8 @@
 .services-dash-row:hover .services-dash-row-index span {
   display: inline-block;
 }
+
+.all-services-cont {
+  width: max-content;
+  margin: 0 auto;
+}

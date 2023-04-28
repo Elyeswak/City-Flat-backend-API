@@ -431,7 +431,7 @@ function AddApartmentForm({ onSubmit }) {
       <Form.Group controlId="formImg" className="col-12">
         <Form.Label>Image</Form.Label>
         <Form.Control
-          type="file"
+          type="text"
           placeholder="Enter image of appartment"
           value={img}
           onChange={(event) => setImg(event.target.value)}

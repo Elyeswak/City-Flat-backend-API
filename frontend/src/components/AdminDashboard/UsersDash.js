@@ -56,7 +56,8 @@ export default function UsersDash() {
   return (
     <div className="bg-dark userDashContainer">
       <Sidebar />
-      <div className="w-100">
+      <h1 className="text-light text-center pt-5">Users Dashboard</h1>
+      <div className="dash-table">
         <ToastContainer
           position="top-right"
           autoClose={2000}
@@ -72,9 +73,8 @@ export default function UsersDash() {
         <Table responsive className="text-light">
           <thead>
             <tr>
-              <th colSpan={3}></th>
-              <th colSpan={1}></th>
-              <th colSpan={2}>
+              <th colSpan={5}></th>
+              <th>
                 <div className="d-flex justify-content-end">
                   <select
                     class="form-control"
@@ -97,16 +97,25 @@ export default function UsersDash() {
               <th>Name</th>
               <th>Email</th>
               <th>Number</th>
+              <th>State</th>
               <th>User action</th>
             </tr>
           </thead>
           <tbody>
-            {filteredAllUsers &&
+            {filteredAllUsers.length === 0 ? (
+              <tr>
+                <td colSpan={6}>
+                  <p className="text-light text-center">
+                    No matching users found
+                  </p>
+                </td>
+              </tr>
+            ) : (
               filteredAllUsers.map((usr, index) => {
-                console.log("user to be displayed",usr); // <-- add this line
-                console.log("all users array", allUsers)
-                console.log("filtered users", filteredAllUsers)
-                console.log("filter value",filterValue)
+                console.log("user to be displayed", usr); // <-- add this line
+                console.log("all users array", allUsers);
+                console.log("filtered users", filteredAllUsers);
+                console.log("filter value", filterValue);
                 return (
                   <AllUserssRow
                     usr={usr}
@@ -116,7 +125,8 @@ export default function UsersDash() {
                     setAllUsers={setAllUsers}
                   />
                 );
-              })}
+              })
+            )}
           </tbody>
         </Table>
       </div>

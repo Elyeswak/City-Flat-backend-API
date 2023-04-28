@@ -34,6 +34,7 @@ function Navbar() {
   // console.log("local user", locUser)
 
   useEffect(() => {
+    if (!locUser) return; // check if locUser is undefined and return if it is
     const fetchUser = async () => {
       try {
         const response = await axios.get(
@@ -44,9 +45,10 @@ function Navbar() {
         console.error(error);
       }
     };
-
+  
     fetchUser();
   }, [locUser]);
+  
   // console.log("fetched user", User)
   // console.log("is logged in", isLoggedIn)
   let menuRef = useRef();

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Rate from "../../Rate/Rate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { faHeart as faHeartEmpty } from "@fortawesome/free-regular-svg-icons";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
@@ -22,7 +23,7 @@ function FilteringResults({ filteredData }) {
             <div className="row">
               {filteredData.map((data) => {
                 return (
-                  <div className="col-sm-6" key={data.id}>
+                  <div className="col-sm-4" key={data.id}>
                     {" "}
                     <div className="card">
                       <div className="card_img">
@@ -43,7 +44,6 @@ function FilteringResults({ filteredData }) {
                           <button>
                             <FontAwesomeIcon
                               icon={faHeart}
-                              beat
                               className="highlight_luxury"
                             />
                           </button>

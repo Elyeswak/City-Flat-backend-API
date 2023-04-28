@@ -128,27 +128,30 @@ export function httpUpdateOneUser(req, res) {
     const newValues = req.body;
     delete newValues.password;
 
-    findOneUserByFilter(req.params.param)
-      .then((foundUser) => {
-        if (!foundUser) {
-          res.status(404).json({ message: "User not found!" });
-        } else {
-          newValues.isBanned = foundUser.isBanned;
-          userDb
-            .findByIdAndUpdate(foundUser._id, newValues)
-            .then((result) => {
-              userDb
-                .findById(result._id)
-                .then((updated) => {
-                  res.status(200).json(userFormat(updated));
-                })
-                .catch((err) => res.status(500).json({ error: err.message }));
-            })
-            .catch((err) => res.status(500).json({ error: err.message }));
-        }
-      })
-      .catch((err) => res.status(500).json({ error: err.message }));
-  }
+      findOneUserByFilter(req.params.param)
+         .then((foundUser) => {
+            if (!foundUser) {
+               res.status(404).json({ message: 'User not found!' });
+            } else {
+             
+               newValues.isBanned = foundUser.isBanned;
+               userDb
+                  .findByIdAndUpdate(foundUser._id, newValues)
+                  .then((result) => {
+                     userDb
+                        .findById(result._id)
+                        .then((updated) => {
+                           res.status(200).json(userFormat(updated));
+                        })
+                        .catch((err) =>
+                           res.status(500).json({ error: err.message })
+                        );
+                  })
+                  .catch((err) => res.status(500).json({ error: err.message }));
+            }
+         })
+         .catch((err) => res.status(500).json({ error: err.message }));
+   }
 }
 
 //  export function httpUpdateAllPlayers(req, res) {

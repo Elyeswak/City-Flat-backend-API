@@ -22,7 +22,7 @@ export default function AllAppartments() {
         setAllAppartments(response.data);
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
         // toast.error("❌ An error occured while trynig to get appartments!", {
         //   position: "top-right",
         //   autoClose: 2000,

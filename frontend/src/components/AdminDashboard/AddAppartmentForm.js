@@ -286,7 +286,7 @@ function AddApartmentForm({ onSubmit }) {
         setFoundSrv(response.data);
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
         toast.error("❌ An error occured while trying to get the services!", {
           position: "top-right",
           autoClose: 2000,

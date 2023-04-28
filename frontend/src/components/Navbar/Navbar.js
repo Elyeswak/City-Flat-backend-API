@@ -31,7 +31,7 @@ function Navbar() {
   }, [locUser])
   
 
-  console.log("local user", locUser)
+  // console.log("local user", locUser)
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -47,8 +47,8 @@ function Navbar() {
 
     fetchUser();
   }, [locUser]);
-  console.log("fetched user", User)
-  console.log("is logged in", isLoggedIn)
+  // console.log("fetched user", User)
+  // console.log("is logged in", isLoggedIn)
   let menuRef = useRef();
 
   useEffect(() => {

@@ -28,7 +28,7 @@ function ApartmentDetails() {
   let params = useParams();
 
   const [apartment, setApartment] = useState(null);
-  const [service, setService] = useState([]);
+  const [services, setServices] = useState([]);
   const [bookedDates, setBookedDates] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
@@ -36,25 +36,14 @@ function ApartmentDetails() {
   /**AXIOS REQUESTS */
 
   useEffect(() => {
+    
     // fetch apartment data
     axios
       .get(`http://localhost:9090/user/appartments/${params.id}`)
       .then((response) => {
         setApartment(response.data);
         localStorage.setItem("apartment", JSON.stringify(response.data));
-        setService(response.data.services);
-
-        // // fetch services data
-        // const servicePromises = response.data.services.map((el) => {
-        //   return axios
-        //     .get(`http://localhost:9090/user/services/${el}`)
-        //     .then((response) => {
-        //       return response.data;
-        //     })
-        //     .catch((error) => {
-        //       console.log(error);
-        //     });
-        // });
+        setServices(response.data.services);
 
         // fetch booked dates data
         const bookedDatesPromise = axios
@@ -71,7 +60,6 @@ function ApartmentDetails() {
           setBookedDates(bookedDates);
           
         });
-        console.log(service)
       })
       .catch((error) => {
         console.log(error);
@@ -86,14 +74,16 @@ function ApartmentDetails() {
   const [value, setvalue] = useState("");
   const handleOnchange = (val) => {
     setvalue(val);
-    console.log(val);
+    console.log("selected service",val);
   };
 
+  // console.log("services", services)
+
   /**SERVICES OF THE APARTMENT */
-  const options = service.map((service) => {
+  const options = services.map((service) => {
     return {
       label: service.name,
-      value: service.id,
+      value: service._id,
     };
   });
 
@@ -112,7 +102,7 @@ function ApartmentDetails() {
   /**EXTRACT SERVICES PRICES */
   const valueStr = value.split(",").map(String);
   const totalPricePerNight = valueStr.reduce((acc, curr) => {
-    const servicePrice = service.find((s) => s.id === curr);
+    const servicePrice = services.find((s) => s._id === curr);
     if (servicePrice) {
       return acc + servicePrice.pricePerNight;
     }
@@ -123,7 +113,7 @@ function ApartmentDetails() {
   /**EXTRACT NAMES FROM SERVICES*/
   const valueStrNames = value.split(",").map(String);
   const serviceNames = valueStrNames.reduce((acc, curr) => {
-    const serviceName = service.find((s) => s.id === curr);
+    const serviceName = services.find((s) => s._id === curr);
     if (serviceName) {
       return [...acc, serviceName.name];
     }
@@ -134,7 +124,7 @@ function ApartmentDetails() {
   /**EXTRACT IDS FROM SERVICES*/
   const valueStrIds = value.split(",").map(String);
   const serviceIds = valueStrIds.reduce((acc, curr) => {
-    if (service.some((s) => s.id === curr)) {
+    if (services.some((s) => s._id === curr)) {
       return [...acc, curr];
     }
     return acc;

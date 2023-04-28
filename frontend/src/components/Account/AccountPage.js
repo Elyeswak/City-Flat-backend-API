@@ -97,10 +97,10 @@ function AccountPage() {
           },
         }
       );
-      console.log(response.data);
+      // console.log(response.data);
       const data = response.data;
       data["token"] = userToken;
-      console.log(data);
+      // console.log(data);
       localStorage.setItem("user", JSON.stringify(data));
       setShowModal(false);
     } catch (error) {
@@ -118,10 +118,10 @@ function AccountPage() {
       })
       .then((response) => {
         setReservations(response.data);
-        console.log(response.data); // handle response data
+        // console.log(response.data); // handle response data
       })
       .catch((error) => {
-        console.log(error.response.data); // handle error
+        // console.log(error.response.data); // handle error
       });
   }, []);
 
@@ -135,10 +135,10 @@ function AccountPage() {
       })
       .then((response) => {
         setOrders(response.data);
-        console.log(response.data); // handle response data
+        // console.log(response.data); // handle response data
       })
       .catch((error) => {
-        console.log(error.response.data); // handle error
+        // console.log(error.response.data); // handle error
       });
   }, []);
 

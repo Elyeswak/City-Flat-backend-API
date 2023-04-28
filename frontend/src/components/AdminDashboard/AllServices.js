@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import AllServicesRow from "./AllServicesRow";
 import ServiceDetailsModal from "./ServiceDetailsModal";
+import './ServicesDash.css'
 
 export default function AllServices() {
   const [allServices, setAllServices] = useState([]);
@@ -30,14 +31,14 @@ export default function AllServices() {
   };
   return (
     <>
-      <div className="w-100">
+      <div className="all-services-cont">
         <Table responsive className="text-light">
           <thead>
             <tr>
               <th>#</th>
               <th>Name</th>
               <th>Night price</th>
-              <th colSpan={2}>Appartment action</th>
+              <th colSpan={2}>Services action</th>
             </tr>
           </thead>
           <tbody>

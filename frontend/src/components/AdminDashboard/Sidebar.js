@@ -49,28 +49,28 @@ function Sidebar(props) {
       </Button>
       <Offcanvas show={show} onHide={handleClose}>
         <Offcanvas.Header closeButton>
-          <Offcanvas.Title className="text-light">
+          <Offcanvas.Title className="text-light display-6">
             Admin Dashboard
           </Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
           <ul className="sidebar-menu">
-            <li className="fs-4">
+            <li className="fs-5">
               <Link to={"/"}>Home</Link>
             </li>
-            <li className="fs-4">
+            <li className="fs-5">
               <Link to={"/ordersdash"}>Orders</Link>
             </li>
-            <li className="fs-4">
+            <li className="fs-5">
               <Link to={"/appartdash"}>Appartments</Link>
             </li>
-            <li className="fs-4">
+            <li className="fs-5">
               <Link to={"/servdash"}>Services</Link>
             </li>
-            <li className="fs-4">
+            <li className="fs-5">
               <Link to={"/userdash"}>Users</Link>
             </li>
-            <li className="fs-4">
+            <li className="fs-5">
               <a href="#" onClick={handleOpenHelpModal}>
                 Help
               </a>

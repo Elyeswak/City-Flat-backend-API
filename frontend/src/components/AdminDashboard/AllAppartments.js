@@ -5,6 +5,7 @@ import AllAppartmentsRow from "./AllAppartmentsRow";
 import { ToastContainer, toast } from "react-toastify";
 import { Form } from "react-bootstrap";
 import AppartmentDetailsModal from "./AppartmentDetailsModal";
+import "./AppartmentDash.css";
 
 export default function AllAppartments() {
   const [allAppartments, setAllAppartments] = useState([]);
@@ -91,7 +92,7 @@ export default function AllAppartments() {
 
   return (
     <>
-      <div className="w-100">
+      <div className="all-apparts-cont">
         <ToastContainer
           position="top-right"
           autoClose={2000}
@@ -107,7 +108,7 @@ export default function AllAppartments() {
         <Table responsive className="text-light">
           <thead>
             <tr>
-              <th colSpan={5}></th>
+              <th colSpan={4}></th>
               <th colSpan={1}>
                 <Form.Control
                   type="number"
@@ -143,19 +144,29 @@ export default function AllAppartments() {
               <th>Location</th>
               <th>Type</th>
               <th>Rooms</th>
-              <th colSpan={2}>Appartment action</th>
+              <th>Appartment action</th>
             </tr>
           </thead>
           <tbody>
-            {filteredAppartments.map((appart, index) => (
-              <AllAppartmentsRow
-                appart={appart}
-                index={index}
-                handleShowDetails={handleShowDetails}
-                allAppartments={filteredAppartments}
-                setAllAppartments={setAllAppartments}
-              />
-            ))}
+            {filteredAllAppartments.length === 0 ? (
+              <tr>
+                <td colSpan={7}>
+                  <p className="text-light text-center">
+                    No matching appartments found
+                  </p>
+                </td>
+              </tr>
+            ) : (
+              filteredAppartments.map((appart, index) => (
+                <AllAppartmentsRow
+                  appart={appart}
+                  index={index}
+                  handleShowDetails={handleShowDetails}
+                  allAppartments={filteredAppartments}
+                  setAllAppartments={setAllAppartments}
+                />
+              ))
+            )}
           </tbody>
         </Table>
       </div>

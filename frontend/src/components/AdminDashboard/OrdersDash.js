@@ -115,6 +115,7 @@ export default function OrdersDash() {
       <Sidebar />
 
       <div className="orders_page_content">
+        <h1 className="text-light text-center mt-5">Orders Dashboard</h1>
         <div className="orders_table">
           <Table responsive className="orders_table">
             <thead>

@@ -148,7 +148,7 @@ export function httpUpdateOneUser(req, res) {
             if (!foundUser) {
                res.status(404).json({ message: 'User not found!' });
             } else {
-               newValues.isVerified = foundUser.isVerified;
+             
                newValues.isBanned = foundUser.isBanned;
                userDb
                   .findByIdAndUpdate(foundUser._id, newValues)

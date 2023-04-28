@@ -3,6 +3,7 @@ import servicetDb from '../models/service.model.js';
 
 import { validationResult } from 'express-validator';
 import appartmentDb from '../models/appartment.model.js';
+import orderModel from '../models/order.model.js';
 
 
 //add a service
@@ -116,6 +117,12 @@ export async function httpDeleteOneService(req, res) {
         { _id: { $in: apartmentsWithService.map((apartment) => apartment._id) } },
         { $pull: { services: serviceId } }
       );
+
+      const result = await orderModel.updateMany(
+        { services: serviceId },
+        { $pull: { services: serviceId } }
+      );
+      console.log(result)
   
       res.status(200).json({ message: 'Service deleted successfully' });
     } catch (error) {

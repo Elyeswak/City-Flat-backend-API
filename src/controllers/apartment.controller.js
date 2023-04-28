@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import apartmentDb from '../models/appartment.model.js';
 import { validationResult } from 'express-validator';
+import orderModel from '../models/order.model.js';
 
 
 //add apartment
@@ -102,13 +103,32 @@ export function httpGetAllApparts(req, res) {
           .catch((err) => res.status(500).json({ error: err.message }));
     }
  }
+
+//remove
+ export async function removeApartmentFromOrders(apartmentId) {
+   try {
+     const result = await orderModel.updateMany(
+       { appartment: apartmentId },
+       { $unset: { appartment: 1 } }
+     );
+     console.log(result);
+     return result;
+   } catch (err) {
+     console.error(err);
+     return null;
+   }
+ }
+
 //delete one appartment with filter
  export function httpDeleteOneAppart(req, res) {
     findOneAppartByFilter(req.params.param)
+
+
        .then((foundAppart) => {
           if (!foundAppart) {
              res.status(404).json({ error: 'Appartment not found!' });
           } else {
+            removeApartmentFromOrders(foundAppart._id)
             apartmentDb
                 .findByIdAndDelete(foundAppart._id)
                 .then((result) => {

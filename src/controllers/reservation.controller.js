@@ -608,25 +608,6 @@ export async function findOneOrderByFilter(orderFilter) {
 }
 
 function orderFormat(Order) {
-<<<<<<< HEAD
-   return {
-      id: Order._id,
-     
-      description: Order.description,
-      totalPrice: Order.totalPrice,
-      checkIn: Order.checkIn,
-      checkOut: Order.checkOut,
-      isPaied : Order.isPaied,
-      servicesFee: Order.servicesFee,
-      nightsFee: Order.nightsFee,
-      isPaied:Order.isPaied,
-      state: Order.state,
-      services: Order.services,
-      User: Order.User,
-      appartment: Order.appartment,
-      transactionId: Order.transactionId
-   };
-=======
   return {
     id: Order._id,
 
@@ -644,7 +625,6 @@ function orderFormat(Order) {
     appartment: Order.appartment,
     transactionId: Order.transactionId,
   };
->>>>>>> 532025f7c6609d96dcbcfed04c8f4eb8714cbc3d
 }
 
 export function orderListFormat(orders) {

@@ -17,6 +17,7 @@ function Login() {
   const [isLoggedin, setIsLoggedin] = useState(false);
   const [successMsg, setSuccessMsg] = useState(false);
   const [loginForm, setLoginForm] = useState(false);
+  const [isVerified,setIsVerified] = useState(false);
 
   /**CHECK FOR PASSWORD VISIBILTY */
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -57,7 +58,7 @@ function Login() {
           error.message ||
           error.toString();
         console.log(resMessage);
-        toast.error("❌ An error occured!", {
+        toast.error("❌" + resMessage, {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,
@@ -75,15 +76,17 @@ function Login() {
 
   const user = JSON.parse(localStorage.getItem("user"));
 
-  const handleLogguseedinUser = () => {};
+  
 
   useEffect(() => {
     if (!user) {
       setLoginForm(true);
       console.log("user is not logged in");
-    } else {
-      setLoginForm(false);
+    } else if (!user.isVerified){
+      setLoginForm(true);
       console.log("user is logged in");
+    }else{
+      setLoginForm(false);
     }
   }, []);
 

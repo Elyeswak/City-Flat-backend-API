@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import Rate from "../../Rate/Rate";
 import { motion } from "framer-motion";
+
 import "./luxuriouCollection.css";
 
 function LuxuriousCollection() {
@@ -23,6 +24,8 @@ function LuxuriousCollection() {
       .catch((error) => console.log(error));
   }, []);
 
+
+
   return (
     <section className="luxury__collection__page">
       <motion.div
@@ -39,7 +42,7 @@ function LuxuriousCollection() {
               {apartments.map((data) => {
                 if (data.type === "LUXURY") {
                   return (
-                    <div className="col-sm-6" key={data.id}>
+                    <div className="col-sm-4" key={data.id}>
                       {" "}
                       <div className="card">
                         <div className="card_img">

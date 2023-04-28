@@ -37,7 +37,7 @@ function PremiumCollection() {
               {apartments.map((data) => {
                 if (data.type === "PREMIUM") {
                   return (
-                    <div className="col-sm-6" key={data.id}>
+                    <div className="col-sm-4" key={data.id}>
                       {" "}
                       <div className="card">
                         <div className="card_img">

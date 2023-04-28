@@ -8,6 +8,7 @@ import Footer from "./../components/Footer/footer";
 import "./../App.css"
 
 function Homepage() {
+  
   return (
     <div className="home">
       <Navbar />

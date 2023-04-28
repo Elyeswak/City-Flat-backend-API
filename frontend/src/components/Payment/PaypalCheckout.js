@@ -7,7 +7,7 @@ function PayPalCheckout(props) {
     event.preventDefault();
     const price = props.totalPrice;
     try {
-      const response = await axios.post("http://localhost:9090/paypal/pay", {
+      const response = await axios.get("http://localhost:9090/paypal/pay", {
         price,
       });
       const { approval_url } = response.data;

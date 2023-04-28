@@ -19,31 +19,50 @@ import PaypalCheckout from "./PaypalCheckout";
 import axios from "axios";
 
 export default function Paynow() {
-const [order,setOrderData] = useState('')
+  const [order, setOrderData] = useState("");
 
   /**GET ORDER DETAILS */
-const orderID = localStorage.getItem("orderId");
-console.log(orderID)
-const user = JSON.parse(localStorage.getItem("user"));
-const token = user.token;
+  const orderID = localStorage.getItem("orderId");
+  const user = JSON.parse(localStorage.getItem("user"));
+  const token = user.token;
 
-useEffect(() => {
-  axios
-    .get(`http://localhost:9090/user/reservations/getOneOrder/${orderID}`, {
-      headers: {
-        Authorization: `Bearer ${token}`, // if authentication is required
-      },
-    })
-    .then((response) => {
-      setOrderData(response.data);
-       // handle response data
-    })
-    .catch((error) => {
-      console.log(error.response.data); // handle error
-    });
-}, []);
+  // useEffect(() => {
+  //   axios
+  //     .get(`http://localhost:9090/user/reservations/getOneOrder/${orderID}`, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`, // if authentication is required
+  //       },
+  //     })
+  //     .then((response) => {
+  //       setOrderData(response.data);
+  //       // handle response data
+  //     })
+  //     .catch((error) => {
+  //       console.log(error.response.data); // handle error
+  //     });
+  // }, []);
 
-console.log(order)
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:9090/user/reservations/getOneOrder/${orderID}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setOrderData(response.data);
+      } catch (error) {
+        console.log(error.response.data);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  console.log(order);
 
   /**DISPLAY ICONS ACCORDING TO THE SERVICES */
   const serviceIcons = {
@@ -60,7 +79,7 @@ console.log(order)
   function animateDisplay() {
     const divAnimate = document.getElementById("toAnimate");
     divAnimate && divAnimate.classList.toggle("hidden");
-    setpayMeth("")
+    setpayMeth("");
   }
 
   const [payMeth, setpayMeth] = useState("");
@@ -86,15 +105,30 @@ console.log(order)
             <div className="col payment_col">
               <div className="card__body__payment">
                 <h4>RESERVATION DETAILS</h4>
-                
+
                 <h5>
-                  FROM <strong>{moment(order.checkIn).format("DD MMMM YYYY")}</strong> TO
-                  <strong> {moment(order.checkOut).format("DD MMMM YYYY")}</strong>.
+                  FROM{" "}
+                  <strong>
+                    {moment(order.checkIn).format("DD MMMM YYYY")}
+                  </strong>{" "}
+                  TO
+                  <strong>
+                    {" "}
+                    {moment(order.checkOut).format("DD MMMM YYYY")}
+                  </strong>
+                  
                 </h5>
                 <hr />
                 <h4>SERVICES</h4>
+
                 <div className="row services">
-                  
+                  {order?.services?.map((service) => (
+                    <div className="col col-sm-2" key={service.name}>
+                      {serviceIcons[service.name]}
+                      <br />
+                      <p className="service_title">{service.name}</p>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -104,9 +138,9 @@ console.log(order)
             >
               <div className="card_infos_payment">
                 <div className="card__body">
-                  <h4></h4>
+                  <h4>{order?.appartment?.name}</h4>
                   <strong style={{ marginBottom: "7%" }}>
-                  {order.description}
+                    {order.description}
                   </strong>
                   <Rate rating={rating} onRating={(rate) => setRating(rate)} />
                   <img

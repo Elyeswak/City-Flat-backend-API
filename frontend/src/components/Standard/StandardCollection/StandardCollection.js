@@ -7,6 +7,7 @@ import Rate from "../../Rate/Rate";
 import "./StandardCollection.css";
 import { motion } from "framer-motion";
 
+
 function StandardCollection() {
   const [rating2, setRating2] = useState(0);
 
@@ -38,7 +39,7 @@ function StandardCollection() {
               {apartments.map((data) => {
                 if (data.type === "STANDARD") {
                   return (
-                    <div className="col-sm-6" key={data.id}>
+                    <div className="col-sm-4" key={data.id}>
                       {" "}
                       <div className="card">
                         <div className="card_img">

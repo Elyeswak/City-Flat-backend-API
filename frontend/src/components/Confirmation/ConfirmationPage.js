@@ -2,14 +2,18 @@ import React, { useState } from "react";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/footer";
 import Rate from "../Rate/Rate";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./ConfirmationPage.css";
 import {
   faBowlFood,
+  faBrush,
   faCar,
   faParking,
   faShirt,
   faToolbox,
   faTools,
+  faTrashArrowUp,
 } from "@fortawesome/free-solid-svg-icons";
 import { format } from "date-fns";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -43,8 +47,10 @@ function PaymentPage() {
     Maintenance: <FontAwesomeIcon icon={faTools} />,
     Parking: <FontAwesomeIcon icon={faParking} />,
     Laundry: <FontAwesomeIcon icon={faShirt} />,
+    Cleaning: <FontAwesomeIcon icon={faTrashArrowUp} />,
   };
 
+  
 
   const apartmentID = apartment.id
 
@@ -76,17 +82,51 @@ function PaymentPage() {
       .then((response) => {
         console.log("Response data:", response.data);
         // Handle success
-        navigate("/requests");
+        toast.success("Your request is sent", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setTimeout(() => {
+          navigate('/requests');
+        }, 2600);
       })
       .catch((error) => {
         console.error("Error message:", error.response.data);
         // Handle error
+        toast.error("❌ An error occured! ", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       });
   }
 
   return (
     <div className="payment_page">
       <Navbar />
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <div className="upper__space"></div>
       <div className="payment__body">
         <div className="payment__content">

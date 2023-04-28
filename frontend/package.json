@@ -31,6 +31,7 @@
     "react-date-range": "^1.4.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.7.1",
+    "react-intersection-observer": "^9.4.3",
     "react-leaflet": "^4.2.1",
     "react-multiple-select-dropdown-lite": "^2.0.6",
     "react-phone-number-input": "^3.2.19",

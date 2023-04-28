@@ -1,8 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./luxury.css";
 import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+import { useAnimation } from "framer-motion";
 
-function luxury() {
+function Luxury() {
+  const { ref, inView } = useInView();
+  const animation = useAnimation();
+  useEffect(() => {
+    if (inView) {
+      animation.start({
+        x: 0,
+        opacity: 1,
+        transition: { duration: 0.7 },
+      });
+    } else {
+      animation.start({ x: -100, opacity: 0 });
+    }
+  }, [animation, inView]);
+
   return (
     <div className="">
       <div className="luxury__page">
@@ -15,7 +31,12 @@ function luxury() {
             <div className="luxury__description">
               <div className="side__line"></div>
 
-              <div className="description__content">
+              <motion.div
+                className="description__content"
+                ref={ref}
+                initial={{ x: -100, opacity: 0 }}
+                animate={animation}
+              >
                 <div className="description__title">
                   <p>OUR LUXURIOUS COLLECTION</p>
                 </div>
@@ -38,14 +59,14 @@ function luxury() {
                     DISCOVER MORE
                   </button>
                 </a>
-              </div>
+              </motion.div>
             </div>
             <div className="description__image">
               <motion.img
-               whileHover={{ scale: 1.2 }}
-               whileTap={{ scale: 0.8 }}
-               whileInView={{ opacity: [0, 1] }}
-               transition={{ duration: 0.7 }}
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.8 }}
+                whileInView={{ opacity: [0, 1] }}
+                transition={{ duration: 0.7 }}
                 src="./bailey-alexander-pkIJXMezi_E-unsplash 1.png"
                 alt="description"
               />
@@ -57,4 +78,4 @@ function luxury() {
   );
 }
 
-export default luxury;
+export default Luxury;

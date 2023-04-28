@@ -54,7 +54,6 @@ function Signup() {
     setIsValidNumber(isValidNumber(number));
   };
 
-  
   const onChangeEmail = (e) => {
     const email = e.target.value;
     setEmail(email);
@@ -181,8 +180,15 @@ function Signup() {
         }
       );
       console.log(response.data);
-      
-      navigate("/login");
+      const userString = localStorage.getItem("user");
+      if (userString) {
+        const user = JSON.parse(userString);
+        user.isVerified = true; // Update the isVerified attribute
+        const updatedString = JSON.stringify(user);
+        localStorage.setItem("user", updatedString);
+      }
+
+      navigate("/");
     } catch (error) {
       toast.error("❌ Invalid code!", {
         position: "top-right",

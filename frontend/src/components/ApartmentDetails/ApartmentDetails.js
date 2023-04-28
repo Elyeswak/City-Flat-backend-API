@@ -30,7 +30,7 @@ function ApartmentDetails() {
   const [apartment, setApartment] = useState(null);
   const [services, setServices] = useState([]);
   const [bookedDates, setBookedDates] = useState([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+ // const [isLoggedIn, setIsLoggedIn] = useState(false)
   const navigate = useNavigate();
 
   /**AXIOS REQUESTS */
@@ -200,7 +200,9 @@ function ApartmentDetails() {
           progress: undefined,
           theme: "light",
         });
-        navigate("/login");
+        setTimeout(() => {
+          navigate('/login');
+        }, 2600);
       }
     } else {
       navigate("/login");

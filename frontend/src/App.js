@@ -1,5 +1,5 @@
 import "./App.css";
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Login from "./components/Auth/login/login";
@@ -25,8 +25,12 @@ import TestPage from './testpage/testpage'
 import ServicesDash from "./components/AdminDashboard/ServicesDash";
 import Notifications from "./components/Notifications/Notifications";
 import FilteringResults from "./components/Home/FilteringPage/FilteringResults";
+import ForgetPassword from "./components/Auth/forget-password/ForgetPassword";
+import ResetPassword from "./components/Auth/reset-password/ResetPassword";
 
 function App() {
+  const [filteredData, setFilteredData] = useState([]);
+
   return (
     <div className="App">
       <BrowserRouter>
@@ -45,9 +49,11 @@ function App() {
           <Route path="/help" element={<ContactUs/>} />
           <Route path="/account" element={<AccountPage />} />
           <Route path="/notifications" element={<Notifications/>} />
-          <Route path="/results" element={<FilteringResults/>} />
+          <Route path="/results" element={<FilteringResults/>} filteredData={filteredData}/>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/forget-password" element={<ForgetPassword/>} />
+          <Route path="/reset-password" element={<ResetPassword/>} />
           <Route path="/admndash" element={<AdminDash />} />
           <Route path="/ordersdash" element={<OrdersDash />} />
           <Route path="/appartdash" element={<AppartmentDash />} />

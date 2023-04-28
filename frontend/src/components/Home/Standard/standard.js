@@ -1,8 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./standard.css";
 import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+import { useAnimation } from "framer-motion";
 
-function standard() {
+function Standard() {
+
+  const { ref, inView } = useInView();
+  const animation = useAnimation();
+  useEffect(() => {
+    if (inView) {
+      animation.start({
+        x: 0,
+        opacity: 1,
+        transition: { duration: 0.7 },
+      });
+    } else {
+      animation.start({ x: -100, opacity: 0 });
+    }
+  }, [animation, inView]);
+
   return (
     <div className="">
       <div className="standard__page">
@@ -15,7 +32,10 @@ function standard() {
             <div className="standard__description">
               <div className="side__line"></div>
 
-              <div className="description__content">
+              <motion.div className="description__content"
+              ref={ref}
+              initial={{ x: -100, opacity: 0 }}
+              animate={animation}>
                 <div className="description__title">
                   <p>OUR STANDARD COLLECTION</p>
                 </div>
@@ -39,7 +59,7 @@ function standard() {
                     DISCOVER MORE
                   </button>
                 </a>
-              </div>
+              </motion.div>
             </div>
 
             <div className="description__image">
@@ -59,4 +79,4 @@ function standard() {
   );
 }
 
-export default standard;
+export default Standard;

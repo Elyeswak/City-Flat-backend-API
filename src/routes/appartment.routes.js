@@ -11,14 +11,22 @@ import {
  } from '../controllers/apartment.controller.js';
 
 
+ import { getAllReviews,createReview,deleteReview,updateReview } from '../controllers/review.controller.js';
+import { ensureUser } from '../middlewares/authorization-handler.js';
+
  /** Defining the router */
 const appartmentRouter = express.Router();
 
 
 appartmentRouter
-.route('/getAllAppart')
-   .get(httpGetAllApparts);
+.route('/reviews/:param')
+   .post(ensureUser,createReview)
+   .get(ensureUser,getAllReviews)
+   .delete(ensureUser,deleteReview);
 
+appartmentRouter
+.route('/getAllAppart')
+   .post(httpGetAllApparts);
 
 
 

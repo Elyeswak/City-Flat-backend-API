@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "./UsersDash.css";
 import axios from "axios";
@@ -17,47 +17,6 @@ export default function AllUserssRow({ index, usr, allUsers, setAllUsers }) {
     setVerified(isChecked);
     console.log(verified);
   };
-  //   const handleUserUpdate = (e) => {
-  //     e.preventDefault();
-  //     const updatedUser = {
-  //       isVerified: verified,
-  //     };
-  //     axios
-  //       .put(`http://localhost:9090/user/${usr.id}`, updatedUser, {
-  //         headers: {
-  //           Authorization: `Bearer ${userToken}`,
-  //         },
-  //       })
-  //       .then((res) => {
-  //         console.log(updatedUser);
-  //         toast.success("✅ User account state modified successfully", {
-  //           position: "top-right",
-  //           autoClose: 2000,
-  //           hideProgressBar: false,
-  //           closeOnClick: true,
-  //           pauseOnHover: true,
-  //           draggable: true,
-  //           progress: undefined,
-  //           theme: "light",
-  //         });
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //         toast.error(
-  //           "❌ An error occured while trying to modify User account state!",
-  //           {
-  //             position: "top-right",
-  //             autoClose: 2000,
-  //             hideProgressBar: false,
-  //             closeOnClick: true,
-  //             pauseOnHover: true,
-  //             draggable: true,
-  //             progress: undefined,
-  //             theme: "light",
-  //           }
-  //         );
-  //       });
-  //   };
 
   const handleUserUpdate = (e) => {
     e.preventDefault();
@@ -77,7 +36,7 @@ export default function AllUserssRow({ index, usr, allUsers, setAllUsers }) {
           a.id === usr.id ? response.data : a
         );
         setAllUsers(updatedUsers);
-        // console.log("updatedUser", updatedUser);
+        console.log("updatedUser", updatedUser);
 
         toast.success("✅ Changes saved successfully", {
           position: "top-right",
@@ -158,6 +117,13 @@ export default function AllUserssRow({ index, usr, allUsers, setAllUsers }) {
       }, 3000);
     }
   };
+  useEffect(() => {
+    setName(usr.name);
+    setEmail(usr.email);
+    setNumber(usr.number);
+    setVerified(usr.isVerified);
+  }, [usr]);
+
   return (
     <>
       <ToastContainer
@@ -177,8 +143,8 @@ export default function AllUserssRow({ index, usr, allUsers, setAllUsers }) {
         <td>{name}</td>
         <td>{email}</td>
         <td>{number}</td>
-        <td>
-          <div>
+        <td className="d-flex justify-content-center">
+          <div className="me-2">
             <button
               className="btn btn-danger rounded-pill"
               onClick={() => handleDelete(usr.id)}
@@ -186,8 +152,6 @@ export default function AllUserssRow({ index, usr, allUsers, setAllUsers }) {
               {confirmingDelete ? "Confirm" : "Delete"}
             </button>
           </div>
-        </td>
-        <td>
           <form
             onSubmit={handleUserUpdate}
             className="d-flex align-items-center"

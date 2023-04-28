@@ -9,7 +9,6 @@ import axios from "axios";
 export default function UsersDash() {
   const [filterValue, setFilterValue] = useState("");
   const [allUsers, setAllUsers] = useState([]);
-  let filteredAllUsers = [];
 
   useEffect(() => {
     axios
@@ -36,6 +35,7 @@ export default function UsersDash() {
     const filter = event.target.value;
     setFilterValue(filter);
   };
+  let filteredAllUsers = [];
   if (filterValue === "") {
     filteredAllUsers = allUsers;
   }
@@ -97,18 +97,26 @@ export default function UsersDash() {
               <th>Name</th>
               <th>Email</th>
               <th>Number</th>
-              <th colSpan={2}>User action</th>
+              <th>User action</th>
             </tr>
           </thead>
           <tbody>
-            {filteredAllUsers.map((usr, index) => (
-              <AllUserssRow
-                usr={usr}
-                index={index}
-                allUsers={filteredAllUsers}
-                setAllUsers={setAllUsers}
-              />
-            ))}
+            {filteredAllUsers &&
+              filteredAllUsers.map((usr, index) => {
+                console.log("user to be displayed",usr); // <-- add this line
+                console.log("all users array", allUsers)
+                console.log("filtered users", filteredAllUsers)
+                console.log("filter value",filterValue)
+                return (
+                  <AllUserssRow
+                    usr={usr}
+                    key={index + 1}
+                    index={index}
+                    allUsers={allUsers}
+                    setAllUsers={setAllUsers}
+                  />
+                );
+              })}
           </tbody>
         </Table>
       </div>

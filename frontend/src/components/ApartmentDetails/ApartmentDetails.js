@@ -20,7 +20,6 @@ import MultiSelect from "react-multiple-select-dropdown-lite";
 import { Carousel } from "react-bootstrap";
 
 function ApartmentDetails() {
-  const [rating, setRating] = useState(0);
 
   /*
    * GETTING ID from the URL
@@ -64,6 +63,8 @@ function ApartmentDetails() {
         console.log(error);
       });
   }, [params.id]);
+
+  const [rating, setRating] = useState(3);
 
   /*
    * SELECT SERVICES
@@ -263,7 +264,7 @@ function ApartmentDetails() {
                         <h5>{apartment.location}</h5>
                         <Rate
                           rating={rating}
-                          onRating={(rate) => setRating(rate)}
+                          onRating={(rate) => setRating(rating)}
                         />
                       </div>
                     </div>
@@ -274,14 +275,14 @@ function ApartmentDetails() {
 
                     <div className="row">
                       <div className="col"></div>
-                      <div className="col justify-content-end">
+                      {/* <div className="col justify-content-end">
                         <button
                           type="button"
                           className="btn btn-light custom-button "
                         >
                           Show reviews
                         </button>
-                      </div>
+                      </div> */}
                     </div>
                     <div className="services_details">
                       <div className="row" style={{ padding: "2%" }}>

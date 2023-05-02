@@ -108,7 +108,7 @@ export default function AllAppartments() {
         <Table responsive className="text-light">
           <thead>
             <tr>
-              <th colSpan={4}></th>
+              <th colSpan={5}></th>
               <th colSpan={1}>
                 <Form.Control
                   type="number"
@@ -144,6 +144,7 @@ export default function AllAppartments() {
               <th>Location</th>
               <th>Type</th>
               <th>Rooms</th>
+              <th>Rating</th>
               <th>Appartment action</th>
             </tr>
           </thead>

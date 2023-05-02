@@ -15,43 +15,40 @@ function Navbar() {
   const [openMenu, setOpenMenu] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
-  const [isAdmin, setIsAdmin] = useState(true);
+  let menuRef = useRef();
+
   const [User, setUser] = useState(null);
-  const [locUser, setLocUser] = useState(null);
-
+  const [isAdmin, setIsAdmin] = useState(false);
   useEffect(() => {
-    const user = localStorage.getItem("user");
-    setLocUser(JSON.parse(user));
-  }, []);
-
-  useEffect(() => {
-    if (locUser) {
-      setIsLoggedIn(true);
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
     }
-  }, [locUser])
-  
-
-  // console.log("local user", locUser)
-
+  }, []);
   useEffect(() => {
-    if (!locUser) return; // check if locUser is undefined and return if it is
-    const fetchUser = async () => {
+    async function getUser() {
       try {
         const response = await axios.get(
-          `http://localhost:9090/user/${locUser.id}`
+          `http://localhost:9090/user/${User.id}`
         );
-        setUser(response.data);
+        const user = response.data;
+        console.log("returned user from db", user);
+        setIsAdmin(user.role === "ADMIN");
       } catch (error) {
         console.error(error);
       }
-    };
-  
-    fetchUser();
-  }, [locUser]);
-  
-  // console.log("fetched user", User)
-  // console.log("is logged in", isLoggedIn)
-  let menuRef = useRef();
+    }
+
+    if (User) {
+      getUser();
+    }
+  }, [User]);
+
+  useEffect(() => {
+    if (User) {
+      setIsLoggedIn(true);
+    }
+  }, [User]);
 
   useEffect(() => {
     let handler = (e) => {

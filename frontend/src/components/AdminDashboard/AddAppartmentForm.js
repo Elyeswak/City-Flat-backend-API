@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import validator from "validator";
+import "./AppartmentDash.css";
 
 function AddApartmentForm({ onSubmit }) {
   const [name, setName] = useState("");
@@ -11,7 +12,7 @@ function AddApartmentForm({ onSubmit }) {
   const [location, setLocation] = useState("");
   const [rooms, setRooms] = useState("");
   const [type, setType] = useState("");
-  const [img, setImg] = useState("");
+  const [img, setImg] = useState([{ id: 1, value: "" }]);
   const [services, setSrv] = useState([]);
   const [foundSrv, setFoundSrv] = useState([]);
   const [nameError, setNameError] = useState("");
@@ -21,6 +22,7 @@ function AddApartmentForm({ onSubmit }) {
   const [typeError, setTypeError] = useState("");
   const [roomsError, setRoomsError] = useState("");
   const [imageError, setImageError] = useState("");
+  const [numOfImgFields, setNumOfImgFields] = useState(1);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -300,6 +302,12 @@ function AddApartmentForm({ onSubmit }) {
       });
   }, []);
 
+  const handleAddImageField = () => {
+    setImg((prevImg) => [...prevImg, { id: prevImg.length + 1, value: "" }]);
+  };
+
+  console.log(img)
+
   return (
     <Form
       onSubmit={handleSubmit}
@@ -428,16 +436,37 @@ function AddApartmentForm({ onSubmit }) {
         </div>
       </Form.Group>
 
-      <Form.Group controlId="formImg" className="col-12">
-        <Form.Label>Image</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Enter image of appartment"
-          value={img}
-          onChange={(event) => setImg(event.target.value)}
-        />
+      <Form.Group controlId="image">
+        <Form.Label>Images</Form.Label>
+        {img.map((imgField, index) => (
+          <div key={imgField.id} className="d-flex mb-2 align-items-center">
+            <Form.Control
+              type="url"
+              placeholder={`Image URL ${index + 1}`}
+              value={imgField.value}
+              onChange={(e) =>
+                setImg((prevImg) =>
+                  prevImg.map((item) =>
+                    item.id === imgField.id
+                      ? { ...item, value: e.target.value }
+                      : item
+                  )
+                )
+              }
+            />
+            {index === img.length - 1 && (
+              <Button
+                variant="success"
+                onClick={handleAddImageField}
+                className="ms-2"
+              >
+                +
+              </Button>
+            )}
+          </div>
+        ))}
         {imageError && (
-          <div className="invalid-feedback d-block">{imageError}</div>
+          <Form.Text className="text-danger">{imageError}</Form.Text>
         )}
       </Form.Group>
 

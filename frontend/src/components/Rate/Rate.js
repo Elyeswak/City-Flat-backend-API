@@ -4,17 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 
 function Rate({ count, rating, color, onRating }) {
-  const [hoverRating, setHoverRating] = useState(0);
-  const getColor = index => {
-    if (hoverRating >= index) {
-        return color.filled;
-    }else if (!hoverRating && rating >= index)
-    {
-        return color.filled;
-    }
-
-    return color.unfilled
-  };
   const starRating = useMemo(() => {
     return Array(count)
       .fill(0)
@@ -24,13 +13,17 @@ function Rate({ count, rating, color, onRating }) {
           key={idx}
           className="cursor-pointer fa-1x"
           icon={faStar}
-          style = {{color: getColor(idx) , marginBottom:"2vh"}}
+          style={{
+            color:
+              rating >= idx
+                ? color.filled
+                : color.unfilled,
+            marginBottom: "2vh",
+          }}
           onClick={() => onRating(idx)}
-          onMouseEnter={() => setHoverRating(idx)}
-          onMouseLeave={() => setHoverRating(0)}
         />
       ));
-  }, [count, rating,hoverRating]);
+  }, [count, rating]);
 
   return <div>{starRating}</div>;
 }
@@ -38,7 +31,7 @@ function Rate({ count, rating, color, onRating }) {
 Rate.propTypes = {
   count: propTypes.number,
   rating: propTypes.number,
-  onChange: propTypes.func,
+  onRating: propTypes.func,
   color: {
     filled: propTypes.string,
     unfilled: propTypes.string,

@@ -5,13 +5,34 @@ import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as faHeartEmpty } from "@fortawesome/free-regular-svg-icons";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import './FilteringResults.css'
 
 function FilteringResults({ filteredData }) {
-  const [rating, setRating] = useState(0);
+  const [likedApartments, setLikedApartments] = useState([]);
+  const [ratings, setRatings] = useState(Array(filteredData.length).fill(0));
+
+  const handleLikeClick = (id) => {
+    setLikedApartments((prevLikedApartments) =>
+      prevLikedApartments.includes(id)
+        ? prevLikedApartments.filter((prevId) => prevId !== id)
+        : [...prevLikedApartments, id]
+    );
+  };
+
+  const handleRatingChange = (index, rating) => {
+    setRatings((prevRatings) =>
+      prevRatings.map((prevRating, i) => (i === index ? rating : prevRating))
+    );
+  };
 
   if (!filteredData) {
-    return <></>;
+    return (
+      <>
+        <strong>No data found</strong>
+      </>
+    );
   }
+
   return (
     <section className="luxury__collection__page">
       <motion.div
@@ -21,7 +42,9 @@ function FilteringResults({ filteredData }) {
         <div className="luxury_collection_items_content">
           <div className="luxury_collection_content">
             <div className="row">
-              {filteredData.map((data) => {
+              {filteredData.map((data, index) => {
+                const isLiked = likedApartments.includes(data.id);
+                const rating = ratings[index];
                 return (
                   <div className="col-sm-4" key={data.id}>
                     {" "}
@@ -41,10 +64,10 @@ function FilteringResults({ filteredData }) {
                       </div>
                       <div className="card_body">
                         <div className="like_button_luxury">
-                          <button>
+                          <button onClick={() => handleLikeClick(data.id)}>
                             <FontAwesomeIcon
-                              icon={faHeart}
-                              className="highlight_luxury"
+                              icon={isLiked ? faHeart : faHeartEmpty}
+                              className={`heart-icon ${isLiked ? "liked" : ""}`}
                             />
                           </button>
                         </div>
@@ -53,7 +76,9 @@ function FilteringResults({ filteredData }) {
                           <p>{data.description}</p>
                           <Rate
                             rating={rating}
-                            onRating={(rate) => setRating(rate)}
+                            onRating={(rate) =>
+                              handleRatingChange(index, rate)
+                            }
                           />
                           <strong>{data.pricePerNight}€</strong>
                         </div>
@@ -69,5 +94,7 @@ function FilteringResults({ filteredData }) {
     </section>
   );
 }
+
+
 
 export default FilteringResults;

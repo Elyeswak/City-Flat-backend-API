@@ -64,8 +64,6 @@ function ApartmentDetails() {
       });
   }, [params.id]);
 
-  const [rating, setRating] = useState(3);
-
   /*
    * SELECT SERVICES
    */
@@ -263,8 +261,8 @@ function ApartmentDetails() {
                         <h1>{apartment.name}</h1>
                         <h5>{apartment.location}</h5>
                         <Rate
-                          rating={rating}
-                          onRating={(rate) => setRating(rating)}
+                          rating={apartment.rating}
+                          onRating={apartment.rating}
                         />
                       </div>
                     </div>

@@ -217,7 +217,7 @@ export default function AllAppartmentsRow({
         <td>{appart.location}</td>
         <td>{appart.type}</td>
         <td>{appart.rooms}</td>
-        <td>{appart.rooms}</td>
+        <td>{appart.rating}</td>
         <td className="d-flex justify-content-center">
           <div className="me-2">
             <button

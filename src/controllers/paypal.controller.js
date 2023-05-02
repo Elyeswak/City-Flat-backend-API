@@ -61,12 +61,12 @@ export async function  PaypalPay( amount , req,res ){
                 "name": "item",
                 "sku": "item",
                 "price": amount,
-                "currency": "eur",
+                "currency": "EUR",
                 "quantity": 1
             }]
         },
         "amount": {
-            "currency": "eur",
+            "currency": "EUR",
             "total": amount
         },
         "description": "This is the payment description."

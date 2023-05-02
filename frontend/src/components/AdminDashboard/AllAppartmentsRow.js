@@ -19,7 +19,7 @@ export default function AllAppartmentsRow({
   const [location, setLocation] = useState(appart.location);
   const [rooms, setRooms] = useState(appart.rooms);
   const [type, setType] = useState(appart.type);
-  const [img, setImg] = useState("");
+  const [img, setImg] = useState([{ id: 1, value: "" }]);
   const [services, setSrv] = useState(appart.services);
   const [foundSrv, setFoundSrv] = useState([]);
   const [nameError, setNameError] = useState("");
@@ -29,6 +29,8 @@ export default function AllAppartmentsRow({
   const [typeError, setTypeError] = useState("");
   const [roomsError, setRoomsError] = useState("");
   const [imageError, setImageError] = useState("");
+  const [imgCount, setImgCount] = useState(1);
+  const [imgUrls, setImgUrls] = useState([]);
 
   useEffect(() => {
     // fetch all services
@@ -126,7 +128,7 @@ export default function AllAppartmentsRow({
       rooms: rooms,
       type: type,
       services: services,
-      img: img,
+      img: img[0].value,
     };
 
     axios
@@ -173,6 +175,19 @@ export default function AllAppartmentsRow({
         });
       });
   };
+
+  const handleAddImageField = () => {
+    setImg((prevImg) => [...prevImg, { id: imgCount + 1, value: "" }]);
+    setImgCount(imgCount + 1);
+  };
+
+  const handleRemoveImageField = (index) => {
+    setImg((prevImg) => prevImg.filter((item, i) => i !== index));
+  };
+
+  useEffect(() => {
+    setImgUrls(img.map((image) => image.value));
+  }, [img]);
 
   return (
     <>
@@ -357,16 +372,49 @@ export default function AllAppartmentsRow({
               </div>
             </Form.Group>
 
-            <Form.Group controlId="formImg" className="col-12">
-              <Form.Label>Image</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter image of appartment"
-                value={img}
-                onChange={(event) => setImg(event.target.value)}
-              />
+            <Form.Group controlId="image">
+              <Form.Label>Images</Form.Label>
+              {img.map((imgField, index) => (
+                <div
+                  key={imgField.id}
+                  className="d-flex mb-2 align-items-center"
+                >
+                  <Form.Control
+                    type="url"
+                    placeholder={`Image URL ${index + 1}`}
+                    value={imgField.value}
+                    onChange={(e) =>
+                      setImg((prevImg) =>
+                        prevImg.map((item) =>
+                          item.id === imgField.id
+                            ? { ...item, value: e.target.value }
+                            : item
+                        )
+                      )
+                    }
+                  />
+                  {index !== 0 && (
+                    <Button
+                      variant="danger"
+                      onClick={() => handleRemoveImageField(index)}
+                      className="ms-2"
+                    >
+                      X
+                    </Button>
+                  )}
+                  {index === img.length - 1 && (
+                    <Button
+                      variant="success"
+                      onClick={handleAddImageField}
+                      className="ms-2"
+                    >
+                      +
+                    </Button>
+                  )}
+                </div>
+              ))}
               {imageError && (
-                <div className="invalid-feedback d-block">{imageError}</div>
+                <Form.Text className="text-danger">{imageError}</Form.Text>
               )}
             </Form.Group>
 

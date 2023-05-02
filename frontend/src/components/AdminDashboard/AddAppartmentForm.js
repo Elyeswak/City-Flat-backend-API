@@ -13,6 +13,7 @@ function AddApartmentForm({ onSubmit }) {
   const [rooms, setRooms] = useState("");
   const [type, setType] = useState("");
   const [img, setImg] = useState([{ id: 1, value: "" }]);
+  const [imgUrls, setImgUrls] = useState([]);
   const [services, setSrv] = useState([]);
   const [foundSrv, setFoundSrv] = useState([]);
   const [nameError, setNameError] = useState("");
@@ -22,7 +23,7 @@ function AddApartmentForm({ onSubmit }) {
   const [typeError, setTypeError] = useState("");
   const [roomsError, setRoomsError] = useState("");
   const [imageError, setImageError] = useState("");
-  const [numOfImgFields, setNumOfImgFields] = useState(1);
+  const [imgCount, setImgCount] = useState(1);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -265,7 +266,7 @@ function AddApartmentForm({ onSubmit }) {
       type,
       rooms,
       services,
-      img,
+      img: imgUrls[0],
     });
 
     // if (postSuccess) {
@@ -303,10 +304,18 @@ function AddApartmentForm({ onSubmit }) {
   }, []);
 
   const handleAddImageField = () => {
-    setImg((prevImg) => [...prevImg, { id: prevImg.length + 1, value: "" }]);
+    setImg((prevImg) => [...prevImg, { id: imgCount + 1, value: "" }]);
+    setImgCount(imgCount + 1);
   };
 
-  console.log(img)
+  const handleRemoveImageField = (index) => {
+    setImg((prevImg) => prevImg.filter((item, i) => i !== index));
+  };
+
+  useEffect(() => {
+    setImgUrls(img.map((image) => image.value));
+  }, [img]);
+  console.log("img urls", imgUrls);
 
   return (
     <Form
@@ -454,6 +463,15 @@ function AddApartmentForm({ onSubmit }) {
                 )
               }
             />
+            {index !== 0 && (
+              <Button
+                variant="danger"
+                onClick={() => handleRemoveImageField(index)}
+                className="ms-2"
+              >
+                X
+              </Button>
+            )}
             {index === img.length - 1 && (
               <Button
                 variant="success"

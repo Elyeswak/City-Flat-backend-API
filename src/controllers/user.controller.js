@@ -219,7 +219,66 @@ export function httpResetPassword(req, res) {
     })
     .catch((err) => res.status(500).json({ error: err.message }));
 }
+//************wishlist******************/
+export async function addToWishlist(req, res) {
+   const errors = validationResult(req);
+   if (!errors.isEmpty()) {
+     return res.status(400).json({ errors: errors.array() });
+   }
+ 
+   try {
+      const userId = req.user.id;
+    const  apartmentId = req.params.param;
+ 
+     const user = await userDb.findById(userId);
+     if (!user) {
+       return res.status(404).json({ message: 'User not found' });
+     }
+ 
+     if (user.wishlist.includes(apartmentId)) {
+       return res.status(400).json({ message: 'Apartment already in wishlist' });
+     }
+ 
+     user.wishlist.push(apartmentId);
+     await user.save();
+ 
+     res.status(200).json({ message: 'Apartment added to wishlist successfully' });
+   } catch (error) {
+     res.status(500).json({ error: error.message });
+   }
+ }
+//remove from wishlist 
+ export function httpRemoveFromWishlist(req, res) {
+   if (!validationResult(req).isEmpty()) {
+     res.status(400).json({ error: validationResult(req).array() });
+   } else {
+     const  apartmentId  = req.params.param;
+     const userId = req.user.id;
+     userDb.findByIdAndUpdate(userId, { $pull: { wishlist: apartmentId } })
+    .then(() => {
+      res.status(200).json({ message: "Apartment removed from wishlist successfully!" });
+    })
+    .catch((err) => res.status(500).json({ error: err.message }));
+   }
+ }
 
+ //****list user wish list ******//
+
+ export function httpListWishlist(req, res) {
+   const userId = req.user.id;
+   userDb.findById(userId)
+     .populate('wishlist')
+     .then((user) => {
+       if (!user) {
+         res.status(404).json({ error: 'User not found' });
+       } else {
+         const apartments = user.wishlist;
+         res.status(200).json(apartments);
+       }
+     })
+     .catch((err) => res.status(500).json({ error: err.message }));
+ }
+ 
 /**
  * A helper function that gets the user
  * with a given id or username or email
@@ -284,20 +343,22 @@ export function usersListFormat(users) {
   return foundUsers;
 }
 export function userFormat(user) {
-  return {
-    id: user._id,
-    name: user.name,
-    email: user.email,
-    password: user.password,
-    number: user.number,
-    address: user.address,
-    isVerified: user.isVerified,
-    birthdate: user.birthdate,
-    role: user.role,
-    isVerified: user.isVerified,
-    img: user.img,
-    reservations: user.reservations,
-    googleID: user.googleID,
-    stripeCustomerID: user.stripeCustomerID,
-  };
+   return {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      password: user.password,
+      number: user.number,
+      address: user.address,
+      isVerified: user.isVerified,
+      birthdate: user.birthdate,
+      role: user.role,
+      isVerified: user.isVerified,
+      img: user.img,
+      reservations:user.reservations,
+      googleID:user.googleID,
+      stripeCustomerID:user.stripeCustomerID,
+      wishlist:user.wishlist
+
+   };
 }

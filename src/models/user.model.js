@@ -60,9 +60,6 @@ const UserSchema = new Schema(
       required: false,
       minlength: 6,
       maxlength: 50,
-     
-      
-      
     },
     isVerified: { type: Boolean, default: false },
     verifCode: String,
@@ -94,6 +91,7 @@ const UserSchema = new Schema(
       required: false,
     },
     reservations: [{ type: Schema.Types.ObjectId, ref: "Reservation", required: false }],
+    wishlist: [{ type: Schema.Types.ObjectId, ref: "Appartment", required: false }],
   },
   { timestamps: true }
 );

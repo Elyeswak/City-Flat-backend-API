@@ -47,6 +47,11 @@ const AppartmentSchema = new Schema(
           message: 'Rooms should only contain digits',
         },
       },
+      rating:{
+        type: Number,
+        required: false,
+
+      },
       reviews: [{ type: Schema.Types.ObjectId, ref: 'Review', required: false }],
       services: [{ type: Schema.Types.ObjectId, ref: 'Service', required: false }],
       img: {

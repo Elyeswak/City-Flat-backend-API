@@ -13,14 +13,14 @@ export default function AllAppartmentsRow({
 }) {
   const [confirmingDelete, setConfirmingDelete] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
-  const [name, setName] = useState(appart.name);
-  const [description, setDescription] = useState(appart.description);
-  const [pricePerNight, setPricePerNight] = useState(appart.pricePerNight);
-  const [location, setLocation] = useState(appart.location);
-  const [rooms, setRooms] = useState(appart.rooms);
-  const [type, setType] = useState(appart.type);
-  const [img, setImg] = useState([{ id: 1, value: "" }]);
-  const [services, setSrv] = useState(appart.services);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [pricePerNight, setPricePerNight] = useState(0);
+  const [location, setLocation] = useState("");
+  const [rooms, setRooms] = useState(0);
+  const [type, setType] = useState("");
+  const [img, setImg] = useState([]);
+  const [services, setSrv] = useState([]);
   const [foundSrv, setFoundSrv] = useState([]);
   const [nameError, setNameError] = useState("");
   const [priceError, setPriceError] = useState("");
@@ -188,6 +188,17 @@ export default function AllAppartmentsRow({
   useEffect(() => {
     setImgUrls(img.map((image) => image.value));
   }, [img]);
+
+  useEffect(() => {
+    setName(appart.name);
+    setDescription(appart.description);
+    setPricePerNight(appart.pricePerNight);
+    setLocation(appart.location);
+    setRooms(appart.rooms);
+    setType(appart.type);
+    setImg(appart.img);
+    setSrv(appart.services);
+  }, [appart]);
 
   return (
     <>

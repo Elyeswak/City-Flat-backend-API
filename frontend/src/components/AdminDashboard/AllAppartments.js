@@ -13,7 +13,7 @@ export default function AllAppartments() {
   const [selectedAppartment, setSelectedAppartment] = useState(null);
   const [filterValue, setFilterValue] = useState("");
   let filteredAllAppartments = [];
-  let filteredAppartments = [];
+  let filteredAppartments = filteredAllAppartments;
   const [value, setValue] = useState(0);
   // getAllAppart
   useEffect(() => {

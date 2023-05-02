@@ -393,7 +393,7 @@ export default function AllAppartmentsRow({
                   <Form.Control
                     type="url"
                     placeholder={`Image URL ${index + 1}`}
-                    value={imgField.value}
+                    value={imgField}
                     onChange={(e) =>
                       setImg((prevImg) =>
                         prevImg.map((item) =>

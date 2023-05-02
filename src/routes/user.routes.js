@@ -13,6 +13,9 @@ import {
    httpUpdateOneUser,
    httpGetAllUsers,
    httpResetPassword,
+   addToWishlist,
+   httpRemoveFromWishlist,
+   httpListWishlist
 } from '../controllers/user.controller.js';
 
 import {
@@ -189,6 +192,19 @@ userRouter
 userRouter
    .route('/reservations/getOne/:param')
    .get(ensureUser, httpGetOneReservation);
+
+//********************wishlist**********************//
+   userRouter
+   .route('/wishlist/:param')
+   
+   .put(ensureUser, addToWishlist);
+   
+   userRouter
+   .route('/wishlist/list')
+   .get(ensureUser,httpListWishlist);
+   userRouter
+   .route('/rmwishlist/:param')
+   .put(ensureUser, httpRemoveFromWishlist);
 
 userRouter
    .route('/reservations/getOneOrder/:param')

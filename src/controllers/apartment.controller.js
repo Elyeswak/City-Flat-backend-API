@@ -271,6 +271,7 @@ export function appartFormat(appartment) {
        services: appartment.services,
        type: appartment.type,
        img: appartment.img,
+       rating:appartment.rating,
  
     };
  }

@@ -266,7 +266,7 @@ function AddApartmentForm({ onSubmit }) {
       type,
       rooms,
       services,
-      img: imgUrls[0],
+      img: imgUrls,
     });
 
     // if (postSuccess) {

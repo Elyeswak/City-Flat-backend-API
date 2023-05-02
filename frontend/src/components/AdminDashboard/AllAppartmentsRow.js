@@ -128,7 +128,7 @@ export default function AllAppartmentsRow({
       rooms: rooms,
       type: type,
       services: services,
-      img: img[0].value,
+      img: imgUrls,
     };
 
     axios

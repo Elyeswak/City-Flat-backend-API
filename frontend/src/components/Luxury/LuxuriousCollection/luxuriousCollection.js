@@ -52,7 +52,8 @@ function LuxuriousCollection() {
                               whileTap={{ scale: 0.8 }}
                               whileInView={{ opacity: [0, 1] }}
                               transition={{ duration: 0.7 }}
-                              src="./luxury-apartments.png"
+                              src={data.img[0]}
+                              height={250}
                               className="card-img-top"
                               alt="..."
                             />

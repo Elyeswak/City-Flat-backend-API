@@ -62,7 +62,7 @@ function Sidebar(props) {
               <Link to={"/ordersdash"}>Orders</Link>
             </li>
             <li className="fs-5">
-              <Link to={"/appartdash"}>Appartments</Link>
+              <Link to={"/appartdash"}>Apartments</Link>
             </li>
             <li className="fs-5">
               <Link to={"/servdash"}>Services</Link>

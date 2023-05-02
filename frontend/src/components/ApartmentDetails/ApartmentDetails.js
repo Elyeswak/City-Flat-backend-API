@@ -17,6 +17,7 @@ import L from "leaflet";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import MultiSelect from "react-multiple-select-dropdown-lite";
+import { Carousel } from "react-bootstrap";
 
 function ApartmentDetails() {
   const [rating, setRating] = useState(0);
@@ -30,13 +31,12 @@ function ApartmentDetails() {
   const [apartment, setApartment] = useState(null);
   const [services, setServices] = useState([]);
   const [bookedDates, setBookedDates] = useState([]);
- // const [isLoggedIn, setIsLoggedIn] = useState(false)
+  // const [isLoggedIn, setIsLoggedIn] = useState(false)
   const navigate = useNavigate();
 
   /**AXIOS REQUESTS */
 
   useEffect(() => {
-    
     // fetch apartment data
     axios
       .get(`http://localhost:9090/user/appartments/${params.id}`)
@@ -58,14 +58,12 @@ function ApartmentDetails() {
         Promise.all([bookedDatesPromise]).then((res) => {
           const [bookedDates] = res;
           setBookedDates(bookedDates);
-          
         });
       })
       .catch((error) => {
         console.log(error);
       });
   }, [params.id]);
-
 
   /*
    * SELECT SERVICES
@@ -74,7 +72,7 @@ function ApartmentDetails() {
   const [value, setvalue] = useState("");
   const handleOnchange = (val) => {
     setvalue(val);
-    console.log("selected service",val);
+    console.log("selected service", val);
   };
 
   // console.log("services", services)
@@ -201,7 +199,7 @@ function ApartmentDetails() {
           theme: "light",
         });
         setTimeout(() => {
-          navigate('/login');
+          navigate("/login");
         }, 2600);
       }
     } else {
@@ -249,7 +247,13 @@ function ApartmentDetails() {
             <div className="row">
               <div className="details__app">
                 <div className="app_carousel">
-                  <CarouselPage />
+                  <Carousel>
+                    {apartment.img.map((image) => (
+                      <Carousel.Item>
+                        <img src={image} className="img-fluid" />
+                      </Carousel.Item>
+                    ))}
+                  </Carousel>
                 </div>
                 <div className="app_details">
                   <div>

@@ -71,15 +71,11 @@ export default function AppartmentDetailsModal(props) {
           </div>
           {/* <img src={appartment.img} className="img-fluid" /> */}
           <Carousel>
-            <Carousel.Item>
-              <img src={appartment.img} className="img-fluid" />
-            </Carousel.Item>
-            <Carousel.Item>
-              <img src={appartment.img} className="img-fluid" />
-            </Carousel.Item>
-            <Carousel.Item>
-              <img src={appartment.img} className="img-fluid" />
-            </Carousel.Item>
+            {appartment.img.map((image) => (
+              <Carousel.Item>
+                <img src={image} className="img-fluid" />
+              </Carousel.Item>
+            ))}
           </Carousel>
         </div>
       </Modal.Body>

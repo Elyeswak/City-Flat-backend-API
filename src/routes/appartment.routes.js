@@ -9,10 +9,27 @@ import {
   httpDeleteOneAppart,
 } from "../controllers/apartment.controller.js";
 
-/** Defining the router */
+
+ import { getAllReviews,createReview,deleteReview,updateReview } from '../controllers/review.controller.js';
+import { ensureUser } from '../middlewares/authorization-handler.js';
+
+ /** Defining the router */
 const appartmentRouter = express.Router();
 
 appartmentRouter.route("/getAllAppart").get(httpGetAllApparts);
 appartmentRouter.route("/addAppart").post(httpAddAppartment);
+
+appartmentRouter
+.route('/reviews/:param')
+   .post(ensureUser,createReview)
+   .get(ensureUser,getAllReviews)
+   .delete(ensureUser,deleteReview);
+
+appartmentRouter
+.route('/getAllAppart')
+   .post(httpGetAllApparts);
+
+
+
 
 export { appartmentRouter };

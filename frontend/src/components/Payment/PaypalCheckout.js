@@ -3,12 +3,20 @@ import axios from "axios";
 import './paypal.css'
 
 function PayPalCheckout(props) {
+
+ 
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const price = props.totalPrice;
+    const price = props.totalPrice.toFixed(2);
+    console.log(price)
+
+
     try {
-      const response = await axios.get("http://localhost:9090/paypal/pay", {
-        price,
+      const amount = 240.00;
+      const formattedAmount = amount.toFixed(2); // convert to string with two decimal places
+      const response = await axios.post("http://localhost:9090/paypal/pay", {
+        price: formattedAmount,
       });
       const { approval_url } = response.data;
       window.location.replace(approval_url);

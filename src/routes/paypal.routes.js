@@ -94,7 +94,7 @@ paypalRouter
                     if (payment.links[index].rel === 'approval_url') {
 
 
-                        res.redirect(payment.links[index].href);
+                        res.send({approval_url : payment.links[index].href});
                         console.log("Redirected to approval_url successfully");
 
                     }

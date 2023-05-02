@@ -47,12 +47,26 @@ const AppartmentSchema = new Schema(
           message: 'Rooms should only contain digits',
         },
       },
-      reviews: [{ type: Schema.Types.Array, ref: 'Review', required: false }],
+      reviews: [{ type: Schema.Types.ObjectId, ref: 'Review', required: false }],
       services: [{ type: Schema.Types.ObjectId, ref: 'Service', required: false }],
       img: {
-        type: String,
+        type: [String],
         required: false,
-      },
+        validate: {
+          validator: function(arr) {
+            if (!Array.isArray(arr)) {
+              return false;
+            }
+            for (let i = 0; i < arr.length; i++) {
+              if (!/\.(jpg|jpeg|png|gif)$/i.test(arr[i])) {
+                return false;
+              }
+            }
+            return true;
+          },
+          message: 'Each element in the img array must be a valid image file'
+        }
+      }
     },
     { timestamps: true }
   );

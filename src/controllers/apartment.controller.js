@@ -44,7 +44,7 @@ export function httpAddAppartment(req, res) {
 //get all appartments
 export function httpGetAllApparts(req, res) {
     apartmentDb
-       .find()
+       .find().populate("reviews")
        .then((apparts) => {
           res.status(200).json(appartsListFormat(apparts));
        })
@@ -235,7 +235,7 @@ export async function findOneAppartByFilter(appartFilter) {
 
             { name: appartFilter },
         ],
-    }).populate('services');
+    }).populate('services').populate('reviews');
 }
 //appartment object format to get all appartments
 export function appartsListFormat(apparts) {

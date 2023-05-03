@@ -17,10 +17,10 @@ import L from "leaflet";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import MultiSelect from "react-multiple-select-dropdown-lite";
-import { Carousel } from "react-bootstrap";
+import { Card, Carousel } from "react-bootstrap";
+import { Modal, Button, Form, Col } from "react-bootstrap";
 
 function ApartmentDetails() {
-
   /*
    * GETTING ID from the URL
    */
@@ -32,6 +32,26 @@ function ApartmentDetails() {
   const [bookedDates, setBookedDates] = useState([]);
   // const [isLoggedIn, setIsLoggedIn] = useState(false)
   const navigate = useNavigate();
+
+  //user info
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userId = user.id;
+  const userToken = user.token;
+
+  const [formData, setFormData] = useState({
+    rating: "",
+    review: "",
+  });
+
+  const [errors, setErrors] = useState({
+    rating: "",
+    review: "",
+  });
+
+  const [showModal, setShowModal] = useState(false);
+
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
 
   /**AXIOS REQUESTS */
 
@@ -221,6 +241,44 @@ function ApartmentDetails() {
     return dates;
   });
 
+  //submit the review
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    // Check for validation errors
+    if (!formData.rating || !formData.review) {
+      setErrors({
+        rating: formData.rating ? "" : "Please enter a rating",
+        review: formData.review ? "" : "Please enter a review",
+      });
+      return;
+    }
+    // Submit the form
+    try {
+      const response = await axios.post(
+        `http://localhost:9090/appartments/reviews/${apartment.id}`,
+        {
+          User: user.id,
+          UserName: user.name,
+          Rating: formData.rating,
+          Description: formData.review,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${userToken}`, // authentication is required
+          },
+        }
+      );
+      const review = response.data;
+      console.log(review);
+      setFormData({
+        rating: "",
+        review: "",
+      });
+      handleCloseModal();
+    } catch (error) {}
+  };
+
+
   /**RENDERING COMPONENT*/
   return (
     <>
@@ -260,10 +318,7 @@ function ApartmentDetails() {
                       <div className="app_title">
                         <h1>{apartment.name}</h1>
                         <h5>{apartment.location}</h5>
-                        <Rate
-                          rating={apartment.rating}
-                          onRating={apartment.rating}
-                        />
+                        <Rate rating={apartment.rating} />
                       </div>
                     </div>
 
@@ -379,6 +434,91 @@ function ApartmentDetails() {
                   </div>
                 </div>
               </div>
+            </div>
+            <div className="review-cards-cont">
+              <Card className="text-dark review-card">
+                <Card.Body>
+                  <Card.Title className="border-bottom border-5 fs-3">
+                    Write a review
+                  </Card.Title>
+                  <div className="row px-5">
+                    <div className="col-4 d-flex justify-content-center align-items-center">
+                      <img
+                        src="https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg"
+                        className="img-fluid img-thumbnail rounded-circle w-25"
+                      />
+                      <p className="ms-3 fs-4">{user.name}</p>
+                    </div>
+                    <div className="col-8">
+                      <Form onSubmit={handleSubmit}>
+                        <Form.Group controlId="rating" className="mb-2">
+                          <Form.Control
+                            type="number"
+                            min="0"
+                            max="5"
+                            placeholder="Rating (0-5)"
+                            value={formData.rating}
+                            onChange={(event) =>
+                              setFormData({
+                                ...formData,
+                                rating: event.target.value,
+                              })
+                            }
+                            isInvalid={!!errors.rating}
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {errors.rating}
+                          </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group controlId="review" className="mb-2">
+                          <Form.Control
+                            as="textarea"
+                            rows={3}
+                            minLength={20}
+                            maxLength={250}
+                            placeholder="Review"
+                            value={formData.review}
+                            onChange={(event) =>
+                              setFormData({
+                                ...formData,
+                                review: event.target.value,
+                              })
+                            }
+                            isInvalid={!!errors.review}
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {errors.review}
+                          </Form.Control.Feedback>
+                        </Form.Group>
+                        <Button type="submit" className="w-50 add-review-btn">
+                          Submit
+                        </Button>
+                      </Form>
+                    </div>
+                  </div>
+                </Card.Body>
+              </Card>
+              {apartment.reviews.map((review) => (
+                <Card key={review._id} className="text-dark review-card">
+                  <Card.Body>
+                    <Card.Title className="row">
+                      <div className="col text-start d-flex justify-content-center align-items-center">
+                        <img
+                          src="https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg"
+                          className="img-fluid img-thumbnail rounded-circle w-25"
+                        />
+                        <p className="col text-start ms-3 fs-4">
+                          {review.UserName ? review.UserName : "Unknown User"}
+                        </p>
+                      </div>
+                      <p className="col text-end">Rating: {review.Rating}⭐</p>
+                    </Card.Title>
+                    <Card.Text className="text-start">
+                      {review.Description}
+                    </Card.Text>
+                  </Card.Body>
+                </Card>
+              ))}
             </div>
           </div>
           <Footer />

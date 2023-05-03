@@ -26,6 +26,7 @@ appartmentRouter.route("/addAppart").post(httpAddAppartment);
 appartmentRouter
   .route("/reviews/:param")
   .post(ensureUser, createReview)
+  .put(ensureUser, updateReview)
   .get(ensureUser, getAllReviews)
   .delete(ensureUser, deleteReview);
 

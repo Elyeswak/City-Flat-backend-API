@@ -40,15 +40,13 @@ export async function updateReview(req, res) {
       req.params.param,
       { Rating: req.body.rating, Description: req.body.description },
       { new: true }
-    )
-      .then((result) => {
-        res
-          .status(201)
-          .json({ message: "review updated successfuly !", object: result });
-      })
-      .catch((err) => res.status(500).json({ error: err.message }));
+    );
+    console.log(req);
+    res
+      .status(200)
+      .json({ message: "Review updated successfully!", object: updatedReview });
   } catch (error) {
-    throw new Error(error.message);
+    res.status(500).json({ error: error.message });
   }
 }
 

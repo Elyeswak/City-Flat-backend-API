@@ -223,6 +223,12 @@
   background-color: #d7d7d7 !important;
 }
 
+.drop-toggle {
+  position: absolute !important;
+  bottom: 5px;
+  right: 5px;
+}
+
 .add-review-btn {
   background-color: #000 !important;
   outline: none !important;

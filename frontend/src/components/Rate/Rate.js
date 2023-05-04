@@ -3,7 +3,7 @@ import propTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 
-function Rate({ count, rating, color, onRating }) {
+function Rate({ count, rating, color }) {
   const starRating = useMemo(() => {
     return Array(count)
       .fill(0)
@@ -20,7 +20,6 @@ function Rate({ count, rating, color, onRating }) {
                 : color.unfilled,
             marginBottom: "2vh",
           }}
-          onClick={() => onRating(idx)}
         />
       ));
   }, [count, rating]);
@@ -31,7 +30,6 @@ function Rate({ count, rating, color, onRating }) {
 Rate.propTypes = {
   count: propTypes.number,
   rating: propTypes.number,
-  onRating: propTypes.func,
   color: {
     filled: propTypes.string,
     unfilled: propTypes.string,

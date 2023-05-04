@@ -13,14 +13,15 @@ export default function AllAppartmentsRow({
 }) {
   const [confirmingDelete, setConfirmingDelete] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
-  const [name, setName] = useState(appart.name);
-  const [description, setDescription] = useState(appart.description);
-  const [pricePerNight, setPricePerNight] = useState(appart.pricePerNight);
-  const [location, setLocation] = useState(appart.location);
-  const [rooms, setRooms] = useState(appart.rooms);
-  const [type, setType] = useState(appart.type);
-  const [img, setImg] = useState([{ id: 1, value: "" }]);
-  const [services, setSrv] = useState(appart.services);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [pricePerNight, setPricePerNight] = useState(0);
+  const [location, setLocation] = useState("");
+  const [rooms, setRooms] = useState(0);
+  const [rating, setRating] = useState(0);
+  const [type, setType] = useState("");
+  const [img, setImg] = useState([""]);
+  const [services, setSrv] = useState([]);
   const [foundSrv, setFoundSrv] = useState([]);
   const [nameError, setNameError] = useState("");
   const [priceError, setPriceError] = useState("");
@@ -29,8 +30,6 @@ export default function AllAppartmentsRow({
   const [typeError, setTypeError] = useState("");
   const [roomsError, setRoomsError] = useState("");
   const [imageError, setImageError] = useState("");
-  const [imgCount, setImgCount] = useState(1);
-  const [imgUrls, setImgUrls] = useState([]);
 
   useEffect(() => {
     // fetch all services
@@ -126,9 +125,10 @@ export default function AllAppartmentsRow({
       pricePerNight: pricePerNight,
       location: location,
       rooms: rooms,
+      rating: rating,
       type: type,
       services: services,
-      img: imgUrls,
+      img,
     };
 
     axios
@@ -177,8 +177,7 @@ export default function AllAppartmentsRow({
   };
 
   const handleAddImageField = () => {
-    setImg((prevImg) => [...prevImg, { id: imgCount + 1, value: "" }]);
-    setImgCount(imgCount + 1);
+    setImg((prevImg) => [...prevImg, ""]);
   };
 
   const handleRemoveImageField = (index) => {
@@ -186,8 +185,16 @@ export default function AllAppartmentsRow({
   };
 
   useEffect(() => {
-    setImgUrls(img.map((image) => image.value));
-  }, [img]);
+    setName(appart.name);
+    setDescription(appart.description);
+    setPricePerNight(appart.pricePerNight);
+    setLocation(appart.location);
+    setRooms(appart.rooms);
+    setRating(appart.rating);
+    setType(appart.type);
+    setImg(appart.img);
+    setSrv(appart.services);
+  }, [appart]);
 
   return (
     <>
@@ -210,6 +217,7 @@ export default function AllAppartmentsRow({
         <td>{appart.location}</td>
         <td>{appart.type}</td>
         <td>{appart.rooms}</td>
+        <td>{appart.rating}</td>
         <td className="d-flex justify-content-center">
           <div className="me-2">
             <button
@@ -332,18 +340,32 @@ export default function AllAppartmentsRow({
               )}
             </Form.Group>
 
-            <Form.Group controlId="formRooms" className="col-6">
-              <Form.Label>Rooms</Form.Label>
-              <Form.Control
-                type="number"
-                placeholder="Enter number of rooms"
-                value={rooms}
-                onChange={(event) => setRooms(event.target.value)}
-              />
-              {roomsError && (
-                <div className="invalid-feedback d-block">{roomsError}</div>
-              )}
-            </Form.Group>
+            <div className="col-6">
+              <Form.Group controlId="formRooms">
+                <Form.Label>Rooms</Form.Label>
+                <Form.Control
+                  type="number"
+                  placeholder="Enter number of rooms"
+                  value={rooms}
+                  onChange={(event) => setRooms(event.target.value)}
+                />
+                {roomsError && (
+                  <div className="invalid-feedback d-block">{roomsError}</div>
+                )}
+              </Form.Group>
+              <Form.Group controlId="formRate">
+                <Form.Label>Rating</Form.Label>
+                <Form.Control
+                  type="number"
+                  placeholder="Enter Rating bypassing value"
+                  value={rating}
+                  onChange={(event) => setRating(event.target.value)}
+                />
+                {roomsError && (
+                  <div className="invalid-feedback d-block">{roomsError}</div>
+                )}
+              </Form.Group>
+            </div>
 
             <Form.Group controlId="services" className="col-6">
               <Form.Label>Services</Form.Label>
@@ -375,20 +397,15 @@ export default function AllAppartmentsRow({
             <Form.Group controlId="image">
               <Form.Label>Images</Form.Label>
               {img.map((imgField, index) => (
-                <div
-                  key={imgField.id}
-                  className="d-flex mb-2 align-items-center"
-                >
+                <div key={index} className="d-flex mb-2 align-items-center">
                   <Form.Control
                     type="url"
                     placeholder={`Image URL ${index + 1}`}
-                    value={imgField.value}
+                    value={imgField}
                     onChange={(e) =>
                       setImg((prevImg) =>
-                        prevImg.map((item) =>
-                          item.id === imgField.id
-                            ? { ...item, value: e.target.value }
-                            : item
+                        prevImg.map((item, i) =>
+                          i === index ? e.target.value : item
                         )
                       )
                     }

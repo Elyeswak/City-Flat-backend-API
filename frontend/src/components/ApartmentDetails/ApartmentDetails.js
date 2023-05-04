@@ -17,11 +17,11 @@ import L from "leaflet";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import MultiSelect from "react-multiple-select-dropdown-lite";
-import { Carousel } from "react-bootstrap";
+import { Card, Carousel, Dropdown } from "react-bootstrap";
+import { Modal, Button, Form, Col } from "react-bootstrap";
+import moment from "moment";
 
 function ApartmentDetails() {
-  const [rating, setRating] = useState(0);
-
   /*
    * GETTING ID from the URL
    */
@@ -31,8 +31,34 @@ function ApartmentDetails() {
   const [apartment, setApartment] = useState(null);
   const [services, setServices] = useState([]);
   const [bookedDates, setBookedDates] = useState([]);
+  const [allReviews, setAllReviews] = useState([]);
   // const [isLoggedIn, setIsLoggedIn] = useState(false)
   const navigate = useNavigate();
+
+  //user info
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userId = user.id;
+  const userToken = user.token;
+
+  const [formData, setFormData] = useState({
+    rating: "",
+    review: "",
+  });
+
+  const [errors, setErrors] = useState({
+    rating: "",
+    review: "",
+  });
+
+  const [showModal, setShowModal] = useState(false);
+
+  const handleShowModal = () => {
+    setShowModal(true);
+  };
+  const handleCloseModal = () => setShowModal(false);
+
+  const [editedRating, setEditedRating] = useState(0);
+  const [editedReview, setEditedReview] = useState("");
 
   /**AXIOS REQUESTS */
 
@@ -44,6 +70,7 @@ function ApartmentDetails() {
         setApartment(response.data);
         localStorage.setItem("apartment", JSON.stringify(response.data));
         setServices(response.data.services);
+        setAllReviews(response.data.reviews);
 
         // fetch booked dates data
         const bookedDatesPromise = axios
@@ -222,6 +249,83 @@ function ApartmentDetails() {
     return dates;
   });
 
+  //submit the review
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    // Check for validation errors
+    if (!formData.rating || !formData.review) {
+      setErrors({
+        rating: formData.rating ? "" : "Please enter a rating",
+        review: formData.review ? "" : "Please enter a review",
+      });
+      return;
+    }
+    // Submit the form
+    try {
+      const response = await axios.post(
+        `http://localhost:9090/appartments/reviews/${apartment.id}`,
+        {
+          User: user.id,
+          UserName: user.name,
+          Rating: formData.rating,
+          Description: formData.review,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${userToken}`, // authentication is required
+          },
+        }
+      );
+      const review = response.data;
+      console.log(review);
+      setFormData({
+        rating: "",
+        review: "",
+      });
+    } catch (error) {}
+  };
+
+  const handleDeleteReview = async (ID) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:9090/appartments/reviews/${ID}`,
+        {
+          headers: {
+            Authorization: `Bearer ${userToken}`, // authentication is required
+          },
+        }
+      );
+      const ResData = response.data;
+      console.log(ResData);
+      // Remove the deleted review from the allReviews array
+      const updatedReviews = allReviews.filter((review) => review._id !== ID);
+      setAllReviews(updatedReviews);
+    } catch (error) {}
+  };
+
+  const handleEditReview = async (ID) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:9090/appartments/reviews/${ID}`,
+        {
+          Rating: editedRating,
+          Description: editedReview,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${userToken}`, // authentication is required
+          },
+        }
+      );
+      const ResData = response.data;
+      console.log(ResData);
+      handleCloseModal();
+    } catch (error) {}
+  };
+
+  console.log(editedRating);
+  console.log(editedReview);
+
   /**RENDERING COMPONENT*/
   return (
     <>
@@ -261,10 +365,7 @@ function ApartmentDetails() {
                       <div className="app_title">
                         <h1>{apartment.name}</h1>
                         <h5>{apartment.location}</h5>
-                        <Rate
-                          rating={rating}
-                          onRating={(rate) => setRating(rate)}
-                        />
+                        <Rate rating={apartment.rating} />
                       </div>
                     </div>
 
@@ -274,14 +375,14 @@ function ApartmentDetails() {
 
                     <div className="row">
                       <div className="col"></div>
-                      <div className="col justify-content-end">
+                      {/* <div className="col justify-content-end">
                         <button
                           type="button"
                           className="btn btn-light custom-button "
                         >
                           Show reviews
                         </button>
-                      </div>
+                      </div> */}
                     </div>
                     <div className="services_details">
                       <div className="row" style={{ padding: "2%" }}>
@@ -380,6 +481,176 @@ function ApartmentDetails() {
                   </div>
                 </div>
               </div>
+            </div>
+            <div className="review-cards-cont">
+              <Card className="text-dark review-card">
+                <Card.Body>
+                  <Card.Title className="border-bottom border-5 fs-3">
+                    Write a review
+                  </Card.Title>
+                  <div className="row px-5">
+                    <div className="col-4 d-flex justify-content-center align-items-center">
+                      <img
+                        src="https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg"
+                        className="img-fluid img-thumbnail rounded-circle w-25"
+                      />
+                      <p className="ms-3 fs-4">{user.name}</p>
+                    </div>
+                    <div className="col-8">
+                      <Form onSubmit={handleSubmit}>
+                        <Form.Group controlId="rating" className="mb-2">
+                          <Form.Control
+                            type="number"
+                            min="0"
+                            max="5"
+                            placeholder="Rating (0-5)"
+                            value={formData.rating}
+                            onChange={(event) =>
+                              setFormData({
+                                ...formData,
+                                rating: event.target.value,
+                              })
+                            }
+                            isInvalid={!!errors.rating}
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {errors.rating}
+                          </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group controlId="review" className="mb-2">
+                          <Form.Control
+                            as="textarea"
+                            rows={3}
+                            minLength={20}
+                            maxLength={250}
+                            placeholder="Review"
+                            value={formData.review}
+                            onChange={(event) =>
+                              setFormData({
+                                ...formData,
+                                review: event.target.value,
+                              })
+                            }
+                            isInvalid={!!errors.review}
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {errors.review}
+                          </Form.Control.Feedback>
+                        </Form.Group>
+                        <Button type="submit" className="w-50 add-review-btn">
+                          Submit
+                        </Button>
+                      </Form>
+                    </div>
+                  </div>
+                </Card.Body>
+              </Card>
+              {allReviews.map((review) => (
+                <>
+                  <Card key={review._id} className="text-dark review-card">
+                    <Card.Body>
+                      <Card.Title className="row">
+                        <div className="col text-start d-flex justify-content-center align-items-center">
+                          <img
+                            src="https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg"
+                            className="img-fluid img-thumbnail rounded-circle w-25"
+                          />
+                          <p className="col text-start ms-3 fs-4">
+                            {review.UserName ? review.UserName : "Unknown User"}
+                          </p>
+                        </div>
+                        <p className="col text-end">
+                          Rating: {review.Rating}⭐
+                        </p>
+                      </Card.Title>
+                      <Card.Text>
+                        <div className="row mb-3">
+                          <p className="col-10 text-start">
+                            {review.Description}
+                          </p>
+                          <p className="col-2 text-end">
+                            {moment(review.createdDate).format("DD MMMM YYYY")}
+                            <br />
+                            {moment(review.createdDate).format("h:mm A")}
+                          </p>
+                        </div>
+                        <Dropdown className="drop-toggle">
+                          <Dropdown.Toggle
+                            variant="success"
+                            id="dropdown-basic"
+                          ></Dropdown.Toggle>
+
+                          <Dropdown.Menu>
+                            <Dropdown.Item>
+                              <button
+                                className="btn btn-link text-primary"
+                                onClick={() => {
+                                  handleShowModal();
+                                }}
+                              >
+                                Edit
+                              </button>
+                            </Dropdown.Item>
+                            <Dropdown.Item>
+                              <button
+                                className="btn btn-link text-danger"
+                                onClick={() => {
+                                  handleDeleteReview(review._id);
+                                }}
+                              >
+                                Delete
+                              </button>
+                            </Dropdown.Item>
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      </Card.Text>
+                    </Card.Body>
+                  </Card>
+                  <Modal show={showModal} onHide={handleCloseModal}>
+                    <Modal.Header closeButton>
+                      <Modal.Title>Write a review</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                      <Form
+                        onSubmit={() => {
+                          handleEditReview(review._id);
+                        }}
+                      >
+                        <Form.Group controlId="editRating">
+                          <Form.Label>Rating (0-5)</Form.Label>
+                          <Form.Control
+                            type="number"
+                            min="0"
+                            max="5"
+                            value={editedRating}
+                            onChange={(e) => setEditedRating(e.target.value)}
+                            isInvalid={!!errors.rating}
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {errors.rating}
+                          </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group controlId="editReview">
+                          <Form.Label>Review (20-250 characters)</Form.Label>
+                          <Form.Control
+                            as="textarea"
+                            rows={3}
+                            minLength={20}
+                            maxLength={250}
+                            value={editedReview}
+                            onChange={(e) => setEditedReview(e.target.value)}
+                            isInvalid={!!errors.review}
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {errors.review}
+                          </Form.Control.Feedback>
+                        </Form.Group>
+                        <Button type="submit">Submit</Button>
+                      </Form>
+                    </Modal.Body>
+                  </Modal>
+                </>
+              ))}
             </div>
           </div>
           <Footer />

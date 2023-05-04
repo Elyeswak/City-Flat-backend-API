@@ -10,10 +10,10 @@ function AddApartmentForm({ onSubmit }) {
   const [description, setDescription] = useState("");
   const [pricePerNight, setPricePerNight] = useState("");
   const [location, setLocation] = useState("");
-  const [rooms, setRooms] = useState("");
+  const [rooms, setRooms] = useState(0);
+  const [rating, setRating] = useState(0);
   const [type, setType] = useState("");
-  const [img, setImg] = useState([{ id: 1, value: "" }]);
-  const [imgUrls, setImgUrls] = useState([]);
+  const [img, setImg] = useState([""]);
   const [services, setSrv] = useState([]);
   const [foundSrv, setFoundSrv] = useState([]);
   const [nameError, setNameError] = useState("");
@@ -265,8 +265,9 @@ function AddApartmentForm({ onSubmit }) {
       location,
       type,
       rooms,
+      rating,
       services,
-      img: imgUrls,
+      img,
     });
 
     // if (postSuccess) {
@@ -304,18 +305,12 @@ function AddApartmentForm({ onSubmit }) {
   }, []);
 
   const handleAddImageField = () => {
-    setImg((prevImg) => [...prevImg, { id: imgCount + 1, value: "" }]);
-    setImgCount(imgCount + 1);
+    setImg((prevImg) => [...prevImg, ""]);
   };
 
   const handleRemoveImageField = (index) => {
     setImg((prevImg) => prevImg.filter((item, i) => i !== index));
   };
-
-  useEffect(() => {
-    setImgUrls(img.map((image) => image.value));
-  }, [img]);
-  console.log("img urls", imgUrls);
 
   return (
     <Form
@@ -448,17 +443,15 @@ function AddApartmentForm({ onSubmit }) {
       <Form.Group controlId="image">
         <Form.Label>Images</Form.Label>
         {img.map((imgField, index) => (
-          <div key={imgField.id} className="d-flex mb-2 align-items-center">
+          <div key={index} className="d-flex mb-2 align-items-center">
             <Form.Control
               type="url"
               placeholder={`Image URL ${index + 1}`}
-              value={imgField.value}
+              value={imgField}
               onChange={(e) =>
                 setImg((prevImg) =>
-                  prevImg.map((item) =>
-                    item.id === imgField.id
-                      ? { ...item, value: e.target.value }
-                      : item
+                  prevImg.map((item, i) =>
+                    i === index ? e.target.value : item
                   )
                 )
               }

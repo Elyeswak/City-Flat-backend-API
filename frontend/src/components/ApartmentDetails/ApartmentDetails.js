@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/footer";
-import CarouselPage from "../../utils/Carousel";
 import Rate from "../Rate/Rate";
 import "./ApartmentDetails.css";
 import "react-date-range/dist/styles.css"; // main css file
@@ -12,13 +10,13 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { DateRange } from "react-date-range";
 import { format } from "date-fns";
-import { MapContainer, TileLayer, useMap, Popup, Marker } from "react-leaflet";
+import { MapContainer, TileLayer, Popup, Marker } from "react-leaflet";
 import L from "leaflet";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import MultiSelect from "react-multiple-select-dropdown-lite";
 import { Card, Carousel, Dropdown } from "react-bootstrap";
-import { Modal, Button, Form, Col } from "react-bootstrap";
+import { Modal, Button, Form } from "react-bootstrap";
 import moment from "moment";
 
 function ApartmentDetails() {
@@ -32,8 +30,7 @@ function ApartmentDetails() {
   const [services, setServices] = useState([]);
   const [bookedDates, setBookedDates] = useState([]);
   const [allReviews, setAllReviews] = useState([]);
-  const [numOfRatings, setNumOfRatings] = useState(0);
-  const [sumOfRatings, setSumOfRatings] = useState(0);
+  const [rate, setRate] = useState(0);
   // const [isLoggedIn, setIsLoggedIn] = useState(false)
   const navigate = useNavigate();
 
@@ -73,8 +70,6 @@ function ApartmentDetails() {
         localStorage.setItem("apartment", JSON.stringify(response.data));
         setServices(response.data.services);
         setAllReviews(response.data.reviews);
-        setNumOfRatings(response.data.numOfRatings);
-        setSumOfRatings(response.data.sumOfRatings);
 
         // fetch booked dates data
         const bookedDatesPromise = axios
@@ -109,7 +104,17 @@ function ApartmentDetails() {
       .catch(() => {
         console.log("error"); // handle error
       });
+    getRate();
   }, [formData]);
+
+  const getRate = () => {
+    axios
+      .get(`http://localhost:9090/user/appartments/${params.id}`)
+      .then((response) => {
+        setRate(response.data.rating);
+      });
+    console.log("current rate", rate);
+  };
 
   /*
    * SELECT SERVICES
@@ -301,22 +306,61 @@ function ApartmentDetails() {
         rating: "",
         review: "",
       });
+      getRate();
     } catch (error) {}
   };
 
-  const getRatingsData = () => {
-    axios
-      .get(`http://localhost:9090/user/appartments/${params.id}`)
-      .then((response) => {
-        setNumOfRatings(response.data.numOfRatings);
-        setSumOfRatings(response.data.sumOfRatings);
-      });
-  };
+  // const handleDeleteReview = async (ID, rating) => {
+  //   const numOfRatings = apartment.numOfRatings;
+  //   const sumOfRatings = apartment.sumOfRatings;
+  //   try {
+  //     // Send delete request and log response data
+  //     const { data } = await axios.delete(
+  //       `http://localhost:9090/appartments/reviews/${ID}`,
+  //       {
+  //         headers: { Authorization: `Bearer ${userToken}` },
+  //       }
+  //     );
+  //     // Update the reviews array and ratings data
+  //     const updatedReviews = await Promise.all(
+  //       allReviews.map(async (review) => {
+  //         if (review._id === ID) {
+  //           await axios.put(
+  //             `http://localhost:9090/appartments/updateRate/${params.id}`,
+  //             {
+  //               sumOfRatings: sumOfRatings - rating,
+  //               numOfRatings: numOfRatings - 1,
+  //             },
+  //             {
+  //               headers: { Authorization: `Bearer ${userToken}` },
+  //             }
+  //           );
+  //           return null; // exclude the deleted review from the updated array
+  //         }
+  //         return review;
+  //       })
+  //     );
+  //     const filteredReviews = updatedReviews.filter(
+  //       (review) => review !== null
+  //     );
+  //     setAllReviews(filteredReviews);
+  //     getRate();
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   const handleDeleteReview = async (ID, rating) => {
+    const numOfRatings = apartment.numOfRatings;
+    const sumOfRatings = apartment.sumOfRatings;
     try {
       const response = await axios.delete(
         `http://localhost:9090/appartments/reviews/${ID}`,
+        {
+          sumOfRatings: sumOfRatings - rating,
+          numOfRatings: numOfRatings - 1,
+          appartmentId: apartment?.id,
+        },
         {
           headers: {
             Authorization: `Bearer ${userToken}`, // authentication is required
@@ -328,26 +372,8 @@ function ApartmentDetails() {
       // Remove the deleted review from the allReviews array
       const updatedReviews = allReviews.filter((review) => review._id !== ID);
       setAllReviews(updatedReviews);
-      getRatingsData();
-      const response1 = await axios.put(
-        `http://localhost:9090/appartments/reviews/${apartment.id}`,
-        {
-          sumOfRatings: sumOfRatings - rating,
-          numOfRatings: numOfRatings - 1,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${userToken}`, // authentication is required
-          },
-        }
-      );
-      const ResData1 = response1.data;
-      console.log(ResData1);
-      console.log("sumOfRatings", sumOfRatings);
-      console.log("numOfRatings", numOfRatings);
     } catch (error) {}
   };
-
   const handleEditReview = async (ID) => {
     try {
       const response = await axios.put(
@@ -365,6 +391,7 @@ function ApartmentDetails() {
       const ResData = response.data;
       console.log(ResData);
       handleCloseModal();
+      getRate();
     } catch (error) {}
   };
 
@@ -407,7 +434,7 @@ function ApartmentDetails() {
                       <div className="app_title">
                         <h1>{apartment.name}</h1>
                         <h5>{apartment.location}</h5>
-                        <Rate rating={apartment.rating} />
+                        <Rate rating={rate} />
                       </div>
                     </div>
 

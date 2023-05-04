@@ -266,6 +266,8 @@ export function appartFormat(appartment) {
        type: appartment.type,
        img: appartment.img,
        rating:appartment.rating,
+       numOfRatings : appartment.numOfRatings,
+       sumOfRatings : appartment.sumOfRatings,
  
     };
  }

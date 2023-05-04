@@ -9,34 +9,31 @@ import "./StandardCollection.css";
 import { motion } from "framer-motion";
 
 function StandardCollection() {
-
-
   const [apartments, setApartments] = useState([]);
-
-
 
   useEffect(() => {
     axios
       .get("http://localhost:9090/appartments/getAllAppart")
       .then((result) => {
-        setApartments(result.data.map((apartment) => ({ ...apartment, liked: false })));
-        
+        setApartments(
+          result.data.map((apartment) => ({ ...apartment, liked: false }))
+        );
+
         // Log the data here
         console.log(result.data);
       })
       .catch((error) => console.log(error));
   }, []);
-  
 
   const handleLikeClick = (id) => {
     setApartments((prevApartments) =>
       prevApartments.map((apartment) =>
-        apartment.id === id ? { ...apartment, liked: !apartment.liked } : apartment
+        apartment.id === id
+          ? { ...apartment, liked: !apartment.liked }
+          : apartment
       )
     );
   };
-
-
 
   return (
     <section className="standard__collection__page">
@@ -76,23 +73,16 @@ function StandardCollection() {
                             <button onClick={() => handleLikeClick(data.id)}>
                               <FontAwesomeIcon
                                 icon={data.liked ? faHeart : faHeartEmpty}
-                                className={`heart-icon ${data.liked ? "liked" : ""}`}
+                                className={`heart-icon ${
+                                  data.liked ? "liked" : ""
+                                }`}
                               />
                             </button>
                           </div>
                           <div className="card_content_standard">
                             <h3>{data.name}</h3>
                             <p>{data.description}</p>
-                            <Rate
-                              rating={data.rating}
-                              onRating={(rate) =>
-                                setApartments((prevApartments) =>
-                                  prevApartments.map((apartment) =>
-                                    apartment.id === data.id ? { ...apartment, rating: rate } : apartment
-                                  )
-                                )
-                              }
-                            />
+                            <Rate rating={data.rating} />
                             <strong>{data.pricePerNight}€</strong>
                           </div>
                         </div>
@@ -108,8 +98,5 @@ function StandardCollection() {
     </section>
   );
 }
-
-
-
 
 export default StandardCollection;

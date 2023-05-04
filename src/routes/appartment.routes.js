@@ -14,6 +14,7 @@ import {
   createReview,
   deleteReview,
   updateReview,
+  updateApartmentRating,
 } from "../controllers/review.controller.js";
 import { ensureUser } from "../middlewares/authorization-handler.js";
 
@@ -27,6 +28,7 @@ appartmentRouter
   .route("/reviews/:param")
   .post(ensureUser, createReview)
   .put(ensureUser, updateReview)
+  .put(ensureUser, updateApartmentRating)
   .get(ensureUser, getAllReviews)
   .delete(ensureUser, deleteReview);
 

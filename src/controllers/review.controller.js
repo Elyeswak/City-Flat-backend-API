@@ -16,9 +16,6 @@ export async function createReview(req, res) {
     const newSumOfRatings =
       parseInt(apartment.sumOfRatings) + parseInt(req.body.Rating);
     const numberOfRatings = apartment.reviews.length + 1;
-    console.log("numberOfRatings", numberOfRatings);
-    console.log("newsumOfRatings", newSumOfRatings);
-    console.log("sumOfRatings", apartment.sumOfRatings);
     await Appartment.findByIdAndUpdate(req.params.param, {
       $push: { reviews: savedReview._id },
       sumOfRatings: newSumOfRatings,
@@ -34,6 +31,25 @@ export async function createReview(req, res) {
   }
 }
 
+export async function updateApartmentRating(req, res) {
+  console.log("trying to update the apart rating", req);
+  try {
+    const newRatingValue = Math.round(
+      req.sumOfRatings / req.numOfRatings
+    );
+    const updatedRating = await Appartment.findByIdAndUpdate(req.params.param, {
+      sumOfRatings: req.sumOfRatings,
+      numOfRatings: req.numOfRatings,
+      rating: newRatingValue,
+    });
+    res
+      .status(200)
+      .json({ message: "Rating updated successfully!", object: updatedRating });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
 export async function updateReview(req, res) {
   try {
     const updatedReview = await Review.findByIdAndUpdate(
@@ -41,7 +57,6 @@ export async function updateReview(req, res) {
       { Rating: req.body.rating, Description: req.body.description },
       { new: true }
     );
-    console.log(req);
     res
       .status(200)
       .json({ message: "Review updated successfully!", object: updatedReview });
@@ -53,6 +68,8 @@ export async function updateReview(req, res) {
 export async function deleteReview(req, res) {
   try {
     const review = await Review.findByIdAndDelete(req.params.param);
+    const apartment = await Appartment.findById(req.body.appartmentId);
+    console.log("req body", req.body);
     await Appartment.findByIdAndUpdate(req.body.appartmentId, {
       $pull: { reviews: review._id },
     })

@@ -32,6 +32,8 @@ function ApartmentDetails() {
   const [services, setServices] = useState([]);
   const [bookedDates, setBookedDates] = useState([]);
   const [allReviews, setAllReviews] = useState([]);
+  const [numOfRatings, setNumOfRatings] = useState(0);
+  const [sumOfRatings, setSumOfRatings] = useState(0);
   // const [isLoggedIn, setIsLoggedIn] = useState(false)
   const navigate = useNavigate();
 
@@ -71,6 +73,8 @@ function ApartmentDetails() {
         localStorage.setItem("apartment", JSON.stringify(response.data));
         setServices(response.data.services);
         setAllReviews(response.data.reviews);
+        setNumOfRatings(response.data.numOfRatings);
+        setSumOfRatings(response.data.sumOfRatings);
 
         // fetch booked dates data
         const bookedDatesPromise = axios
@@ -90,7 +94,22 @@ function ApartmentDetails() {
       .catch((error) => {
         console.log(error);
       });
-  }, [params.id]);
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:9090/appartments/reviews/${apartment?.id}`, {
+        headers: {
+          Authorization: `Bearer ${userToken}`, // if authentication is required
+        },
+      })
+      .then((response) => {
+        setAllReviews(response.data);
+      })
+      .catch(() => {
+        console.log("error"); // handle error
+      });
+  }, [formData]);
 
   /*
    * SELECT SERVICES
@@ -285,7 +304,16 @@ function ApartmentDetails() {
     } catch (error) {}
   };
 
-  const handleDeleteReview = async (ID) => {
+  const getRatingsData = () => {
+    axios
+      .get(`http://localhost:9090/user/appartments/${params.id}`)
+      .then((response) => {
+        setNumOfRatings(response.data.numOfRatings);
+        setSumOfRatings(response.data.sumOfRatings);
+      });
+  };
+
+  const handleDeleteReview = async (ID, rating) => {
     try {
       const response = await axios.delete(
         `http://localhost:9090/appartments/reviews/${ID}`,
@@ -300,6 +328,23 @@ function ApartmentDetails() {
       // Remove the deleted review from the allReviews array
       const updatedReviews = allReviews.filter((review) => review._id !== ID);
       setAllReviews(updatedReviews);
+      getRatingsData();
+      const response1 = await axios.put(
+        `http://localhost:9090/appartments/reviews/${apartment.id}`,
+        {
+          sumOfRatings: sumOfRatings - rating,
+          numOfRatings: numOfRatings - 1,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${userToken}`, // authentication is required
+          },
+        }
+      );
+      const ResData1 = response1.data;
+      console.log(ResData1);
+      console.log("sumOfRatings", sumOfRatings);
+      console.log("numOfRatings", numOfRatings);
     } catch (error) {}
   };
 
@@ -322,9 +367,6 @@ function ApartmentDetails() {
       handleCloseModal();
     } catch (error) {}
   };
-
-  console.log(editedRating);
-  console.log(editedReview);
 
   /**RENDERING COMPONENT*/
   return (
@@ -595,7 +637,7 @@ function ApartmentDetails() {
                               <button
                                 className="btn btn-link text-danger"
                                 onClick={() => {
-                                  handleDeleteReview(review._id);
+                                  handleDeleteReview(review._id, review.Rating);
                                 }}
                               >
                                 Delete

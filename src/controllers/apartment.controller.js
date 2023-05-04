@@ -273,5 +273,6 @@ export function appartFormat(appartment) {
        img: appartment.img,
        rating:appartment.rating,
  
+ 
     };
  }

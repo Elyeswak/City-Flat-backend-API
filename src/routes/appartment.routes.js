@@ -25,8 +25,8 @@ appartmentRouter
    .delete(ensureUser,deleteReview);
 
 appartmentRouter
-.route('/getAllAppart')
-   .post(httpGetAllApparts);
+.route('/all/getAllAppart')
+   .get(httpGetAllApparts);
 
 
 

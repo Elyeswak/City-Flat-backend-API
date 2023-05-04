@@ -13,15 +13,20 @@ function StandardCollection() {
 
   const [apartments, setApartments] = useState([]);
 
+
+
   useEffect(() => {
     axios
       .get("http://localhost:9090/appartments/getAllAppart")
       .then((result) => {
         setApartments(result.data.map((apartment) => ({ ...apartment, liked: false })));
-        console.log();
+        
+        // Log the data here
+        console.log(result.data);
       })
       .catch((error) => console.log(error));
   }, []);
+  
 
   const handleLikeClick = (id) => {
     setApartments((prevApartments) =>
@@ -30,6 +35,8 @@ function StandardCollection() {
       )
     );
   };
+
+
 
   return (
     <section className="standard__collection__page">

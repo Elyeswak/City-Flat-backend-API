@@ -15,10 +15,7 @@ export async function createReview(req, res) {
     // Update total rating and number of reviews for the apartment
     const newSumOfRatings =
       parseInt(apartment.sumOfRatings) + parseInt(req.body.Rating);
-    const numberOfRatings = apartment.reviews.length + 1;
-    console.log("numberOfRatings", numberOfRatings);
-    console.log("newsumOfRatings", newSumOfRatings);
-    console.log("sumOfRatings", apartment.sumOfRatings);
+    const numberOfRatings = apartment.numOfRatings + 1;
     await Appartment.findByIdAndUpdate(req.params.param, {
       $push: { reviews: savedReview._id },
       sumOfRatings: newSumOfRatings,
@@ -41,7 +38,6 @@ export async function updateReview(req, res) {
       { Rating: req.body.rating, Description: req.body.description },
       { new: true }
     );
-    console.log(req);
     res
       .status(200)
       .json({ message: "Review updated successfully!", object: updatedReview });
@@ -52,20 +48,36 @@ export async function updateReview(req, res) {
 
 export async function deleteReview(req, res) {
   try {
+    console.log("trying to update the apart rating", req);
+    console.log(req.body.sumOfRatings);
+    console.log(req.body.numOfRatings);
+    const newRatingValue =
+      req.body.sumOfRatings <= 0 || req.body.numOfRatings >= 0
+        ? 0
+        : Math.round(req.body.sumOfRatings / req.body.numOfRatings);
+    const updatedRating = await Appartment.findByIdAndUpdate(req.params.param, {
+      sumOfRatings: req.body.sumOfRatings,
+      numOfRatings: req.body.numOfRatings,
+      rating: newRatingValue,
+    });
+    console.log("req body", req.body);
     const review = await Review.findByIdAndDelete(req.params.param);
     await Appartment.findByIdAndUpdate(req.body.appartmentId, {
       $pull: { reviews: review._id },
     })
       .then((result) => {
-        res.status(200).json({ message: "deleted successfully ! " });
+        res
+          .status(200)
+          .json({ message: "Rating and review deleted successfully!" });
       })
       .catch((err) => {
         res.status(500).json({ message: err.message });
       });
   } catch (error) {
-    throw new Error(error.message);
+    res.status(500).json({ error: error.message });
   }
 }
+
 
 export async function getAllReviews(req, res) {
   try {

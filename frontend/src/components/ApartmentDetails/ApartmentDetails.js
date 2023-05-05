@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/footer";
-import CarouselPage from "../../utils/Carousel";
 import Rate from "../Rate/Rate";
 import "./ApartmentDetails.css";
 import "react-date-range/dist/styles.css"; // main css file
@@ -12,13 +10,13 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { DateRange } from "react-date-range";
 import { format } from "date-fns";
-import { MapContainer, TileLayer, useMap, Popup, Marker } from "react-leaflet";
+import { MapContainer, TileLayer, Popup, Marker } from "react-leaflet";
 import L from "leaflet";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import MultiSelect from "react-multiple-select-dropdown-lite";
 import { Card, Carousel, Dropdown } from "react-bootstrap";
-import { Modal, Button, Form, Col } from "react-bootstrap";
+import { Modal, Button, Form } from "react-bootstrap";
 import moment from "moment";
 
 function ApartmentDetails() {
@@ -32,6 +30,7 @@ function ApartmentDetails() {
   const [services, setServices] = useState([]);
   const [bookedDates, setBookedDates] = useState([]);
   const [allReviews, setAllReviews] = useState([]);
+  const [rate, setRate] = useState(0);
   // const [isLoggedIn, setIsLoggedIn] = useState(false)
   const navigate = useNavigate();
 
@@ -90,7 +89,32 @@ function ApartmentDetails() {
       .catch((error) => {
         console.log(error);
       });
-  }, [params.id]);
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:9090/appartments/reviews/${apartment?.id}`, {
+        headers: {
+          Authorization: `Bearer ${userToken}`, // if authentication is required
+        },
+      })
+      .then((response) => {
+        setAllReviews(response.data);
+      })
+      .catch(() => {
+        console.log("error"); // handle error
+      });
+    getRate();
+  }, [formData]);
+
+  const getRate = () => {
+    axios
+      .get(`http://localhost:9090/user/appartments/${params.id}`)
+      .then((response) => {
+        setRate(response.data.rating);
+      });
+    console.log("current rate", rate);
+  };
 
   /*
    * SELECT SERVICES
@@ -282,13 +306,61 @@ function ApartmentDetails() {
         rating: "",
         review: "",
       });
+      getRate();
     } catch (error) {}
   };
 
-  const handleDeleteReview = async (ID) => {
+  // const handleDeleteReview = async (ID, rating) => {
+  //   const numOfRatings = apartment.numOfRatings;
+  //   const sumOfRatings = apartment.sumOfRatings;
+  //   try {
+  //     // Send delete request and log response data
+  //     const { data } = await axios.delete(
+  //       `http://localhost:9090/appartments/reviews/${ID}`,
+  //       {
+  //         headers: { Authorization: `Bearer ${userToken}` },
+  //       }
+  //     );
+  //     // Update the reviews array and ratings data
+  //     const updatedReviews = await Promise.all(
+  //       allReviews.map(async (review) => {
+  //         if (review._id === ID) {
+  //           await axios.put(
+  //             `http://localhost:9090/appartments/updateRate/${params.id}`,
+  //             {
+  //               sumOfRatings: sumOfRatings - rating,
+  //               numOfRatings: numOfRatings - 1,
+  //             },
+  //             {
+  //               headers: { Authorization: `Bearer ${userToken}` },
+  //             }
+  //           );
+  //           return null; // exclude the deleted review from the updated array
+  //         }
+  //         return review;
+  //       })
+  //     );
+  //     const filteredReviews = updatedReviews.filter(
+  //       (review) => review !== null
+  //     );
+  //     setAllReviews(filteredReviews);
+  //     getRate();
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+  const handleDeleteReview = async (ID, rating) => {
+    const numOfRatings = apartment.numOfRatings;
+    const sumOfRatings = apartment.sumOfRatings;
     try {
       const response = await axios.delete(
         `http://localhost:9090/appartments/reviews/${ID}`,
+        {
+          sumOfRatings: sumOfRatings - rating,
+          numOfRatings: numOfRatings - 1,
+          appartmentId: apartment?.id,
+        },
         {
           headers: {
             Authorization: `Bearer ${userToken}`, // authentication is required
@@ -302,7 +374,6 @@ function ApartmentDetails() {
       setAllReviews(updatedReviews);
     } catch (error) {}
   };
-
   const handleEditReview = async (ID) => {
     try {
       const response = await axios.put(
@@ -320,11 +391,9 @@ function ApartmentDetails() {
       const ResData = response.data;
       console.log(ResData);
       handleCloseModal();
+      getRate();
     } catch (error) {}
   };
-
-  console.log(editedRating);
-  console.log(editedReview);
 
   /**RENDERING COMPONENT*/
   return (
@@ -365,7 +434,7 @@ function ApartmentDetails() {
                       <div className="app_title">
                         <h1>{apartment.name}</h1>
                         <h5>{apartment.location}</h5>
-                        <Rate rating={apartment.rating} />
+                        <Rate rating={rate} />
                       </div>
                     </div>
 
@@ -595,7 +664,7 @@ function ApartmentDetails() {
                               <button
                                 className="btn btn-link text-danger"
                                 onClick={() => {
-                                  handleDeleteReview(review._id);
+                                  handleDeleteReview(review._id, review.Rating);
                                 }}
                               >
                                 Delete

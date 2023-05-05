@@ -30,6 +30,7 @@ appartmentRouter
   .get(ensureUser, getAllReviews)
   .delete(ensureUser, deleteReview);
 
+
 appartmentRouter.route("/getAllAppart").post(httpGetAllApparts);
 
 export { appartmentRouter };

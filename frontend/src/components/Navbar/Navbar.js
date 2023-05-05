@@ -32,7 +32,6 @@ function Navbar() {
           `http://localhost:9090/user/${User.id}`
         );
         const user = response.data;
-        console.log("returned user from db", user);
         setIsAdmin(user.role === "ADMIN");
       } catch (error) {
         console.error(error);

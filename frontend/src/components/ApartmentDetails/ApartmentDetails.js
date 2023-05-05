@@ -349,21 +349,16 @@ function ApartmentDetails() {
   //     console.error(error);
   //   }
   // };
-
-  const handleDeleteReview = async (ID, rating) => {
-    const numOfRatings = apartment.numOfRatings;
-    const sumOfRatings = apartment.sumOfRatings;
+  const handleDeleteReview = async (ID) => {
     try {
       const response = await axios.delete(
         `http://localhost:9090/appartments/reviews/${ID}`,
         {
-          sumOfRatings: sumOfRatings - rating,
-          numOfRatings: numOfRatings - 1,
-          appartmentId: apartment?.id,
-        },
-        {
           headers: {
             Authorization: `Bearer ${userToken}`, // authentication is required
+          },
+          data: {
+            appartmentId: apartment.id,
           },
         }
       );
@@ -372,15 +367,22 @@ function ApartmentDetails() {
       // Remove the deleted review from the allReviews array
       const updatedReviews = allReviews.filter((review) => review._id !== ID);
       setAllReviews(updatedReviews);
-    } catch (error) {}
+      getRate();
+    } catch (error) {
+      console.error(error);
+    }
   };
+
   const handleEditReview = async (ID) => {
+    console.log(editedRating);
+    console.log(editedReview);
     try {
       const response = await axios.put(
         `http://localhost:9090/appartments/reviews/${ID}`,
         {
-          Rating: editedRating,
-          Description: editedReview,
+          rating: editedRating,
+          description: editedReview,
+          appartmentId: apartment.id,
         },
         {
           headers: {
@@ -391,6 +393,10 @@ function ApartmentDetails() {
       const ResData = response.data;
       console.log(ResData);
       handleCloseModal();
+      setFormData({
+        rating: "",
+        review: "",
+      });
       getRate();
     } catch (error) {}
   };
@@ -589,7 +595,7 @@ function ApartmentDetails() {
                         <Form.Group controlId="review" className="mb-2">
                           <Form.Control
                             as="textarea"
-                            rows={3}
+                            rows={2}
                             minLength={20}
                             maxLength={250}
                             placeholder="Review"
@@ -664,7 +670,7 @@ function ApartmentDetails() {
                               <button
                                 className="btn btn-link text-danger"
                                 onClick={() => {
-                                  handleDeleteReview(review._id, review.Rating);
+                                  handleDeleteReview(review._id);
                                 }}
                               >
                                 Delete
@@ -677,20 +683,22 @@ function ApartmentDetails() {
                   </Card>
                   <Modal show={showModal} onHide={handleCloseModal}>
                     <Modal.Header closeButton>
-                      <Modal.Title>Write a review</Modal.Title>
+                      <Modal.Title>Edit review</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                       <Form
-                        onSubmit={() => {
+                        onSubmit={(e) => {
+                          e.preventDefault();
                           handleEditReview(review._id);
                         }}
-                      >
+                      > 
                         <Form.Group controlId="editRating">
                           <Form.Label>Rating (0-5)</Form.Label>
                           <Form.Control
                             type="number"
                             min="0"
                             max="5"
+                            placeholder={review.Rating}
                             value={editedRating}
                             onChange={(e) => setEditedRating(e.target.value)}
                             isInvalid={!!errors.rating}
@@ -703,9 +711,10 @@ function ApartmentDetails() {
                           <Form.Label>Review (20-250 characters)</Form.Label>
                           <Form.Control
                             as="textarea"
-                            rows={3}
-                            minLength={20}
+                            rows={2}
+                            minLength={15}
                             maxLength={250}
+                            placeholder={review.Description}
                             value={editedReview}
                             onChange={(e) => setEditedReview(e.target.value)}
                             isInvalid={!!errors.review}

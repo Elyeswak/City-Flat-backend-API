@@ -173,27 +173,28 @@ function Navbar() {
               }`}
             >
               <div className="dropdown__list">
-                <a href="/notifications">
-                  <button className="button-31">Notifications</button>
-                </a>
+                
                 <a href="/requests">
                   <button className="button-31">Orders</button>
                 </a>
                 <a href="/wishlist">
                   <button className="button-31">Wishlist</button>
                 </a>
-                <hr />
+                
                 <a href="/account">
                   <button className="button-31">Account</button>
                 </a>
-                <a href="/help">
-                  <button className="button-31">Help</button>
-                </a>
+                
                 {isAdmin ? (
                   <a href="/admndash">
                     <button className="button-31">Dashboard</button>
                   </a>
                 ) : null}
+                <hr />
+                <a href="/help">
+                  <button className="button-31">Help</button>
+                </a>
+                
                 <button className="button-31" onClick={handleLogout}>
                   Logout
                 </button>

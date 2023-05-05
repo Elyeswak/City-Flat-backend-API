@@ -155,3 +155,16 @@ export async function getAllReviews(req, res) {
     throw new Error("Failed to get reviews.");
   }
 }
+
+export async function getReviewById(req, res) {
+  console.log(req.params.param);
+  try {
+    const review = await Review.findById(req.params.param);
+    if (!review) {
+      return res.status(404).json({ message: "Review not found" });
+    }
+    return res.status(200).json(review);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+}

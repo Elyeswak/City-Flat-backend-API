@@ -16,6 +16,7 @@ export default function ReviewCard({
   const user = JSON.parse(localStorage.getItem("user"));
   const userId = user.id;
   const userToken = user.token;
+  const isReviewOwner = userId === review.User;
 
   const handleDeleteReview = async () => {
     try {
@@ -75,35 +76,37 @@ export default function ReviewCard({
                 {moment(review.createdDate).format("h:mm A")}
               </p>
             </div>
-            <Dropdown className="drop-toggle">
-              <Dropdown.Toggle
-                variant="success"
-                id="dropdown-basic"
-              ></Dropdown.Toggle>
+            {isReviewOwner ? (
+              <Dropdown className="drop-toggle">
+                <Dropdown.Toggle
+                  variant="success"
+                  id="dropdown-basic"
+                ></Dropdown.Toggle>
 
-              <Dropdown.Menu>
-                <Dropdown.Item>
-                  <button
-                    className="btn btn-link text-primary"
-                    onClick={() => {
-                      handleShowModal();
-                    }}
-                  >
-                    Edit
-                  </button>
-                </Dropdown.Item>
-                <Dropdown.Item>
-                  <button
-                    className="btn btn-link text-danger"
-                    onClick={() => {
-                      handleDeleteReview();
-                    }}
-                  >
-                    Delete
-                  </button>
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
+                <Dropdown.Menu>
+                  <Dropdown.Item>
+                    <button
+                      className="btn btn-link text-primary"
+                      onClick={() => {
+                        handleShowModal();
+                      }}
+                    >
+                      Edit
+                    </button>
+                  </Dropdown.Item>
+                  <Dropdown.Item>
+                    <button
+                      className="btn btn-link text-danger"
+                      onClick={() => {
+                        handleDeleteReview();
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            ) : null}
           </Card.Text>
         </Card.Body>
       </Card>

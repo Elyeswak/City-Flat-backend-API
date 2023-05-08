@@ -11,9 +11,9 @@ import validator from "validator";
 import { isValidNumber } from "libphonenumber-js";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { faEye } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./AccountPage.css";
+import { Cloudinary, Util } from "cloudinary-core";
+import { unsignedUpload } from "cloudinary-core";
 
 function AccountPage() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -27,11 +27,120 @@ function AccountPage() {
   const [name, setName] = useState(user.name);
   const [address, setAddress] = useState(user.address);
   const [number, setNumber] = useState(user.number);
+  const [img, setImg] = useState(user.img);
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [isValidPhoneNumber, setIsValidNumber] = useState(false);
   const [isValidName, setIsValidName] = useState(false);
   const [isValidPassword, setIsValidPassword] = useState(false);
+
+  //edit img modal
+  const [showEditImg, setShowEditImg] = useState(false);
+  const handleCloseEditImg = () => setShowEditImg(false);
+  const handleShowEditImg = () => setShowEditImg(true);
+
+  const [signature, setSignature] = useState("");
+
+  const cloudinary = Util.cloudinaryInstance({
+    cloud: {
+      cloudName: process.env.REACT_APP_CLOUDINARY_CLOUD_NAME,
+      apiKey: process.env.REACT_APP_CLOUDINARY_KEY,
+    },
+  });
+
+  const [imageUrl, setImageUrl] = useState("");
+  const [imageUrl2, setImageUrl2] = useState("");
+
+  const handleImageUrlChange = (e) => {
+    setImageUrl2(e.target.value);
+  };
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    setImageUrl(file);
+  };
+
+  // function to generate the signature using the unsignedUpload method
+  const generateSignature = async () => {
+    try {
+      const result = await cloudinary.unsignedUpload(user.name, "cityFlat", {
+        cloud_name: process.env.REACT_APP_CLOUDINARY_CLOUD_NAME,
+      });
+      setSignature(result.signature);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // call the generateSignature function when the component mounts
+  useEffect(() => {
+    generateSignature();
+    console.log(signature);
+  }, [imageUrl]);
+
+  const handleSaveChanges = async () => {
+    if (imageUrl) {
+      try {
+        const formData = new FormData();
+        formData.append("file", imageUrl);
+        formData.append("upload_preset", "cityFlat");
+        formData.append("public_id", user.name);
+        formData.append("folder", "CityFlat-assets/profile_imgs");
+        formData.append("signature", signature);
+
+        const response = await axios.post(
+          `https://api.cloudinary.com/v1_1/${cloudinary.cloudinaryConfig.cloud.cloudName}/image/upload`,
+          formData
+        );
+
+        const uploadedImageUrl = response.data.secure_url;
+        setImageUrl(uploadedImageUrl);
+        setImg(uploadedImageUrl);
+        // Do something with the uploaded image URL
+        try {
+          const response = await axios.put(
+            `http://localhost:9090/user/${userId}`,
+            {
+              img: uploadedImageUrl,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${userToken}`, // authentication is required
+              },
+            }
+          );
+          setImageUrl2("");
+          setImg(uploadedImageUrl);
+        } catch (error) {
+          console.log("while trying to submit imageUrl2", error);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    if (imageUrl2) {
+      try {
+        const response = await axios.put(
+          `http://localhost:9090/user/${userId}`,
+          {
+            img: imageUrl2,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${userToken}`, // authentication is required
+            },
+          }
+        );
+        setImg(imageUrl2);
+      } catch (error) {
+        console.log("while trying to submit imageUrl2", error);
+      }
+    }
+    handleCloseEditImg();
+  };
+
+  //edit img modal
 
   /**CHECK FOR PASSWORD VISIBILTY */
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -74,7 +183,7 @@ function AccountPage() {
   const handlePasswordChange = async (event) => {
     event.preventDefault(); // prevent form submission
 
-    if (!oldPassword || !newPassword ) {
+    if (!oldPassword || !newPassword) {
       toast.error("❌ Please fill all required fields!", {
         position: "top-right",
         autoClose: 2000,
@@ -264,12 +373,15 @@ function AccountPage() {
             <div className="col-lg-4">
               <div className="card mb- color-white">
                 <div className="card-body text-center">
-                  <img
-                    src="https://newprofilepic2.photo-cdn.net//assets/images/article/profile.jpg"
-                    alt="avatar"
-                    className="rounded-circle img-fluid"
-                    style={{ width: 150 }}
-                  />
+                  <div className="profile-img-container">
+                    <img
+                      src={img}
+                      alt="avatar"
+                      className="rounded-circle img-fluid profile-img"
+                      style={{ width: 150, height: 150 }}
+                    />
+                    <div class="camera-icon" onClick={handleShowEditImg}></div>
+                  </div>
                   <h5 className="my-3">{user.name}</h5>
 
                   <p className="text-muted mb-4">{user.address}</p>
@@ -378,6 +490,38 @@ function AccountPage() {
                   Close
                 </Button>
                 <Button variant="primary" onClick={handlePasswordChange}>
+                  Save Changes
+                </Button>
+              </Modal.Footer>
+            </Modal>
+
+            <Modal show={showEditImg} onHide={handleCloseEditImg}>
+              <Modal.Header closeButton>
+                <Modal.Title>Edit Profile Image</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Form>
+                  <Form.Group className="mb-3" controlId="imageUrl">
+                    <Form.Label>Image Url</Form.Label>
+                    <Form.Control
+                      type="url"
+                      value={imageUrl2}
+                      onChange={handleImageUrlChange}
+                      autoFocus
+                    />
+                  </Form.Group>
+                  <Form.Label>Or</Form.Label>
+                  <Form.Group className="mb-3" controlId="file">
+                    <Form.Label>Upload Local Image</Form.Label>
+                    <Form.Control type="file" onChange={handleFileChange} />
+                  </Form.Group>
+                </Form>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={handleCloseEditImg}>
+                  Close
+                </Button>
+                <Button variant="primary" onClick={handleSaveChanges}>
                   Save Changes
                 </Button>
               </Modal.Footer>

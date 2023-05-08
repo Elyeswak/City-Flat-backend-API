@@ -12,8 +12,7 @@ import { isValidNumber } from "libphonenumber-js";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./AccountPage.css";
-import { Cloudinary, Util } from "cloudinary-core";
-import { unsignedUpload } from "cloudinary-core";
+import { Cloudinary } from "@cloudinary/base";
 
 function AccountPage() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -38,10 +37,7 @@ function AccountPage() {
   const [showEditImg, setShowEditImg] = useState(false);
   const handleCloseEditImg = () => setShowEditImg(false);
   const handleShowEditImg = () => setShowEditImg(true);
-
-  const [signature, setSignature] = useState("");
-
-  const cloudinary = Util.cloudinaryInstance({
+  const cloudinary = new Cloudinary({
     cloud: {
       cloudName: process.env.REACT_APP_CLOUDINARY_CLOUD_NAME,
       apiKey: process.env.REACT_APP_CLOUDINARY_KEY,
@@ -60,33 +56,22 @@ function AccountPage() {
     setImageUrl(file);
   };
 
-  // function to generate the signature using the unsignedUpload method
-  const generateSignature = async () => {
-    try {
-      const result = await cloudinary.unsignedUpload(user.name, "cityFlat", {
-        cloud_name: process.env.REACT_APP_CLOUDINARY_CLOUD_NAME,
-      });
-      setSignature(result.signature);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  // call the generateSignature function when the component mounts
-  useEffect(() => {
-    generateSignature();
-    console.log(signature);
-  }, [imageUrl]);
-
   const handleSaveChanges = async () => {
     if (imageUrl) {
       try {
+        const timestamp = Date.now();
+        const signature = await axios.get(
+          `http://localhost:9090/signature?timestamp=${timestamp}`
+        );
+
         const formData = new FormData();
         formData.append("file", imageUrl);
         formData.append("upload_preset", "cityFlat");
         formData.append("public_id", user.name);
         formData.append("folder", "CityFlat-assets/profile_imgs");
-        formData.append("signature", signature);
+        formData.append("signature", signature.data.signature);
+        formData.append("timestamp", timestamp);
+        formData.append("overwrite", true);
 
         const response = await axios.post(
           `https://api.cloudinary.com/v1_1/${cloudinary.cloudinaryConfig.cloud.cloudName}/image/upload`,

@@ -8,8 +8,12 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { useTranslation } from "react-i18next";
 
 function ContactUs() {
+
+   /**LANGUAGE SETTINGS */
+   const { t } = useTranslation();
 
   const navigate = useNavigate();
   /**GET ALL THE USER'S DATA FROM LOCALSTORAGE */
@@ -95,15 +99,15 @@ function ContactUs() {
           <div className="row">
             <div className="col-ms-12">
               <form onSubmit={handleSubmit}>
-                <h3>DO YOU NEED HELP?</h3>
+                <h3>{t("DO YOU NEED HELP")}?</h3>
                 <div className="form-group">
-                  <strong style={{float:"left", margin:"2%", fontFamily:"font-alethia-pro"}}>Please enter your message here.</strong>
+                  <strong style={{float:"left", margin:"2%", fontFamily:"font-alethia-pro"}}>{t("Please enter your message here.")}</strong>
                   <textarea
                     name="message"
                     value={values.message}
                     onChange={handleInputChange}
                     className="form-control"
-                    placeholder="Your Message"
+                    placeholder={t("Your message")}
                     style={{ width: "100%", height: 150, marginBottom: "20px" }}
                   />
                   <div className="form-group" style={{ marginBottom: "20px" }}>
@@ -112,7 +116,7 @@ function ContactUs() {
                       name="btnSubmit"
                       className="btnContact"
                      value="SEND "
-                    > SEND <FontAwesomeIcon icon={faPaperPlane}/> </button>
+                    > {t("SEND")} <FontAwesomeIcon icon={faPaperPlane}/> </button>
                   </div>
                 </div>
               </form>

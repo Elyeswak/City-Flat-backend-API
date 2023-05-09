@@ -6,11 +6,15 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Rate from "../../Rate/Rate";
 import { motion } from "framer-motion";
+import i18n from "./../../../i18next";
+import { useTranslation } from "react-i18next";
 import "./PremiumCollection.css";
 
 function PremiumCollection() {
   
   const [apartments, setApartments] = useState([]);
+   /**LANGUAGE SETTINGS */
+   const { t } = useTranslation();
 
   useEffect(() => {
     axios
@@ -43,7 +47,7 @@ function PremiumCollection() {
         transition={{ duration: 0.5 }}
       >
         <div className="premium_collection_items_title">
-          <h2>OUR PREMIUM COLLECTION</h2>
+          <h2>{t("OUR PREMIUM COLLECTION")}</h2>
           <div className="line-in-middle"></div>
         </div>
         <div className="premium_collection_items_content">

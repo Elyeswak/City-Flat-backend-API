@@ -5,10 +5,14 @@ import { motion } from "framer-motion";
 import axios from "axios";
 import "./topRated.css";
 import { Link } from "react-router-dom";
+import i18n from "./../../../i18next";
+import { useTranslation } from "react-i18next";
 
 function TopRated() {
  
   const [apartments, setApartments] = useState([]);
+   /**LANGUAGE SETTINGS */
+   const { t } = useTranslation();
 
   useEffect(() => {
     axios
@@ -35,7 +39,7 @@ function TopRated() {
     <div className="col content_col" style={{ backgroundColor: "white" }}>
       <div className="card_infos_luxury">
         <div className="card__body_luxury">
-          <h2>OUR BEST APARTMENT</h2>
+          <h2>{t("OUR BEST APARTMENT")}</h2>
           <h4>{filteredApartments[0].name}</h4>
           <p className="apartment_description">{filteredApartments[0].description}</p>
           <Rate rating={filteredApartments[0].rating} />
@@ -44,7 +48,7 @@ function TopRated() {
         <div className="card__button_luxury">
           <Link to={`/details/${filteredApartments[0].id}`}>
             <button type="button" className="btn btn-outline-dark" style={{fontSize: "14px", padding: "5px 10px"}}>
-              MORE DETAILS
+            {t("DISCOVER MORE")}
             </button>
           </Link>
         </div>

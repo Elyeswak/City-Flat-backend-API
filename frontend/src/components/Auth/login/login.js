@@ -73,11 +73,7 @@ function Login() {
   };
 
   /**CHECK IF USER LOGGEDIN  */
-
   const user = JSON.parse(localStorage.getItem("user"));
-
-  
-
   useEffect(() => {
     if (!user) {
       setLoginForm(true);

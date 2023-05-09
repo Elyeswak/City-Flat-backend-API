@@ -7,9 +7,13 @@ import { Link } from "react-router-dom";
 import Rate from "../../Rate/Rate";
 import "./StandardCollection.css";
 import { motion } from "framer-motion";
+import i18n from "./../../../i18next";
+import { useTranslation } from "react-i18next";
 
 function StandardCollection() {
   const [apartments, setApartments] = useState([]);
+   /**LANGUAGE SETTINGS */
+   const { t } = useTranslation();
 
   useEffect(() => {
     axios
@@ -42,7 +46,7 @@ function StandardCollection() {
         transition={{ duration: 0.5 }}
       >
         <div className="standard_collection_items_title">
-          <h2>OUR STANDARD COLLECTION</h2>
+          <h2>{t("OUR STANDARD COLLECTION")}</h2>
           <div className="line-in-middle"></div>
         </div>
         <div className="standard_collection_items_content">

@@ -7,12 +7,13 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import Rate from "../../Rate/Rate";
 import { motion } from "framer-motion";
-
+import i18n from "./../../../i18next";
+import { useTranslation } from "react-i18next";
 import "./luxuriouCollection.css";
 
 function LuxuriousCollection() {
 
-
+  const { t } = useTranslation();
   const [apartments, setApartments] = useState([]);
 
   useEffect(() => {
@@ -44,7 +45,7 @@ function LuxuriousCollection() {
         transition={{ duration: 0.5 }}
       >
         <div className="luxury_collection_items_title">
-          <h2>OUR PREMIUM COLLECTION</h2>
+          <h2>{t("OUR LUXURIOUS COLLECTION")}</h2>
           <div className="line-in-middle"></div>
         </div>
         <div className="luxury_collection_items_content">

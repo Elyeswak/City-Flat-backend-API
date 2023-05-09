@@ -9,8 +9,19 @@ import {
   faClose,
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router";
+import i18n from "./../../i18next";
+import { NavDropdown } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
+import { US, DE, FR } from "country-flag-icons/react/3x2";
 
 function Navbar() {
+  const [currentLanguage, setCurrentLanguage] = useState("de");
+  const { t } = useTranslation();
+  function handleLanguageChange(language) {
+    setCurrentLanguage(language);
+    i18n.changeLanguage(language);
+  }
+
   const [openProfile, setOpenProfile] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -97,7 +108,7 @@ function Navbar() {
                       transition={{ duration: 0.7 }}
                     >
                       <a href="/" className="link__item">
-                        HOME
+                        {t("HOME")}
                       </a>
                     </motion.li>
                     <motion.li
@@ -107,7 +118,7 @@ function Navbar() {
                     >
                       {" "}
                       <a href="/standard" className="link__item">
-                        STANDARD
+                        {t("STANDARD")}
                       </a>
                     </motion.li>
                     <motion.li
@@ -116,7 +127,7 @@ function Navbar() {
                       transition={{ duration: 0.7 }}
                     >
                       <a href="/premium" className="link__item">
-                        PREMIUM
+                        {t("PREMIUM")}
                       </a>
                     </motion.li>
                     <motion.li
@@ -126,7 +137,7 @@ function Navbar() {
                     >
                       {" "}
                       <a href="/luxury" className="link__item">
-                        LUXURY
+                        {t("LUXURY")}
                       </a>
                     </motion.li>
                     <motion.li
@@ -136,7 +147,7 @@ function Navbar() {
                     >
                       {" "}
                       <a href="/wishlist" className="link__item">
-                        WISHLIST
+                        {t("WISHLIST")}
                       </a>
                     </motion.li>
                     <motion.li
@@ -145,7 +156,7 @@ function Navbar() {
                       transition={{ duration: 0.7 }}
                     >
                       <a href="/help" className="link__item">
-                        CONTACT
+                        {t("CONTACT")}
                       </a>
                     </motion.li>
                   </ul>
@@ -155,78 +166,115 @@ function Navbar() {
           </>
         )}
       </div>
-      {isLoggedIn ? (
-        <div className="navbar-user" ref={menuRef}>
-          <button
-            className="float-on-hover"
-            onClick={() => setOpenProfile(!openProfile)}
+      <div className="nav__right">
+        <div className="languages_changer">
+          <NavDropdown
+            title={
+              currentLanguage === "en" ? (
+                <US title="United States" className="flag-icon" />
+              ) : currentLanguage === "fr" ? (
+                <FR title="France" className="flag-icon" />
+              ) : (
+                <DE title="Deutschland" className="flag-icon" />
+              )
+            }
+            id="language-selector"
+            onSelect={handleLanguageChange}
+            selected="en"
           >
-            {" "}
-            <FontAwesomeIcon icon={faUserCircle} className="fa-2x" />
-          </button>
+            <NavDropdown.Item
+              eventKey="en"
+              style={{ fontFamily: "font-alethia-pro" }}
+            >
+              <US title="United States" className="flag-icon" /> English
+            </NavDropdown.Item>
+            <NavDropdown.Item
+              eventKey="fr"
+              style={{ fontFamily: "font-alethia-pro" }}
+            >
+              <FR title="France" className="flag-icon" /> French
+            </NavDropdown.Item>
+            <NavDropdown.Item
+              eventKey="de"
+              style={{ fontFamily: "font-alethia-pro" }}
+            >
+              <DE title="Deutschland" className="flag-icon" /> German
+            </NavDropdown.Item>
+          </NavDropdown>
+        </div>
 
-          {openProfile && (
-            <div
-              className={` flex flex-col gap-4 dropdown__menu ${
-                openProfile ? "active" : "inactive"
-              }`}
+        {isLoggedIn ? (
+          <div className="navbar-user" ref={menuRef}>
+            <button
+              className="float-on-hover"
+              onClick={() => setOpenProfile(!openProfile)}
             >
-              <div className="dropdown__list">
-                
-                <a href="/requests">
-                  <button className="button-31">Orders</button>
-                </a>
-                <a href="/wishlist">
-                  <button className="button-31">Wishlist</button>
-                </a>
-                
-                <a href="/account">
-                  <button className="button-31">Account</button>
-                </a>
-                
-                {isAdmin ? (
-                  <a href="/admndash">
-                    <button className="button-31">Dashboard</button>
+              {" "}
+              <FontAwesomeIcon icon={faUserCircle} className="fa-2x" />
+            </button>
+
+            {openProfile && (
+              <div
+                className={` flex flex-col gap-4 dropdown__menu ${
+                  openProfile ? "active" : "inactive"
+                }`}
+              >
+                <div className="dropdown__list">
+                  <a href="/requests">
+                    <button className="button-31">Orders</button>
                   </a>
-                ) : null}
-                <hr />
-                <a href="/help">
-                  <button className="button-31">Help</button>
-                </a>
-                
-                <button className="button-31" onClick={handleLogout}>
-                  Logout
-                </button>
+                  <a href="/wishlist">
+                    <button className="button-31">Wishlist</button>
+                  </a>
+
+                  <a href="/account">
+                    <button className="button-31">Account</button>
+                  </a>
+
+                  {isAdmin ? (
+                    <a href="/admndash">
+                      <button className="button-31">Dashboard</button>
+                    </a>
+                  ) : null}
+                  <hr />
+                  <a href="/help">
+                    <button className="button-31">Help</button>
+                  </a>
+
+                  <button className="button-31" onClick={handleLogout}>
+                    Logout
+                  </button>
+                </div>
               </div>
-            </div>
-          )}
-        </div>
-      ) : (
-        <div className="navbar-user auth-btns" ref={menuRef}>
-          <a href="/signup">
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.8 }}
-              transition={{ duration: 0.7 }}
-              type="button"
-              className="btn btn-dark"
-            >
-              SIGNUP
-            </motion.button>
-          </a>
-          <a href="/login">
-            <motion.button
-              type="button"
-              className="btn btn-link"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.8 }}
-              transition={{ duration: 0.7 }}
-            >
-              LOGIN
-            </motion.button>
-          </a>
-        </div>
-      )}
+            )}
+          </div>
+        ) : (
+          <div className="navbar-user auth-btns" ref={menuRef}>
+            <a href="/signup">
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.8 }}
+                transition={{ duration: 0.7 }}
+                type="button"
+                className="btn btn-dark"
+              >
+                SIGNUP
+              </motion.button>
+            </a>
+            <a href="/login">
+              <motion.button
+                type="button"
+                className="btn btn-link"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.8 }}
+                transition={{ duration: 0.7 }}
+              >
+                LOGIN
+              </motion.button>
+            </a>
+          </div>
+        )}
+      </div>
     </nav>
   );
 }

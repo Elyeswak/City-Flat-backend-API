@@ -31,7 +31,7 @@ function ApartmentDetails() {
   const [bookedDates, setBookedDates] = useState([]);
   const [allReviews, setAllReviews] = useState([]);
   const [rate, setRate] = useState(0);
-  // const [isLoggedIn, setIsLoggedIn] = useState(false)
+  //const [isLoggedIn, setIsLoggedIn] = useState(false)
   const navigate = useNavigate();
 
   //user info

@@ -11,10 +11,27 @@ import { useTranslation } from "react-i18next";
 import "./PremiumCollection.css";
 
 function PremiumCollection() {
-  
   const [apartments, setApartments] = useState([]);
-   /**LANGUAGE SETTINGS */
-   const { t } = useTranslation();
+  /**LANGUAGE SETTINGS */
+  const { t } = useTranslation();
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userId = user.id;
+  const userToken = user.token;
+
+  const [wishlist, setWishlist] = useState([]);
+
+  useEffect(() => {
+    // fetch all services
+    axios
+      .get(`http://localhost:9090/user/${userId}`)
+      .then((response) => {
+        setWishlist(response.data.wishlist);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   useEffect(() => {
     axios
@@ -30,6 +47,16 @@ function PremiumCollection() {
       .catch((error) => console.log(error));
   }, []);
 
+  // const handleLikeClick = (id) => {
+  //   setApartments((prevApartments) =>
+  //     prevApartments.map((apartment) =>
+  //       apartment.id === id
+  //         ? { ...apartment, liked: !apartment.liked }
+  //         : apartment
+  //     )
+  //   );
+  // };
+
   const handleLikeClick = (id) => {
     setApartments((prevApartments) =>
       prevApartments.map((apartment) =>
@@ -38,6 +65,30 @@ function PremiumCollection() {
           : apartment
       )
     );
+
+    if (wishlist.includes(id)) {
+      fetch(`http://localhost:9090/user/rmwishlist/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then(() =>
+          setWishlist((prevWishlist) =>
+            prevWishlist.filter((item) => item !== id)
+          )
+        )
+        .catch((error) => console.log(error));
+    } else {
+      fetch(`http://localhost:9090/user/wishlist/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then(() => setWishlist((prevWishlist) => [...prevWishlist, id]))
+        .catch((error) => console.log(error));
+    }
   };
 
   return (
@@ -75,7 +126,7 @@ function PremiumCollection() {
                         </div>
                         <div className="card_body">
                           <div className="like_button">
-                          <button onClick={() => handleLikeClick(data.id)}>
+                            <button onClick={() => handleLikeClick(data.id)}>
                               <FontAwesomeIcon
                                 icon={data.liked ? faHeart : faHeartEmpty}
                                 className={`heart-icon ${

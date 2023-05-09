@@ -194,7 +194,6 @@ userRouter
 //********************wishlist**********************//
    userRouter
    .route('/wishlist/:param')
-   
    .put(ensureUser, addToWishlist);
    
    userRouter

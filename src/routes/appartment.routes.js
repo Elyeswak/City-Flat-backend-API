@@ -21,7 +21,7 @@ const appartmentRouter = express.Router();
 appartmentRouter
 .route('/reviews/:param')
    .post(ensureUser,createReview)
-   .get(ensureUser,getAllReviews)
+   .get(getAllReviews)
    .delete(ensureUser,deleteReview);
 
 appartmentRouter

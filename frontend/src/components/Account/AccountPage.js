@@ -66,20 +66,20 @@ function AccountPage() {
         // );
 
         // Delete all files with userId in their names
-        // const publicIdPrefix = `${userId},`;
-        // const deleteResponse = await axios.delete(
-        //   `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/resources/image`,
-        //   {
-        //     params: {
-        //       prefix: `CityFlat-assets/profile_imgs/${publicIdPrefix}`,
-        //       type: "upload",
-        //     },
-        //     headers: {
-        //       Authorization: `Bearer ${process.env.REACT_APP_CLOUDINARY_API_SECRET}`,
-        //     },
-        //   }
-        // );
-        // console.log(deleteResponse);
+        const publicIdPrefix = `${userId},`;
+        const deleteResponse = await axios.delete(
+          `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/resources/image`,
+          {
+            params: {
+              prefix: `CityFlat-assets/profile_imgs/${publicIdPrefix}`,
+              type: "upload",
+            },
+            headers: {
+              Authorization: `Bearer ${process.env.REACT_APP_CLOUDINARY_API_SECRET}`,
+            },
+          }
+        );
+        console.log(deleteResponse);
 
         const formData = new FormData();
         formData.append("file", imageUrl);

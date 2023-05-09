@@ -31,22 +31,22 @@
     text-align: left;
     display: flex;
     flex-direction: column;
-    padding-top: 10%;
+    
   }
   
   .card_infos_luxury  h2 {
     font-family: "Lexend Mega", sans-serif;
-    font-size: 3vw !important;
+    font-size: 2.5vw !important;
   }
   
   .card_infos_luxury  h4 {
     font-family: "Lexend Mega", sans-serif;
-    font-size: 2vw !important;
+    font-size: 1.5vw !important;
   }
   
   .card_infos_luxury  p {
     font-family: font-alethia-pro;
-    font-size: 1.5vw !important;
+    font-size: 1vw !important;
   }
   
   .card_infos_luxury  strong {
@@ -57,16 +57,24 @@
   .card__body_luxury  {
     margin-bottom: 3%;
   }
+
+  .apartment_description {
+    font-size: 10px !important;
+  }
   @media screen and (max-width: 710px) {
-    .col {
-      flex: auto !important;
-    }
+   
     .card_infos_luxury  {
       padding-top: 0%;
     }
     .card_infos_luxury  strong {
       font-family: font-alethia-pro;
       font-size: 2vw !important;
+    }
+  }
+
+  @media screen and (max-width:814px) {
+    .col {
+      flex: auto !important;
     }
   }
   
@@ -108,22 +116,22 @@
   
     .card_infos_luxury  h2 {
       font-family: "Lexend Mega", sans-serif;
-      font-size: 3vw !important;
+      font-size: 1.8vw !important;
     }
     
     .card_infos_luxury  h4 {
       font-family: "Lexend Mega", sans-serif;
-      font-size: 2.5vw !important;
+      font-size: 1.5vw !important;
     }
     
     .card_infos_luxury  p {
       font-family: font-alethia-pro;
-      font-size: 2vw !important;
+      font-size: 1.2vw !important;
     }
     
     .card_infos_luxury  strong {
       font-family: font-alethia-pro;
-      font-size: 2vw !important;
+      font-size: 1.5vw !important;
     }
   }
   
@@ -133,9 +141,6 @@
     margin-bottom: 5%;
   }
   
-  .card__button{
-    margin-top: 5%;
-  }
   
   }
   

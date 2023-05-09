@@ -7,18 +7,24 @@ import { Link } from "react-router-dom";
 import Rate from "../../Rate/Rate";
 import "./StandardCollection.css";
 import { motion } from "framer-motion";
+import i18n from "./../../../i18next";
+import { useTranslation } from "react-i18next";
 
 function StandardCollection() {
-
-
   const [apartments, setApartments] = useState([]);
+   /**LANGUAGE SETTINGS */
+   const { t } = useTranslation();
 
   useEffect(() => {
     axios
       .get("http://localhost:9090/appartments/getAllAppart")
       .then((result) => {
-        setApartments(result.data.map((apartment) => ({ ...apartment, liked: false })));
-        console.log();
+        setApartments(
+          result.data.map((apartment) => ({ ...apartment, liked: false }))
+        );
+
+        // Log the data here
+        console.log(result.data);
       })
       .catch((error) => console.log(error));
   }, []);
@@ -26,7 +32,9 @@ function StandardCollection() {
   const handleLikeClick = (id) => {
     setApartments((prevApartments) =>
       prevApartments.map((apartment) =>
-        apartment.id === id ? { ...apartment, liked: !apartment.liked } : apartment
+        apartment.id === id
+          ? { ...apartment, liked: !apartment.liked }
+          : apartment
       )
     );
   };
@@ -38,7 +46,7 @@ function StandardCollection() {
         transition={{ duration: 0.5 }}
       >
         <div className="standard_collection_items_title">
-          <h2>OUR STANDARD COLLECTION</h2>
+          <h2>{t("OUR STANDARD COLLECTION")}</h2>
           <div className="line-in-middle"></div>
         </div>
         <div className="standard_collection_items_content">
@@ -69,23 +77,16 @@ function StandardCollection() {
                             <button onClick={() => handleLikeClick(data.id)}>
                               <FontAwesomeIcon
                                 icon={data.liked ? faHeart : faHeartEmpty}
-                                className={`heart-icon ${data.liked ? "liked" : ""}`}
+                                className={`heart-icon ${
+                                  data.liked ? "liked" : ""
+                                }`}
                               />
                             </button>
                           </div>
                           <div className="card_content_standard">
                             <h3>{data.name}</h3>
                             <p>{data.description}</p>
-                            <Rate
-                              rating={data.rating}
-                              onRating={(rate) =>
-                                setApartments((prevApartments) =>
-                                  prevApartments.map((apartment) =>
-                                    apartment.id === data.id ? { ...apartment, rating: rate } : apartment
-                                  )
-                                )
-                              }
-                            />
+                            <Rate rating={data.rating} />
                             <strong>{data.pricePerNight}€</strong>
                           </div>
                         </div>
@@ -101,8 +102,5 @@ function StandardCollection() {
     </section>
   );
 }
-
-
-
 
 export default StandardCollection;

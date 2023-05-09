@@ -150,6 +150,15 @@
   border-color: #FFD700 !important;
 }
 
+.results{
+  background-color: #FFC400 !important;
+}
+
+.results:hover {
+  background-color: #dbc233 !important;
+}
+
+
 @media only screen and (max-width: 600px) {
   .search {
     font-size: 10px;

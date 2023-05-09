@@ -7,6 +7,8 @@ import FilteringResults from "./../FilteringPage/FilteringResults";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useAnimation } from "framer-motion";
+import i18n from "./../../../i18next";
+import { useTranslation } from "react-i18next";
 import "./coverPage.css";
 
 /**PRICE VARIABLES */
@@ -26,6 +28,8 @@ function CoverPage() {
   const [priceValues, setPriceValues] = useState([100, 900]);
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+
+  const { t } = useTranslation();
 
   const handlePriceChange = (newPriceValues) => {
     setPriceValues(newPriceValues);
@@ -116,8 +120,9 @@ function CoverPage() {
                 animate={animation}
               >
                 <h1 className="title__cover">
-                  BOOK YOUR NEXT GETAWAY AND LET US <br /> TAKE CARE OF THE
-                  REST!
+                  {t(
+                    "BOOK YOUR NEXT GETAWAY AND LET US TAKE CARE OF THE REST!"
+                  )}
                 </h1>
               </motion.div>
 
@@ -126,7 +131,7 @@ function CoverPage() {
                   className="search__input"
                   type="text"
                   id="search"
-                  placeholder="Search"
+                  placeholder={t("SEARCH")}
                 />
                 <button
                   className="search__filter"
@@ -145,12 +150,12 @@ function CoverPage() {
                     }`}
                   >
                     <div className="filter__title">
-                      <h4>Filter</h4>
+                      <h4>FILTER</h4>
                       <hr />
                     </div>
                     <div className="filter__list">
                       <div className="row row_filter price__filter">
-                        <p>PRICE RANGE</p>
+                        <p>{t("PRICE RANGE")}</p>
                         <div
                           style={{
                             display: "flex",
@@ -234,10 +239,10 @@ function CoverPage() {
                         </div>
                       </div>
                       <div className="row row_filter">
-                        <p>TYPE</p>
+                        <p>{t("TYPE")}</p>
                         <div className="row">
                           <div className="col">
-                            <p>standard</p>
+                            <p>{t("STANDARD")}</p>
                             <input
                               className="form-check-input"
                               type="radio"
@@ -249,7 +254,7 @@ function CoverPage() {
                             />
                           </div>
                           <div className="col">
-                            <p>Premium</p>
+                            <p>{t("PREMIUM")}</p>
                             <input
                               className="form-check-input"
                               type="radio"
@@ -261,7 +266,7 @@ function CoverPage() {
                             />
                           </div>
                           <div className="col">
-                            <p>Luxury</p>
+                            <p>{t("LUXURY")}</p>
                             <input
                               className="form-check-input"
                               type="radio"
@@ -277,11 +282,13 @@ function CoverPage() {
                       <div className="row row_filter">
                         <div className="col-sm"></div>
                         <div className="col-sm">
-                          <p>ROOMS</p>
+                          <p>{t("ROOMS")}</p>
                           <div
                             style={{
                               display: "flex",
                               justifyContent: "center",
+                              flexDirection: "column",
+                              alignItems: "center",
                             }}
                           >
                             <Range
@@ -349,20 +356,23 @@ function CoverPage() {
                                 </div>
                               )}
                             />
-                            <output style={{ marginTop: "30px" }}>
+                            <output style={{ marginTop: "10px" }}>
                               {roomCount}
                             </output>
+                            <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                marginTop: "20px",
+                              }}
+                            >
+                              <button className="btn results" onClick={handleFilter}>
+                                {t("SEE RESULTS")}
+                              </button>
+                            </div>
                           </div>
                         </div>
                         <div className="col-sm"></div>
-                        <div className="col">
-                          <button
-                            className="btn btn-primary"
-                            onClick={handleFilter}
-                          >
-                            SEE RESULTS
-                          </button>
-                        </div>
                       </div>
                     </div>
                   </div>
@@ -370,7 +380,7 @@ function CoverPage() {
               </div>
 
               <div className="scroll__down">
-                <p>SCROLL DOWN</p>
+                <p>{t("SCROLL DOWN")}</p>
               </div>
             </div>
           </div>

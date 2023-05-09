@@ -1,11 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./premium.css";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useAnimation } from "framer-motion";
+import i18n from "./../../../i18next";
+import { useTranslation } from "react-i18next";
 
 
 function Premium() {
+
+  const [currentLanguage, setCurrentLanguage] = useState("en");
+  const { t } = useTranslation();
+
+
   const { ref, inView } = useInView();
   const animation = useAnimation();
   useEffect(() => {
@@ -25,7 +32,7 @@ function Premium() {
       <motion.div className="premium__page">
         <div className="">
           <div className="title">
-            <p className="title__premium">PREMIUM</p>
+            <p className="title__premium">{t("PREMIUM")}</p>
           </div>
           <div className="line-in-middle"></div>
           <div className="premium__content">
@@ -35,7 +42,7 @@ function Premium() {
                 whileTap={{ scale: 0.8 }}
                 whileInView={{ opacity: [0, 1] }}
                 transition={{ duration: 0.7 }}
-                src="./bailey-alexander-pkIJXMezi_E-unsplash 1.png"
+                src="https://c4.wallpaperflare.com/wallpaper/396/394/415/city-apartment-design-wallpaper-preview.jpg"
                 alt="description"
               />
             </div>
@@ -49,7 +56,7 @@ function Premium() {
                 animate={animation}
               >
                 <div className="description__title">
-                  <p>OUR PREMIUM COLLECTION</p>
+                  <p>{t("OUR PREMIUM COLLECTION")}</p>
                 </div>
 
                 <div className="description__text">
@@ -69,7 +76,7 @@ function Premium() {
 
                 <a href="/premium">
                   <button className="btn btn-outline-warning discover__button">
-                    DISCOVER MORE
+                  {t("DISCOVER MORE")}
                   </button>
                 </a>
               </motion.div>

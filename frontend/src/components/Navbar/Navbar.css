@@ -9,6 +9,38 @@
  z-index: 999;
 }
 
+
+.nav__left {
+  display: flex;
+  align-items: center;
+}
+
+.nav__right {
+  display: flex;
+  align-items: center;
+}
+
+.nav__icon {
+  margin: 0 5px;
+}
+
+/* Languages  changer style*/
+.flag-icon {
+  height: 25px;
+  width: 25px;
+}
+
+.languages_changer{
+  margin-right: 10px;
+}
+.dropdown-toggle::after {
+  display: none;
+}
+
+.nav .nav-item .dropdown-toggle::after {
+  display: none;
+}
+
 .navbar-menu {
   margin-left: 60px;
   color: white;

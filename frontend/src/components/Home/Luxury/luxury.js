@@ -1,10 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./luxury.css";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useAnimation } from "framer-motion";
 
+import i18n from "./../../../i18next";
+import { useTranslation } from "react-i18next";
+
 function Luxury() {
+
+  const [currentLanguage, setCurrentLanguage] = useState("en");
+  const { t } = useTranslation();
+
+
   const { ref, inView } = useInView();
   const animation = useAnimation();
   useEffect(() => {
@@ -24,7 +32,7 @@ function Luxury() {
       <div className="luxury__page">
         <div className="">
           <div className="title">
-            <p className="title__luxury">LUXURY</p>
+            <p className="title__luxury">{t("LUXURY")}</p>
           </div>
           <div className="line-in-middle"></div>
           <div className="luxury__content">
@@ -38,7 +46,7 @@ function Luxury() {
                 animate={animation}
               >
                 <div className="description__title">
-                  <p>OUR LUXURIOUS COLLECTION</p>
+                  <p>{t("OUR LUXURIOUS COLLECTION")}</p>
                 </div>
 
                 <div className="description__text">
@@ -56,7 +64,7 @@ function Luxury() {
                 </div>
                 <a href="/luxury">
                   <button className="btn btn-outline-warning discover__button">
-                    DISCOVER MORE
+                  {t("DISCOVER MORE")}
                   </button>
                 </a>
               </motion.div>
@@ -67,7 +75,7 @@ function Luxury() {
                 whileTap={{ scale: 0.8 }}
                 whileInView={{ opacity: [0, 1] }}
                 transition={{ duration: 0.7 }}
-                src="./bailey-alexander-pkIJXMezi_E-unsplash 1.png"
+                src="https://i.pinimg.com/736x/e8/e4/34/e8e43414b10874a6a7050c0e56849bd9--modern-living-room-designs-modern-interior-design.jpg"
                 alt="description"
               />
             </div>

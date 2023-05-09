@@ -75,10 +75,8 @@ function FilteringResults({ filteredData }) {
                           <h3>{data.name}</h3>
                           <p>{data.description}</p>
                           <Rate
-                            rating={rating}
-                            onRating={(rate) =>
-                              handleRatingChange(index, rate)
-                            }
+                            rating={data.rating}
+                            
                           />
                           <strong>{data.pricePerNight}€</strong>
                         </div>

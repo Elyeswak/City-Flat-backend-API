@@ -1,10 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./standard.css";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useAnimation } from "framer-motion";
+import i18n from "./../../../i18next";
+import { useTranslation } from "react-i18next";
 
 function Standard() {
+
+  const [currentLanguage, setCurrentLanguage] = useState("en");
+  const { t } = useTranslation();
 
   const { ref, inView } = useInView();
   const animation = useAnimation();
@@ -25,7 +30,7 @@ function Standard() {
       <div className="standard__page">
         <div className="">
           <div className="title">
-            <p className="title__standard">STANDARD</p>
+            <p className="title__standard">{t("STANDARD")}</p>
           </div>
           <div className="line-in-middle"></div>
           <div className="standard__content">
@@ -37,7 +42,7 @@ function Standard() {
               initial={{ x: -100, opacity: 0 }}
               animate={animation}>
                 <div className="description__title">
-                  <p>OUR STANDARD COLLECTION</p>
+                  <p>{t("OUR STANDARD COLLECTION")}</p>
                 </div>
 
                 <div className="description__text">
@@ -56,7 +61,7 @@ function Standard() {
                 </div>
                 <a href="/standard">
                   <button className="btn btn-outline-warning discover__button">
-                    DISCOVER MORE
+                  {t("DISCOVER MORE")}
                   </button>
                 </a>
               </motion.div>
@@ -68,7 +73,7 @@ function Standard() {
                 whileTap={{ scale: 0.8 }}
                 whileInView={{ opacity: [0, 1] }}
                 transition={{ duration: 0.7 }}
-                src="./bailey-alexander-pkIJXMezi_E-unsplash 1.png"
+                src="https://cdn.pixabay.com/photo/2016/11/18/17/20/living-room-1835923__480.jpg"
                 alt="description"
               />
             </div>

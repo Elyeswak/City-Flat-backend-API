@@ -1,25 +1,44 @@
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { faHeart as faHeartEmpty } from "@fortawesome/free-regular-svg-icons";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Rate from "../../Rate/Rate";
 import { motion } from "framer-motion";
+import i18n from "./../../../i18next";
+import { useTranslation } from "react-i18next";
 import "./PremiumCollection.css";
 
 function PremiumCollection() {
-  const [rating2, setRating2] = useState(0);
+  
   const [apartments, setApartments] = useState([]);
+   /**LANGUAGE SETTINGS */
+   const { t } = useTranslation();
 
   useEffect(() => {
     axios
       .get("http://localhost:9090/appartments/getAllAppart")
       .then((result) => {
-        setApartments(result.data);
-        console.log();
+        setApartments(
+          result.data.map((apartment) => ({ ...apartment, liked: false }))
+        );
+
+        // Log the data here
+        console.log(result.data);
       })
       .catch((error) => console.log(error));
   }, []);
+
+  const handleLikeClick = (id) => {
+    setApartments((prevApartments) =>
+      prevApartments.map((apartment) =>
+        apartment.id === id
+          ? { ...apartment, liked: !apartment.liked }
+          : apartment
+      )
+    );
+  };
 
   return (
     <section className="premium__collection__page">
@@ -28,7 +47,7 @@ function PremiumCollection() {
         transition={{ duration: 0.5 }}
       >
         <div className="premium_collection_items_title">
-          <h2>OUR PREMIUM COLLECTION</h2>
+          <h2>{t("OUR PREMIUM COLLECTION")}</h2>
           <div className="line-in-middle"></div>
         </div>
         <div className="premium_collection_items_content">
@@ -56,21 +75,19 @@ function PremiumCollection() {
                         </div>
                         <div className="card_body">
                           <div className="like_button">
-                            <button>
+                          <button onClick={() => handleLikeClick(data.id)}>
                               <FontAwesomeIcon
-                                icon={faHeart}
-                                beat
-                                className="highligh_premium"
+                                icon={data.liked ? faHeart : faHeartEmpty}
+                                className={`heart-icon ${
+                                  data.liked ? "liked" : ""
+                                }`}
                               />
                             </button>
                           </div>
                           <div className="card_content">
                             <h3>{data.name}</h3>
                             <p>{data.description}</p>
-                            <Rate
-                              rating={rating2}
-                              onRating={(rate) => setRating2(rate)}
-                            />
+                            <Rate rating={data.rating} />
                             <strong>{data.pricePerNight}€</strong>
                           </div>
                         </div>

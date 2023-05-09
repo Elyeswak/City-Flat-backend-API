@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import moment from "moment";
 import axios from "axios";
 import { Card, Dropdown } from "react-bootstrap";
@@ -17,6 +17,19 @@ export default function ReviewCard({
   const userId = user.id;
   const userToken = user.token;
   const isReviewOwner = userId === review.User;
+  const [userImg, setUserImg] = useState("");
+
+  useEffect(() => {
+    // fetch all services
+    axios
+      .get(`http://localhost:9090/user/${review.User}`)
+      .then((response) => {
+        setUserImg(response.data.img);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [review]);
 
   const handleDeleteReview = async () => {
     try {
@@ -58,8 +71,8 @@ export default function ReviewCard({
           <Card.Title className="row">
             <div className="col text-start d-flex justify-content-center align-items-center">
               <img
-                src="https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg"
-                className="img-fluid img-thumbnail rounded-circle w-25"
+                src={userImg}
+                className="img-fluid img-thumbnail rounded-circle write-review-img"
               />
               <p className="col text-start ms-3 fs-4">
                 {review.UserName ? review.UserName : "Unknown User"}

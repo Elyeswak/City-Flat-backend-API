@@ -234,3 +234,8 @@
   outline: none !important;
   border-color: #000 !important;
 }
+
+.write-review-img {
+  width: 5rem !important;
+  height: 5rem !important;
+}

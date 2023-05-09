@@ -63,6 +63,18 @@ app.get("/signature", (req, res) => {
   });
 });
 
+cloudinary.v2.config({
+  cloud_name: process.env.REACT_APP_CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.REACT_APP_CLOUDINARY_KEY,
+  api_secret: process.env.REACT_APP_CLOUDINARY_SECRET,
+});
+
+app.delete("/delete-from-cloudinary/:filename", async (req, res) => {
+  const prefix = `CityFlat-assets/profile_imgs/${req.params.filename}`;
+  const result = await cloudinary.v2.api.delete_resources_by_prefix(prefix);
+  res.json(result);
+});
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/img", express.static("public/images"));

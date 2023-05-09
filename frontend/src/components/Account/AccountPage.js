@@ -58,6 +58,9 @@ function AccountPage() {
 
   const handleSaveChanges = async () => {
     if (imageUrl) {
+      await axios.delete(
+        `http://localhost:9090/delete-from-cloudinary/${userId}`
+      );
       try {
         // const timestamp = Date.now();
         // console.log(timestamp);
@@ -66,20 +69,6 @@ function AccountPage() {
         // );
 
         // Delete all files with userId in their names
-        const publicIdPrefix = `${userId},`;
-        const deleteResponse = await axios.delete(
-          `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/resources/image`,
-          {
-            params: {
-              prefix: `CityFlat-assets/profile_imgs/${publicIdPrefix}`,
-              type: "upload",
-            },
-            headers: {
-              Authorization: `Bearer ${process.env.REACT_APP_CLOUDINARY_API_SECRET}`,
-            },
-          }
-        );
-        console.log(deleteResponse);
 
         const formData = new FormData();
         formData.append("file", imageUrl);
@@ -113,6 +102,14 @@ function AccountPage() {
           );
           setImageUrl2("");
           setImg(uploadedImageUrl);
+          // Update the img property of the user object
+          user.img = uploadedImageUrl;
+
+          // Stringify the updated user object
+          const updatedUserObject = JSON.stringify(user);
+
+          // Store the updated user object back in local storage
+          localStorage.setItem("user", updatedUserObject);
         } catch (error) {
           console.log("while trying to submit imageUrl2", error);
         }
@@ -135,6 +132,14 @@ function AccountPage() {
           }
         );
         setImg(imageUrl2);
+        // Update the img property of the user object
+        user.img = imageUrl2;
+
+        // Stringify the updated user object
+        const updatedUserObject = JSON.stringify(user);
+
+        // Store the updated user object back in local storage
+        localStorage.setItem("user", updatedUserObject);
       } catch (error) {
         console.log("while trying to submit imageUrl2", error);
       }

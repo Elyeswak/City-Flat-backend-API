@@ -512,8 +512,8 @@ function ApartmentDetails() {
                     <div className="row px-5">
                       <div className="col-4 d-flex justify-content-center align-items-center">
                         <img
-                          src="https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg"
-                          className="img-fluid img-thumbnail rounded-circle w-25"
+                          src={user.img}
+                          className="img-fluid img-thumbnail rounded-circle write-review-img"
                         />
                         <p className="ms-3 fs-4">
                           {itemExists ? user.name : null}

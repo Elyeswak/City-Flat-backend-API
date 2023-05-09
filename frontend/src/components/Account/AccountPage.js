@@ -55,7 +55,7 @@ function AccountPage() {
     const file = e.target.files[0];
     setImageUrl(file);
   };
-
+  
   const handleSaveChanges = async () => {
     if (imageUrl) {
       try {
@@ -69,6 +69,7 @@ function AccountPage() {
         formData.append("upload_preset", "cityFlat");
         formData.append("public_id", user.name);
         formData.append("folder", "CityFlat-assets/profile_imgs");
+        formData.append("api_key", process.env.REACT_APP_CLOUDINARY_KEY);
         formData.append("signature", signature.data.signature);
         formData.append("timestamp", timestamp);
         formData.append("overwrite", true);
@@ -77,6 +78,8 @@ function AccountPage() {
           `https://api.cloudinary.com/v1_1/${cloudinary.cloudinaryConfig.cloud.cloudName}/image/upload`,
           formData
         );
+
+        console.log(response);
 
         const uploadedImageUrl = response.data.secure_url;
         setImageUrl(uploadedImageUrl);

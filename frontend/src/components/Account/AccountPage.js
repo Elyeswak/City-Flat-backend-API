@@ -55,24 +55,38 @@ function AccountPage() {
     const file = e.target.files[0];
     setImageUrl(file);
   };
-  
+
   const handleSaveChanges = async () => {
     if (imageUrl) {
       try {
-        const timestamp = Date.now();
-        const signature = await axios.get(
-          `http://localhost:9090/signature?timestamp=${timestamp}`
-        );
+        // const timestamp = Date.now();
+        // console.log(timestamp);
+        // const signature = await axios.get(
+        //   `http://localhost:9090/signature?timestamp=${timestamp}`
+        // );
+
+        // Delete all files with userId in their names
+        // const publicIdPrefix = `${userId},`;
+        // const deleteResponse = await axios.delete(
+        //   `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/resources/image`,
+        //   {
+        //     params: {
+        //       prefix: `CityFlat-assets/profile_imgs/${publicIdPrefix}`,
+        //       type: "upload",
+        //     },
+        //     headers: {
+        //       Authorization: `Bearer ${process.env.REACT_APP_CLOUDINARY_API_SECRET}`,
+        //     },
+        //   }
+        // );
+        // console.log(deleteResponse);
 
         const formData = new FormData();
         formData.append("file", imageUrl);
-        formData.append("upload_preset", "cityFlat");
-        formData.append("public_id", user.name);
+        formData.append("upload_preset", "k0vttmaf");
+        formData.append("public_id", `${userId},${Date.now()}`);
         formData.append("folder", "CityFlat-assets/profile_imgs");
         formData.append("api_key", process.env.REACT_APP_CLOUDINARY_KEY);
-        formData.append("signature", signature.data.signature);
-        formData.append("timestamp", timestamp);
-        formData.append("overwrite", true);
 
         const response = await axios.post(
           `https://api.cloudinary.com/v1_1/${cloudinary.cloudinaryConfig.cloud.cloudName}/image/upload`,

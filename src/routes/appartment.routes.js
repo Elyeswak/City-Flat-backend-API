@@ -14,7 +14,6 @@ import {
   createReview,
   deleteReview,
   updateReview,
-  deleteAllReviews,
   getReviewById,
 } from "../controllers/review.controller.js";
 import { ensureUser } from "../middlewares/authorization-handler.js";
@@ -31,10 +30,6 @@ appartmentRouter
   .put(ensureUser, updateReview)
   .get(ensureUser, getAllReviews)
   .delete(ensureUser, deleteReview);
-
-appartmentRouter.route("/deleteAll").delete(deleteAllReviews);
 appartmentRouter.route("/review/:param").get(getReviewById);
-
-appartmentRouter.route("/all/getAllAppart").get(httpGetAllApparts);
 
 export { appartmentRouter };

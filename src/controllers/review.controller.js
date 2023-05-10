@@ -20,7 +20,7 @@ export async function createReview(req, res) {
       $push: { reviews: savedReview._id },
       sumOfRatings: newSumOfRatings,
       numOfRatings: numberOfRatings,
-      rating: Math.round(newSumOfRatings / numberOfRatings),
+      rating: Math.round((newSumOfRatings / numberOfRatings) * 2) / 2,
     })
       .then((result) => {
         res.status(201).json(savedReview);
@@ -43,7 +43,7 @@ export async function deleteReview(req, res) {
     const newRating =
       newSumOfRatings === 0 || numberOfRatings === 0
         ? 0
-        : Math.round(newSumOfRatings / numberOfRatings);
+        : Math.round((newSumOfRatings / numberOfRatings) * 2) / 2;
     console.log(newSumOfRatings);
     console.log(numberOfRatings);
     await Appartment.findByIdAndUpdate(req.body.appartmentId, {
@@ -117,7 +117,9 @@ export async function updateReview(req, res) {
     const newSumOfRatings = oldSumOfRatings - oldRating + newRating;
     const newNumOfRatings = oldNumOfRatings;
     const newRatingValue =
-      newNumOfRatings === 0 ? 0 : Math.round(newSumOfRatings / newNumOfRatings);
+      newNumOfRatings === 0
+        ? 0
+        : Math.round((newSumOfRatings / newNumOfRatings) * 2) / 2;
     const updatedReview = await Review.findByIdAndUpdate(
       req.params.param,
       { Rating: req.body.rating, Description: req.body.description },

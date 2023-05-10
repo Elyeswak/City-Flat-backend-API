@@ -3,6 +3,7 @@ import moment from "moment";
 import axios from "axios";
 import { Card, Dropdown } from "react-bootstrap";
 import EditModal from "./EditModal";
+import { Rating } from "react-simple-star-rating";
 
 export default function ReviewCard({
   review,
@@ -10,7 +11,7 @@ export default function ReviewCard({
   allReviews,
   setAllReviews,
   getRate,
-  setFormData,
+  setRefresh,
   index,
 }) {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -69,7 +70,7 @@ export default function ReviewCard({
       <Card key={review._id} className="text-dark review-card">
         <Card.Body>
           <Card.Title className="row">
-            <div className="col text-start d-flex justify-content-center align-items-center">
+            <div className="col-8 text-start d-flex justify-content-center align-items-center">
               <img
                 src={userImg}
                 className="img-fluid img-thumbnail rounded-circle write-review-img"
@@ -78,16 +79,18 @@ export default function ReviewCard({
                 {review.UserName ? review.UserName : "Unknown User"}
               </p>
             </div>
-            <p className="col text-end">Rating: {review.Rating}⭐</p>
+            <p className="col-4 text-end">
+              <Rating
+                initialValue={review.Rating}
+                readonly
+                allowFraction
+                size={25}
+              />
+            </p>
           </Card.Title>
           <Card.Text>
             <div className="row mb-3">
-              <p className="col-10 text-start">{review.Description}</p>
-              <p className="col-2 text-end">
-                {moment(review.createdDate).format("DD MMMM YYYY")}
-                <br />
-                {moment(review.createdDate).format("h:mm A")}
-              </p>
+              <p className="text-start">{review.Description}</p>
             </div>
             {isReviewOwner ? (
               <Dropdown className="drop-toggle">
@@ -129,7 +132,7 @@ export default function ReviewCard({
         apartment={apartment}
         userToken={userToken}
         getRate={getRate}
-        setFormData={setFormData}
+        setRefresh={setRefresh}
         setShowModal={setShowModal}
       />
     </>

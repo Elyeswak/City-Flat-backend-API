@@ -8,7 +8,7 @@ export default function EditModal({
   apartment,
   userToken,
   getRate,
-  setFormData,
+  setRefresh,
   setShowModal,
 }) {
   const handleCloseModal = () => setShowModal(false);
@@ -46,10 +46,7 @@ export default function EditModal({
       const ResData = response.data;
       console.log(ResData);
       handleCloseModal();
-      setFormData({
-        rating: "",
-        review: "",
-      });
+      setRefresh(1);
       getRate();
     } catch (error) {}
   };

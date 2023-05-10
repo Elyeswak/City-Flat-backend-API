@@ -38,12 +38,11 @@ function ApartmentDetails() {
     const item = localStorage.getItem(itemName);
     return item !== null;
   };
-  const itemExists = checkItemInLocalStorage("user");
 
   //user info
   const user = JSON.parse(localStorage.getItem("user"));
-  const userId = itemExists ? user.id : "no user";
-  const userToken = itemExists ? user.token : "no user";
+  const userId = user?.id;
+  const userToken = user?.token;
 
   const [formData, setFormData] = useState({
     rating: "",
@@ -89,11 +88,7 @@ function ApartmentDetails() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:9090/appartments/reviews/${apartment?.id}`, {
-        headers: {
-          Authorization: `Bearer ${userToken}`, // if authentication is required
-        },
-      })
+      .get(`http://localhost:9090/appartments/reviews/${apartment?.id}`)
       .then((response) => {
         setAllReviews(response.data);
       })
@@ -502,86 +497,82 @@ function ApartmentDetails() {
                 </div>
               </div>
             </div>
-            {itemExists ? (
-              <div className="review-cards-cont">
-                <Card className="text-dark review-card">
-                  <Card.Body>
-                    <Card.Title className="border-bottom border-5 fs-3">
-                      Write a review
-                    </Card.Title>
-                    <div className="row px-5">
-                      <div className="col-4 d-flex justify-content-center align-items-center">
-                        <img
-                          src={user.img}
-                          className="img-fluid img-thumbnail rounded-circle write-review-img"
-                        />
-                        <p className="ms-3 fs-4">
-                          {itemExists ? user.name : null}
-                        </p>
-                      </div>
-                      <div className="col-8">
-                        <Form onSubmit={handleSubmit}>
-                          <Form.Group controlId="rating" className="mb-2">
-                            <Form.Control
-                              type="number"
-                              min="0"
-                              max="5"
-                              placeholder="Rating (0-5)"
-                              value={formData.rating}
-                              onChange={(event) =>
-                                setFormData({
-                                  ...formData,
-                                  rating: event.target.value,
-                                })
-                              }
-                              isInvalid={!!errors.rating}
-                            />
-                            <Form.Control.Feedback type="invalid">
-                              {errors.rating}
-                            </Form.Control.Feedback>
-                          </Form.Group>
-                          <Form.Group controlId="review" className="mb-2">
-                            <Form.Control
-                              as="textarea"
-                              rows={2}
-                              minLength={20}
-                              maxLength={250}
-                              placeholder="Review"
-                              value={formData.review}
-                              onChange={(event) =>
-                                setFormData({
-                                  ...formData,
-                                  review: event.target.value,
-                                })
-                              }
-                              isInvalid={!!errors.review}
-                            />
-                            <Form.Control.Feedback type="invalid">
-                              {errors.review}
-                            </Form.Control.Feedback>
-                          </Form.Group>
-                          <Button type="submit" className="w-50 add-review-btn">
-                            Submit
-                          </Button>
-                        </Form>
-                      </div>
+            <div className="review-cards-cont">
+              {user ? (<Card className="text-dark review-card">
+                <Card.Body>
+                  <Card.Title className="border-bottom border-5 fs-3">
+                    Write a review
+                  </Card.Title>
+                  <div className="row px-5">
+                    <div className="col-4 d-flex justify-content-center align-items-center">
+                      <img
+                        src={user.img}
+                        className="img-fluid img-thumbnail rounded-circle write-review-img"
+                      />
+                      <p className="ms-3 fs-4">{user ? null : user.name}</p>
                     </div>
-                  </Card.Body>
-                </Card>
-                {allReviews.map((review, index) => (
-                  <ReviewCard
-                    key={index + 1}
-                    review={review}
-                    apartment={apartment}
-                    allReviews={allReviews}
-                    setAllReviews={setAllReviews}
-                    getRate={getRate}
-                    setFormData={setFormData}
-                    index={index + 1}
-                  />
-                ))}
-              </div>
-            ) : null}
+                    <div className="col-8">
+                      <Form onSubmit={handleSubmit}>
+                        <Form.Group controlId="rating" className="mb-2">
+                          <Form.Control
+                            type="number"
+                            min="0"
+                            max="5"
+                            placeholder="Rating (0-5)"
+                            value={formData.rating}
+                            onChange={(event) =>
+                              setFormData({
+                                ...formData,
+                                rating: event.target.value,
+                              })
+                            }
+                            isInvalid={!!errors.rating}
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {errors.rating}
+                          </Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group controlId="review" className="mb-2">
+                          <Form.Control
+                            as="textarea"
+                            rows={2}
+                            minLength={20}
+                            maxLength={250}
+                            placeholder="Review"
+                            value={formData.review}
+                            onChange={(event) =>
+                              setFormData({
+                                ...formData,
+                                review: event.target.value,
+                              })
+                            }
+                            isInvalid={!!errors.review}
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {errors.review}
+                          </Form.Control.Feedback>
+                        </Form.Group>
+                        <Button type="submit" className="w-50 add-review-btn">
+                          Submit
+                        </Button>
+                      </Form>
+                    </div>
+                  </div>
+                </Card.Body>
+              </Card>) : null}
+              {allReviews.map((review, index) => (
+                <ReviewCard
+                  key={index + 1}
+                  review={review}
+                  apartment={apartment}
+                  allReviews={allReviews}
+                  setAllReviews={setAllReviews}
+                  getRate={getRate}
+                  setFormData={setFormData}
+                  index={index + 1}
+                />
+              ))}
+            </div>
           </div>
           <Footer />
         </div>

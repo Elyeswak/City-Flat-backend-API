@@ -14,8 +14,8 @@ export default function ReviewCard({
   index,
 }) {
   const user = JSON.parse(localStorage.getItem("user"));
-  const userId = user.id;
-  const userToken = user.token;
+  const userId = user?.id;
+  const userToken = user?.token;
   const isReviewOwner = userId === review.User;
   const [userImg, setUserImg] = useState("");
 

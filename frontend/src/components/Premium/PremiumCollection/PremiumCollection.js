@@ -16,21 +16,24 @@ function PremiumCollection() {
   const { t } = useTranslation();
 
   const user = JSON.parse(localStorage.getItem("user"));
-  const userId = user.id;
-  const userToken = user.token;
+  const userId = user?.id;
+  const userToken = user?.token;
 
   const [wishlist, setWishlist] = useState([]);
 
   useEffect(() => {
-    // fetch all services
-    axios
-      .get(`http://localhost:9090/user/${userId}`)
-      .then((response) => {
-        setWishlist(response.data.wishlist);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    try {
+      axios
+        .get(`http://localhost:9090/user/${userId}`)
+        .then((response) => {
+          setWishlist(response.data.wishlist);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
 
   useEffect(() => {
@@ -58,36 +61,42 @@ function PremiumCollection() {
   // };
 
   const handleLikeClick = (id) => {
-    setApartments((prevApartments) =>
-      prevApartments.map((apartment) =>
-        apartment.id === id
-          ? { ...apartment, liked: !apartment.liked }
-          : apartment
-      )
-    );
-
-    if (wishlist.includes(id)) {
-      fetch(`http://localhost:9090/user/rmwishlist/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then(() =>
-          setWishlist((prevWishlist) =>
-            prevWishlist.filter((item) => item !== id)
-          )
+    if (user) {
+      setApartments((prevApartments) =>
+        prevApartments.map((apartment) =>
+          apartment.id === id
+            ? { ...apartment, liked: !apartment.liked }
+            : apartment
         )
-        .catch((error) => console.log(error));
+      );
+
+      if (wishlist.includes(id)) {
+        fetch(`http://localhost:9090/user/rmwishlist/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userToken}`,
+          },
+        })
+          .then(() =>
+            setWishlist((prevWishlist) =>
+              prevWishlist.filter((item) => item !== id)
+            )
+          )
+          .catch((error) => console.log(error));
+      } else {
+        fetch(`http://localhost:9090/user/wishlist/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userToken}`,
+          },
+        })
+          .then(() => setWishlist((prevWishlist) => [...prevWishlist, id]))
+          .catch((error) => console.log(error));
+      }
     } else {
-      fetch(`http://localhost:9090/user/wishlist/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then(() => setWishlist((prevWishlist) => [...prevWishlist, id]))
-        .catch((error) => console.log(error));
+      return;
     }
   };
 
@@ -128,9 +137,13 @@ function PremiumCollection() {
                           <div className="like_button">
                             <button onClick={() => handleLikeClick(data.id)}>
                               <FontAwesomeIcon
-                                icon={data.liked ? faHeart : faHeartEmpty}
+                                icon={
+                                  wishlist.includes(data.id)
+                                    ? faHeart
+                                    : faHeartEmpty
+                                }
                                 className={`heart-icon ${
-                                  data.liked ? "liked" : ""
+                                  wishlist.includes(data.id) ? "liked" : ""
                                 }`}
                               />
                             </button>

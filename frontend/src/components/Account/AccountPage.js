@@ -13,11 +13,14 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./AccountPage.css";
 import { Cloudinary } from "@cloudinary/base";
+import { useTranslation } from "react-i18next";
+
 
 function AccountPage() {
   const user = JSON.parse(localStorage.getItem("user"));
   const userId = user.id;
   const userToken = user.token;
+  const { t } = useTranslation();
 
   const [reservations, setReservations] = useState([]);
   const [orders, setOrders] = useState([]);
@@ -55,6 +58,8 @@ function AccountPage() {
     const file = e.target.files[0];
     setImageUrl(file);
   };
+
+
 
   const handleSaveChanges = async () => {
     if (imageUrl) {
@@ -398,14 +403,14 @@ function AccountPage() {
                       className="btn btn-outline-primary ms-1 edit-profile"
                       onClick={handleShowModal}
                     >
-                      EDIT MY PROFILE
+                      {t("EDIT MY PROFILE")}
                     </button>
                     <button
                       type="button"
                       className="btn btn-outline-primary ms-1 edit-profile"
                       onClick={handleShowPasswordModal}
                     >
-                      EDIT MY PASSWORD
+                      {t("EDIT MY PASSWORD")}
                     </button>
                   </div>
                 </div>
@@ -419,7 +424,7 @@ function AccountPage() {
               <Modal.Body>
                 <Form>
                   <Form.Group className="mb-3" controlId="formBasicName">
-                    <Form.Label>Full Name</Form.Label>
+                    <Form.Label>{t("Full Name")}</Form.Label>
                     <Form.Control
                       type="text"
                       placeholder="Enter Your Name"
@@ -428,7 +433,7 @@ function AccountPage() {
                     />
                   </Form.Group>
                   <Form.Group className="mb-3" controlId="formBasicPhone">
-                    <Form.Label>Phone Number</Form.Label>
+                    <Form.Label>{t("Phone Number")}</Form.Label>
 
                     <PhoneInput
                       id="number"
@@ -439,7 +444,7 @@ function AccountPage() {
                     />
                   </Form.Group>
                   <Form.Group className="mb-3" controlId="formBasicAddress">
-                    <Form.Label>Address</Form.Label>
+                    <Form.Label>{t("Address")}</Form.Label>
                     <Form.Control
                       type="text"
                       placeholder={user.address}
@@ -451,10 +456,10 @@ function AccountPage() {
               </Modal.Body>
               <Modal.Footer>
                 <Button variant="secondary" onClick={() => setShowModal(false)}>
-                  Close
+                  {t("Close")}
                 </Button>
                 <Button variant="primary" onClick={handleSaveProfile}>
-                  Save Changes
+                  {t("Save Changes")}
                 </Button>
               </Modal.Footer>
             </Modal>
@@ -464,25 +469,25 @@ function AccountPage() {
               onHide={() => setShowPasswordModal(false)}
             >
               <Modal.Header closeButton>
-                <Modal.Title>Edit Password</Modal.Title>
+                <Modal.Title>{t("Edit Password")}</Modal.Title>
               </Modal.Header>
               <Modal.Body>
                 <Form>
                   <Form.Group className="mb-3" controlId="formBasicOldPassword">
-                    <Form.Label>Old Password</Form.Label>
+                    <Form.Label>{t("Old Password")}</Form.Label>
                     <Form.Control
                       type="password"
-                      placeholder="Enter your old password"
+                      placeholder={t("Enter your old password")}
                       value={oldPassword}
                       onChange={onChangeOldPassword}
                     />
                   </Form.Group>
 
                   <Form.Group className="mb-3" controlId="formBasicNewPassword">
-                    <Form.Label>New Password</Form.Label>
+                    <Form.Label>{t("New Password")}</Form.Label>
                     <Form.Control
                       type="password"
-                      placeholder="Set new password"
+                      placeholder={t("Set new password")}
                       value={newPassword}
                       onChange={onChangeNewPassword}
                     />
@@ -494,22 +499,22 @@ function AccountPage() {
                   variant="secondary"
                   onClick={() => setShowPasswordModal(false)}
                 >
-                  Close
+                  {t("Close")}
                 </Button>
                 <Button variant="primary" onClick={handlePasswordChange}>
-                  Save Changes
+                  {t("Save Changes")}
                 </Button>
               </Modal.Footer>
             </Modal>
 
             <Modal show={showEditImg} onHide={handleCloseEditImg}>
               <Modal.Header closeButton>
-                <Modal.Title>Edit Profile Image</Modal.Title>
+                <Modal.Title>{t("Edit Profile Image")}</Modal.Title>
               </Modal.Header>
               <Modal.Body>
                 <Form>
                   <Form.Group className="mb-3" controlId="imageUrl">
-                    <Form.Label>Image Url</Form.Label>
+                    <Form.Label>{t("Image Url")}</Form.Label>
                     <Form.Control
                       type="url"
                       value={imageUrl2}
@@ -517,19 +522,19 @@ function AccountPage() {
                       autoFocus
                     />
                   </Form.Group>
-                  <Form.Label>Or</Form.Label>
+                  <Form.Label>{t("Or")}</Form.Label>
                   <Form.Group className="mb-3" controlId="file">
-                    <Form.Label>Upload Local Image</Form.Label>
+                    <Form.Label>{t("Upload Local Image")}</Form.Label>
                     <Form.Control type="file" onChange={handleFileChange} />
                   </Form.Group>
                 </Form>
               </Modal.Body>
               <Modal.Footer>
                 <Button variant="secondary" onClick={handleCloseEditImg}>
-                  Close
+                  {t("Close")}
                 </Button>
                 <Button variant="primary" onClick={handleSaveChanges}>
-                  Save Changes
+                  {t("Save Changes")}
                 </Button>
               </Modal.Footer>
             </Modal>
@@ -539,7 +544,7 @@ function AccountPage() {
                 <div className="card-body">
                   <div className="row">
                     <div className="col-sm-3">
-                      <p className="mb-0">Full Name</p>
+                      <p className="mb-0">{t("Full Name")}</p>
                     </div>
                     <div className="col-sm-9">
                       <p className="text-muted mb-0">{user.name}</p>
@@ -548,7 +553,7 @@ function AccountPage() {
                   <hr />
                   <div className="row">
                     <div className="col-sm-3">
-                      <p className="mb-0">Email</p>
+                      <p className="mb-0">{t("Email")}</p>
                     </div>
                     <div className="col-sm-9">
                       <p className="text-muted mb-0">{user.email}</p>
@@ -557,7 +562,7 @@ function AccountPage() {
                   <hr />
                   <div className="row">
                     <div className="col-sm-3">
-                      <p className="mb-0">Phone</p>
+                      <p className="mb-0">{t("Phone Number")}</p>
                     </div>
                     <div className="col-sm-9">
                       <p className="text-muted mb-0">{user.number}</p>
@@ -566,7 +571,7 @@ function AccountPage() {
                   <hr />
                   <div className="row">
                     <div className="col-sm-3">
-                      <p className="mb-0">Address</p>
+                      <p className="mb-0">{t("Address")}</p>
                     </div>
                     <div className="col-sm-9">
                       <p className="text-muted mb-0">{user.address}</p>
@@ -578,15 +583,15 @@ function AccountPage() {
                 <div className="col-md-6">
                   <div className="card mb-4 mb-md-0 color-white">
                     <div className="card-body">
-                      <p className="mb-4">My orders</p>
+                      <p className="mb-4">{t("My orders")}</p>
                       <Table responsive className="reservations_table">
                         <thead>
                           <tr>
                             <th>#</th>
-                            <th>Apartment</th>
-                            <th>Date</th>
-                            <th>Total price</th>
-                            <th>Status</th>
+                            <th>{t("Apartment")}</th>
+                            <th>{t("Date")}</th>
+                            <th>{t("Total price")}</th>
+                            <th>{t("Status")}</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -602,7 +607,7 @@ function AccountPage() {
                                 {order.state === "PENDING" && (
                                   <div>
                                     <Badge bg="warning" pill text="dark">
-                                      PENDING
+                                      {t("PENDING")}
                                     </Badge>
                                   </div>
                                 )}
@@ -611,14 +616,14 @@ function AccountPage() {
                                     <div className="badge_status"></div>
                                     <div className="pay_btn"></div>
                                     <Badge bg="success" pill text="dark">
-                                      ACCEPTED
+                                      {t("ACCEPTED")}
                                     </Badge>
                                   </div>
                                 )}
                                 {order.state === "DECLINED" && (
                                   <div>
                                     <Badge bg="danger" pill text="dark">
-                                      DECLINED
+                                      {t("DECLINED")}
                                     </Badge>
                                   </div>
                                 )}
@@ -633,14 +638,14 @@ function AccountPage() {
                 <div className="col-md-6">
                   <div className="card mb-4 mb-md-0 color-white">
                     <div className="card-body">
-                      <p className="mb-4">My reservations</p>
+                      <p className="mb-4">{t("My reservations")}</p>
                       <Table responsive className="reservations_table">
                         <thead>
                           <tr>
                             <th>#</th>
-                            <th>Reservation code</th>
-                            <th>Date</th>
-                            <th>Total price</th>
+                            <th>{t("Reservation code")}</th>
+                            <th>{t("Date")}</th>
+                            <th>{t("Total price")}</th>
                           </tr>
                         </thead>
                         <tbody>

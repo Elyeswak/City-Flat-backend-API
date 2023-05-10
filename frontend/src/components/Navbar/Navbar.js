@@ -221,14 +221,14 @@ function Navbar() {
               >
                 <div className="dropdown__list">
                   <a href="/requests">
-                    <button className="button-31">Orders</button>
+                    <button className="button-31">{t("Orders")}</button>
                   </a>
                   <a href="/wishlist">
-                    <button className="button-31">Wishlist</button>
+                    <button className="button-31">{t("Wishlist")}</button>
                   </a>
 
                   <a href="/account">
-                    <button className="button-31">Account</button>
+                    <button className="button-31">{t("Account")}</button>
                   </a>
 
                   {isAdmin ? (
@@ -238,11 +238,11 @@ function Navbar() {
                   ) : null}
                   <hr />
                   <a href="/help">
-                    <button className="button-31">Help</button>
+                    <button className="button-31">{t("Help")}</button>
                   </a>
 
                   <button className="button-31" onClick={handleLogout}>
-                    Logout
+                    {t("Logout")}
                   </button>
                 </div>
               </div>
@@ -258,7 +258,7 @@ function Navbar() {
                 type="button"
                 className="btn btn-dark"
               >
-                SIGNUP
+                {("SIGNUP")}
               </motion.button>
             </a>
             <a href="/login">
@@ -269,7 +269,7 @@ function Navbar() {
                 whileTap={{ scale: 0.8 }}
                 transition={{ duration: 0.7 }}
               >
-                LOGIN
+                {t("LOGIN")}
               </motion.button>
             </a>
           </div>

@@ -8,11 +8,11 @@ import Swal from "sweetalert2";
 import moment from "moment";
 import Badge from "react-bootstrap/Badge";
 import axios from "axios";
-
+import { useTranslation } from "react-i18next";
 
 function Requestspage() {
   const [orders, setOrders] = useState([]);
-
+  const { t } = useTranslation();
   /**GET ALL ORDERS FOR THE LOGGED IN USER */
   const user = JSON.parse(localStorage.getItem("user"));
   const token = user.token;
@@ -115,120 +115,128 @@ function Requestspage() {
             <Table responsive className="requests_table">
               {
                 <>
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Apartment</th>
-                    <th>Booking Date</th>
-                    <th>check-in</th>
-                    <th>check-out</th>
-                    <th>Total price</th>
-                    <th>Order status</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {orders.map((order, index) => (
-                    <tr key={index}>
-                      <td>{index + 1}</td>
-                      <td>{order.appartment.name}</td>
-                      <td>{moment(order.createdAt).format("DD MMMM YYYY")}</td>
-                      <td>{moment(order.checkIn).format("DD MMMM YYYY")}</td>
-                      <td>{moment(order.checkOut).format("DD MMMM YYYY")}</td>
-                      <td>€ {order.totalPrice}</td>
-                      <td>
-                        {order.state === "PENDING" && (
-                          <div>
-                            <Badge bg="warning" pill text="dark">
-                              PENDING
-                            </Badge>
-                          </div>
-                        )}
-                        {order.state === "ACCEPTED" && (
-                          <div>
-                            <Badge bg="success" pill text="dark">
-                              ACCEPTED
-                            </Badge>
-                          </div>
-                        )}
-                        {order.state === "DECLINED" && (
-                          <div>
-                            <Badge bg="danger" pill text="dark">
-                              DECLINED
-                            </Badge>
-                          </div>
-                        )}
-                      </td>
-    
-                      <td>
-                        {order.isPaied === true ? (
-                          <span>Already Paid</span>
-                        ) : (
-                          <div>
-                            {order.state === "PENDING" && (
-                              <div>
-                                <button
-                                  type="button"
-                                  className="btn"
-                                  style={{
-                                    backgroundColor: "#dc3444",
-                                    borderRadius: "16px",
-                                    fontSize: "12px",
-                                  }}
-                                  onClick={() => handleCancelClick(order.id)}
-                                >
-                                  <span style={{ color: "white" }}>DELETE</span>
-                                </button>
-                              </div>
-                            )}
-                            {order.state === "ACCEPTED" && (
-                              <div>
-                                <button
-                                  type="button"
-                                  className="btn"
-                                  style={{
-                                    backgroundColor: "#23639e",
-                                    borderRadius: "16px",
-                                    fontSize: "12px",
-                                  }}
-                                  onClick={(e) => handlePayNowClick(e, order)}
-                                >
-                                  <span style={{ color: "white" }}>PAY NOW</span>
-                                </button>
-    
-                                <a
-                                  style={{
-                                    marginLeft: "3%",
-                                  }}
-                                  className="link--metis link"
-                                  onClick={() => handleCancelClick(order.id)}
-                                >
-                                  <span>CANCEL</span>
-                                </a>
-                              </div>
-                            )}
-                            {order.state === "DECLINED" && (
-                              <div>
-                                <button
-                                  type="button"
-                                  className="btn"
-                                  style={{
-                                    backgroundColor: "#dc3444",
-                                    borderRadius: "16px",
-                                    fontSize: "12px",
-                                  }}
-                                  onClick={() => handleCancelClick(order.id)}
-                                >
-                                  <span style={{ color: "white" }}>DELETE</span>
-                                </button>
-                              </div>
-                            )}
-                          </div>
-                        )}
-                      </td>
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>{t("Apartment")}</th>
+                      <th>{t("Booking Date")}</th>
+                      <th>{t("check-in")}</th>
+                      <th>{t("check-out")}</th>
+                      <th>{t("Total price")}</th>
+                      <th>{t("Order status")}</th>
+                      <th>{t("Actions")}</th>
                     </tr>
-                  ))}
-                </tbody>
+                  </thead>
+                  <tbody>
+                    {orders.map((order, index) => (
+                      <tr key={index}>
+                        <td>{index + 1}</td>
+                        <td>{order.appartment.name}</td>
+                        <td>
+                          {moment(order.createdAt).format("DD MMMM YYYY")}
+                        </td>
+                        <td>{moment(order.checkIn).format("DD MMMM YYYY")}</td>
+                        <td>{moment(order.checkOut).format("DD MMMM YYYY")}</td>
+                        <td>€ {order.totalPrice}</td>
+                        <td>
+                          {order.state === "PENDING" && (
+                            <div>
+                              <Badge bg="warning" pill text="dark">
+                                {t("PENDING")}
+                              </Badge>
+                            </div>
+                          )}
+                          {order.state === "ACCEPTED" && (
+                            <div>
+                              <Badge bg="success" pill text="dark">
+                                {t("ACCEPTED")}
+                              </Badge>
+                            </div>
+                          )}
+                          {order.state === "DECLINED" && (
+                            <div>
+                              <Badge bg="danger" pill text="dark">
+                                DECLINED
+                              </Badge>
+                            </div>
+                          )}
+                        </td>
+
+                        <td>
+                          {order.isPaied === true ? (
+                            <span>{t("Already Paid")}</span>
+                          ) : (
+                            <div>
+                              {order.state === "PENDING" && (
+                                <div>
+                                  <button
+                                    type="button"
+                                    className="btn"
+                                    style={{
+                                      backgroundColor: "#dc3444",
+                                      borderRadius: "16px",
+                                      fontSize: "12px",
+                                    }}
+                                    onClick={() => handleCancelClick(order.id)}
+                                  >
+                                    <span style={{ color: "white" }}>
+                                      {t("DELETE")}
+                                    </span>
+                                  </button>
+                                </div>
+                              )}
+                              {order.state === "ACCEPTED" && (
+                                <div>
+                                  <button
+                                    type="button"
+                                    className="btn"
+                                    style={{
+                                      backgroundColor: "#23639e",
+                                      borderRadius: "16px",
+                                      fontSize: "12px",
+                                    }}
+                                    onClick={(e) => handlePayNowClick(e, order)}
+                                  >
+                                    <span style={{ color: "white" }}>
+                                      {t("PAY NOW")}
+                                    </span>
+                                  </button>
+
+                                  <a
+                                    style={{
+                                      marginLeft: "3%",
+                                    }}
+                                    className="link--metis link"
+                                    onClick={() => handleCancelClick(order.id)}
+                                  >
+                                    <span>{t("CANCEL")}</span>
+                                  </a>
+                                </div>
+                              )}
+                              {order.state === "DECLINED" && (
+                                <div>
+                                  <button
+                                    type="button"
+                                    className="btn"
+                                    style={{
+                                      backgroundColor: "#dc3444",
+                                      borderRadius: "16px",
+                                      fontSize: "12px",
+                                    }}
+                                    onClick={() => handleCancelClick(order.id)}
+                                  >
+                                    <span style={{ color: "white" }}>
+                                      {t("DELETE")}
+                                    </span>
+                                  </button>
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
                 </>
               }
             </Table>
@@ -240,7 +248,6 @@ function Requestspage() {
       <Footer />
     </div>
   );
-  
 }
 
 export default Requestspage;

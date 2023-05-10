@@ -34,6 +34,7 @@ appartmentRouter
 
 appartmentRouter.route("/deleteAll").delete(deleteAllReviews);
 appartmentRouter.route("/review/:param").get(getReviewById);
-appartmentRouter.route("/getAllAppart").post(httpGetAllApparts);
+
+appartmentRouter.route("/all/getAllAppart").get(httpGetAllApparts);
 
 export { appartmentRouter };

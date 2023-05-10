@@ -7,7 +7,7 @@ const OrdernSchema = new Schema({
     User:{ type: Schema.Types.ObjectId, ref: 'User' },
     appartment:{ type: Schema.Types.ObjectId, ref: 'Appartment'},
     
-    description: { type: String, required: true},
+    description: { type: String, required: false},
    
     totalPrice: {
         type: Number,
@@ -44,6 +44,6 @@ const OrdernSchema = new Schema({
 { timestamps: true }
 );
 
-//ReservationSchema.index({createdAt: 1},{expireAfterSeconds:2592000});
+
 
 export default model("Order", OrdernSchema);

@@ -427,53 +427,40 @@ export function httpDeclineOrder(req, res) {
 }
 
 export function httpAdminDeclineOrder(req, res) {
-  findOneOrderByFilter(req.params.param)
-    .then((foundOrder) => {
-      if (!foundOrder) {
-        return res.status(404).json({ message: "Order not found!" });
-      } else {
-        if (foundOrder.state == "ACCEPTED" || foundOrder.state == "DECLINED") {
-          return res.status(400).json({
-            message: " Order already accepted or declined !! ",
-          });
-        } else {
-          userDb.findById(foundOrder.User._id).then((founUser) => {
-            appartmentDb
-              .findById(foundOrder.appartment._id)
-              .then((foundAppart) => {
-                sendDeclineReservationEmail(founUser, foundOrder, foundAppart);
-                orderDb
-                  .deleteOne(foundOrder._id, {
-                    $set: {
-                      accepted: false,
-                      state: "DECLINED",
-                    },
-                  })
-                  .then((order) => {
-                    const notification = {
-                      user: foundOrder.User._id,
-                      message:
-                        "Your reservation for :" +
-                        foundOrder.appartment.name +
-                        " reservation code : " +
-                        foundOrder.id +
-                        "has been declined by our admin .",
-                    };
-                    createNotification(notification);
+   findOneOrderByFilter(req.params.param)
+     .then((foundOrder) => {
+       if (!foundOrder) {
+         return res.status(404).json({ message: 'Order not found!' });
+       } else {
+         if (foundOrder.state === "ACCEPTED" || foundOrder.state === 'DECLINED') {
+           return res.status(400).json({
+             message: 'Order already accepted or declined!',
+           });
+         } else {
+           orderDb
+             .updateOne(
+               { _id: foundOrder._id },
+               { $set: { accepted: false, state: "DECLINED" } }
+             )
+             .then((order) => {
 
-                    res.status(200).json({
-                      message: `${foundOrder.id} delclined successfully`,
-                    });
-                  })
-                  .catch((err) => res.status(500).json({ error: err.message }));
-              })
-              .catch((err) => res.status(500).json({ error: err.message }));
-          });
-        }
-      }
-    })
-    .catch((err) => res.status(500).json({ error: err.message }));
-}
+               sendDeclineReservationEmail(foundOrder.User,foundOrder,foundOrder.appartment)
+               const notification = {
+                 user: foundOrder.User._id,
+                 message: `Your reservation for ${foundOrder.appartment.name} (reservation code: ${foundOrder.id}) has been declined by our admin.`,
+               };
+               createNotification(notification);
+ 
+               res.status(200).json({
+                 message: `${foundOrder.id} declined successfully`,
+               });
+             })
+             .catch((err) => res.status(500).json({ error: err.message }));
+         }
+       }
+     })
+     .catch((err) => res.status(500).json({ error: err.message }));
+ }
 
 export function httpAdminAcceptOrder(req, res) {
   findOneOrderByFilter(req.params.param)

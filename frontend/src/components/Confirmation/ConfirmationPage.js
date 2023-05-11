@@ -150,9 +150,8 @@ function PaymentPage() {
                 <h4>{t("SERVICES")}</h4>
                 <div className="row services">
                   {serviceNames.map((serviceName) => (
-                    <div className="col col-sm-2" key={serviceName}>
+                    <div className="col col-sm-2 mx-3 d-flex flex-column align-items-center" key={serviceName}>
                       {serviceIcons[serviceName]}
-                      <br />
                       <p className="service_title">{serviceName}</p>
                     </div>
                   ))}

@@ -13,8 +13,7 @@ export async function createReview(req, res) {
     const savedReview = await review.save();
     const apartment = await Appartment.findById(req.params.param);
     // Update total rating and number of reviews for the apartment
-    const newSumOfRatings =
-      parseInt(apartment.sumOfRatings) + parseInt(req.body.Rating);
+    const newSumOfRatings = apartment.sumOfRatings + req.body.Rating;
     const numberOfRatings = apartment.numOfRatings + 1;
     await Appartment.findByIdAndUpdate(req.params.param, {
       $push: { reviews: savedReview._id },
@@ -37,8 +36,7 @@ export async function deleteReview(req, res) {
     const reviewRate = await Review.findById(req.params.param);
     const review = await Review.findByIdAndDelete(req.params.param);
     const apartment = await Appartment.findById(req.body.appartmentId);
-    const newSumOfRatings =
-      parseInt(apartment.sumOfRatings) - parseInt(reviewRate.Rating);
+    const newSumOfRatings = apartment.sumOfRatings - reviewRate.Rating;
     const numberOfRatings = parseInt(apartment.numOfRatings) - 1;
     const newRating =
       newSumOfRatings === 0 || numberOfRatings === 0
@@ -108,18 +106,25 @@ export async function deleteAllReviews(req, res) {
 export async function updateReview(req, res) {
   try {
     const review = await Review.findById(req.params.param);
-    const oldRating = parseInt(review.Rating);
-    const newRating = parseInt(req.body.rating);
+    const oldRating = review.Rating;
+    console.log("oldRating", oldRating, typeof oldRating);
+    const newRating = parseFloat(req.body.rating);
+    console.log("newRating", newRating, typeof newRating);
     const apartmentId = req.body.appartmentId;
     const apartment = await Appartment.findById(apartmentId);
-    const oldSumOfRatings = parseInt(apartment.sumOfRatings);
-    const oldNumOfRatings = parseInt(apartment.numOfRatings);
+    const oldSumOfRatings = parseFloat(apartment.sumOfRatings);
+    console.log("oldSumOfRatings", oldSumOfRatings, typeof oldSumOfRatings);
+    const oldNumOfRatings = parseFloat(apartment.numOfRatings);
+    console.log("oldNumOfRatings", oldNumOfRatings, typeof oldNumOfRatings);
     const newSumOfRatings = oldSumOfRatings - oldRating + newRating;
+    console.log("newSumOfRatings", newSumOfRatings, typeof newSumOfRatings);
     const newNumOfRatings = oldNumOfRatings;
+    console.log("newNumOfRatings", newNumOfRatings, typeof newNumOfRatings);
     const newRatingValue =
       newNumOfRatings === 0
         ? 0
         : Math.round((newSumOfRatings / newNumOfRatings) * 2) / 2;
+    console.log("newRatingValue", newRatingValue, typeof newRatingValue);
     const updatedReview = await Review.findByIdAndUpdate(
       req.params.param,
       { Rating: req.body.rating, Description: req.body.description },

@@ -57,7 +57,7 @@ export default function ReviewCard({
 
       setAllReviews(updatedReviews);
       setRefresh(refresh + 1);
-      getRate();
+      getRate(); 
     } catch (error) {
       console.error(error);
     }
@@ -137,6 +137,7 @@ export default function ReviewCard({
         userToken={userToken}
         getRate={getRate}
         setRefresh={setRefresh}
+        refresh={refresh}
         setShowModal={setShowModal}
       />
     </>

@@ -10,6 +10,7 @@ export default function EditModal({
   userToken,
   getRate,
   setRefresh,
+  refresh,
   setShowModal,
 }) {
   const handleCloseModal = () => setShowModal(false);
@@ -48,7 +49,7 @@ export default function EditModal({
       const ResData = response.data;
       console.log(ResData);
       handleCloseModal();
-      setRefresh(1);
+      setRefresh(refresh + 1);
       getRate();
     } catch (error) {}
   };
@@ -68,7 +69,6 @@ export default function EditModal({
             <Form.Label>{t("Rating")} (0-5)</Form.Label>
             <Form.Control
               type="number"
-              min="0"
               max="5"
               value={editedRating}
               onChange={(e) => setEditedRating(e.target.value)}

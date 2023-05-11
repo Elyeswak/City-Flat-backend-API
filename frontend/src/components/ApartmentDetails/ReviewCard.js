@@ -10,8 +10,11 @@ export default function ReviewCard({
   apartment,
   allReviews,
   setAllReviews,
+  reviewsToShow,
+  setReviewsToShow,
   getRate,
   setRefresh,
+  refresh,
   index,
 }) {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -53,6 +56,7 @@ export default function ReviewCard({
       );
 
       setAllReviews(updatedReviews);
+      setRefresh(refresh + 1);
       getRate();
     } catch (error) {
       console.error(error);

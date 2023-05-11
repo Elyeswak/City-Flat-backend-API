@@ -605,8 +605,11 @@ function ApartmentDetails() {
                     review={review}
                     apartment={apartment}
                     allReviews={allReviews}
+                    reviewsToShow={reviewsToShow}
+                    setReviewsToShow={setReviewsToShow}
                     setAllReviews={setAllReviews}
                     getRate={getRate}
+                    refresh={refresh}
                     setRefresh={setRefresh}
                     index={index + 1}
                   />

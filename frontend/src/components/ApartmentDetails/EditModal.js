@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 
 export default function EditModal({
   showModal,
@@ -12,6 +13,7 @@ export default function EditModal({
   setShowModal,
 }) {
   const handleCloseModal = () => setShowModal(false);
+  const {t} = useTranslation()
   const [editedRating, setEditedRating] = useState(0);
   const [editedReview, setEditedReview] = useState("");
   useEffect(() => {
@@ -53,7 +55,7 @@ export default function EditModal({
   return (
     <Modal show={showModal} onHide={handleCloseModal}>
       <Modal.Header closeButton>
-        <Modal.Title>Edit review</Modal.Title>
+        <Modal.Title>{t("Edit review")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form
@@ -63,7 +65,7 @@ export default function EditModal({
           }}
         >
           <Form.Group>
-            <Form.Label>Rating (0-5)</Form.Label>
+            <Form.Label>{t("Rating")} (0-5)</Form.Label>
             <Form.Control
               type="number"
               min="0"
@@ -74,7 +76,7 @@ export default function EditModal({
             <Form.Control.Feedback type="invalid">Error</Form.Control.Feedback>
           </Form.Group>
           <Form.Group>
-            <Form.Label>Review (20-250 characters)</Form.Label>
+            <Form.Label>{t("Review (20-250 characters)")}</Form.Label>
             <Form.Control
               as="textarea"
               rows={2}
@@ -85,7 +87,7 @@ export default function EditModal({
             />
             <Form.Control.Feedback type="invalid">Error</Form.Control.Feedback>
           </Form.Group>
-          <Button type="submit">Submit</Button>
+          <Button type="submit">{t("RATE")}</Button>
         </Form>
       </Modal.Body>
     </Modal>

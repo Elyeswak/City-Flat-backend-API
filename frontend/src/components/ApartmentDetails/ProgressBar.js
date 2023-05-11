@@ -1,6 +1,7 @@
+import { useTranslation } from "react-i18next";
 const ProgressBar = (props) => {
   const { bgcolor, completed } = props;
-
+  const {t} = useTranslation()
   const containerStyles = {
     width: "100%",
     backgroundColor: "#d7d7d7",

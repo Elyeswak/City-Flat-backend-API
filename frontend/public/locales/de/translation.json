@@ -70,7 +70,6 @@
   "Choose Services": "Dienstleistungen auswählen",
   "Nights Fees": "Übernachtungsgebühren",
   "Services Fees": "Servicegebühren",
-  "RESERVE": "RESERVIEREN",
   "CONFIRM YOUR PAYMENT": "BESTÄTIGEN SIE IHRE ZAHLUNG",
   "RESERVATION DETAILS": "RESERVIERUNGSDATEN",
   "NIGHTS": "Nächte",
@@ -82,5 +81,16 @@
   "NIGHTS FEES" : "ÜBERNACHTUNGSGEBÜHREN",
   "SERVICES FEES" : "SERVICEGEBÜHREN",
   "TOTAL PRICE" : "GESAMTPREIS",
-  "RESERVE" : "JETZT BUCHEN"
+  "RESERVE" : "JETZT BUCHEN",
+  "Edit review":"Überprüfung bearbeiten",
+  "RATE" : "Bewerten",
+  "Error" : "Fehler",
+  "Review (20-250 characters)":"Bewertung (20-250 Zeichen)",
+  "Rating":"Bewertung",
+  "Give us a rate":"",
+  "FROM ALL":"",
+  "REVIEWS":"",
+  "Show All":""
+  
+
 }

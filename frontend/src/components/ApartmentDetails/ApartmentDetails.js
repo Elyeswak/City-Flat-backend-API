@@ -18,6 +18,8 @@ import MultiSelect from "react-multiple-select-dropdown-lite";
 import { Card, Carousel } from "react-bootstrap";
 import { Button, Form } from "react-bootstrap";
 import ReviewCard from "./ReviewCard";
+import { useTranslation } from "react-i18next";
+
 import { Rating } from "react-simple-star-rating";
 import ProgressBar from "./ProgressBar";
 
@@ -27,7 +29,7 @@ function ApartmentDetails() {
    */
 
   let params = useParams();
-
+  const { t } = useTranslation();
   const [apartment, setApartment] = useState(null);
   const [services, setServices] = useState([]);
   const [bookedDates, setBookedDates] = useState([]);
@@ -411,14 +413,14 @@ function ApartmentDetails() {
                     </div>
                     <div className="services_details">
                       <div className="row" style={{ padding: "2%" }}>
-                        <strong>Choose your services:</strong>
+                        <strong>{t("Choose your services")}:</strong>
                       </div>
 
                       <div className="services_selection">
                         <MultiSelect
                           onChange={handleOnchange}
                           options={options}
-                          placeholder="Choose Services"
+                          placeholder={t("Choose Services")}
                         />
                       </div>
                     </div>
@@ -473,7 +475,7 @@ function ApartmentDetails() {
                     <div className="col-6  check-in">
                       <div className="p-3">
                         {" "}
-                        <p>Check-in</p>
+                        <p>{t("Check-in")}</p>
                         <strong>{`${format(
                           date[0].startDate,
                           "dd/MM/yyyy"
@@ -483,7 +485,7 @@ function ApartmentDetails() {
                     <div className="col-6 check-out">
                       <div className="p-3">
                         {" "}
-                        <p>Check-out</p>
+                        <p>{t("Check-out")}</p>
                         <strong>{`${format(
                           date[0].endDate,
                           "dd/MM/yyyy"
@@ -492,16 +494,16 @@ function ApartmentDetails() {
                     </div>
                   </div>
                   <div className="row details_row">
-                    <p>Nights Fees :€{apartmentPrice}</p>
-                    <p>Services Fees :€{totalPricePerNight}</p>
-                    <p>Total price :€{totalPrice}</p>
+                    <p>{t("Nights Fees")} :€{apartmentPrice}</p>
+                    <p>{t("Services Fees")} :€{totalPricePerNight}</p>
+                    <p>{t("Total price")} :€{totalPrice}</p>
                   </div>
                   <div className="row custom-button-reservation-row">
                     <button
                       className="btn btn-dark custom-button-reservation"
                       onClick={handleCheckUser}
                     >
-                      RESERVE
+                      {t("RESERVE")}
                     </button>
                   </div>
                 </div>

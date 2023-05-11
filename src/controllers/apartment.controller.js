@@ -131,7 +131,6 @@ export function httpDeleteOneAppart(req, res) {
 /// get all the available dates for this appartment
 export async function getAvailableDates(apartmentId, startDate, endDate) {
   const apartment = await apartmentDb.findById(apartmentId);
-
   const bookedDates = apartment.bookedDates || [];
   const overlappingDates = bookedDates.filter((bookedDate) => {
     return startDate < bookedDate.end && endDate > bookedDate.start;

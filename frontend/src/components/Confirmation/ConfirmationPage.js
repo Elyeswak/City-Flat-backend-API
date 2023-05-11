@@ -7,7 +7,6 @@ import "react-toastify/dist/ReactToastify.css";
 import "./ConfirmationPage.css";
 import {
   faBowlFood,
-  faBrush,
   faCar,
   faParking,
   faShirt,
@@ -20,10 +19,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+
 
 function PaymentPage() {
+  const { t } = useTranslation();
+
   const [rating, setRating] = useState(0);
   const navigate = useNavigate();
+  
 
   /**GET ALL ITEMS FROM LOCAL STORAGE */
   const user = JSON.parse(localStorage.getItem("user"));
@@ -131,19 +135,19 @@ function PaymentPage() {
       <div className="payment__body">
         <div className="payment__content">
           <div className="payment_title">
-            <h3>CONFIRM YOUR PAYMENT</h3>
+            <h3>{t("CONFIRM YOUR PAYMENT")}</h3>
           </div>
           <div className="row row_props ">
             <div className="col payment_col">
               <div className="card__body__payment">
-                <h4>RESERVATION DETAILS</h4>
-                <h5>NIGHTS :{diffInDays}</h5>
+                <h4>{t("RESERVATION DETAILS")}</h4>
+                <h5>{t("NIGHTS")} :{diffInDays}</h5>
                 <h5>
-                  FROM <strong>{startDate}</strong> TO{" "}
+                  {t("FROM")} <strong>{startDate}</strong> {t("TO")}{" "}
                   <strong>{endDate}</strong>.
                 </h5>
                 <hr />
-                <h4>SERVICES</h4>
+                <h4>{t("SERVICES")}</h4>
                 <div className="row services">
                   {serviceNames.map((serviceName) => (
                     <div className="col col-sm-2" key={serviceName}>
@@ -171,17 +175,17 @@ function PaymentPage() {
                     className="apartment_picture"
                     src="./interior-design-ga22c634af_19201.png"
                   />
-                  <h4>PAYMENT DETAILS:</h4>
-                  <p>NIGHTS FEES: €{apartmentPrice}</p>
-                  <p>SERVICES FEES: €{servicesPrice}</p>
-                  <p>TOTAL PRICE: €{totalPrice}</p>
+                  <h4>{t("PAYMENT DETAILS")}:</h4>
+                  <p>{t("NIGHTS FEES")}: €{apartmentPrice}</p>
+                  <p>{t("SERVICES FEES")}: €{servicesPrice}</p>
+                  <p>{t("TOTAL PRICE")}: €{totalPrice}</p>
                   <button className="btn btn-dark custom-confirm-button">
                     <Link
                       to={"/paystate"}
                       className="text-light"
                       onClick={postData}
                     >
-                      SEND REQUEST
+                      {t("SEND REQUEST")}
                     </Link>
                   </button>
                   <a href="/">
@@ -189,7 +193,7 @@ function PaymentPage() {
                       type="reset"
                       className="btn btn-dark custom-confirm-button"
                     >
-                      CANCEL
+                      {t("CANCEL")}
                     </button>
                   </a>
                 </div>

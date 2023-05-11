@@ -17,6 +17,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import StripeCheckout from "./StripeCheckout";
 import PaypalCheckout from "./PaypalCheckout";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
+
 
 export default function Paynow() {
   const [order, setOrderData] = useState("");
@@ -25,6 +27,7 @@ export default function Paynow() {
   const orderID = localStorage.getItem("orderId");
   const user = JSON.parse(localStorage.getItem("user"));
   const token = user.token;
+  const { t } = useTranslation();
 
   // useEffect(() => {
   //   axios

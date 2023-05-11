@@ -494,9 +494,15 @@ function ApartmentDetails() {
                     </div>
                   </div>
                   <div className="row details_row">
-                    <p>{t("Nights Fees")} :€{apartmentPrice}</p>
-                    <p>{t("Services Fees")} :€{totalPricePerNight}</p>
-                    <p>{t("Total price")} :€{totalPrice}</p>
+                    <p>
+                      {t("Nights Fees")} :€{apartmentPrice}
+                    </p>
+                    <p>
+                      {t("Services Fees")} :€{totalPricePerNight}
+                    </p>
+                    <p>
+                      {t("Total price")} :€{totalPrice}
+                    </p>
                   </div>
                   <div className="row custom-button-reservation-row">
                     <button

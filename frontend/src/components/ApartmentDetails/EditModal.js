@@ -12,24 +12,25 @@ export default function EditModal({
   setRefresh,
   refresh,
   setShowModal,
+  getReviewData,
 }) {
   const handleCloseModal = () => setShowModal(false);
-  const {t} = useTranslation()
+  const { t } = useTranslation();
   const [editedRating, setEditedRating] = useState(0);
   const [editedReview, setEditedReview] = useState("");
   useEffect(() => {
-    // fetch apartment data
+    // old review data
     axios
       .get(`http://localhost:9090/appartments/review/${review._id}`)
       .then((response) => {
         setEditedRating(response.data.Rating);
         setEditedReview(response.data.Description);
-        console.log(response.data);
+        console.log("getting old review data", response.data);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [refresh, getReviewData]);
 
   const handleEditReview = async () => {
     try {

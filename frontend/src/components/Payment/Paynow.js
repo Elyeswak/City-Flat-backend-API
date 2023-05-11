@@ -3,7 +3,6 @@ import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/footer";
 import Rate from "../Rate/Rate";
 import "./paynow.css";
-import { format } from "date-fns";
 import moment from "moment";
 import {
   faBowlFood,

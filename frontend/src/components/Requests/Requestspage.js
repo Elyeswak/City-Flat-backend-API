@@ -156,7 +156,7 @@ function Requestspage() {
                           {order.state === "DECLINED" && (
                             <div>
                               <Badge bg="danger" pill text="dark">
-                                DECLINED
+                                {t("DECLINED")}
                               </Badge>
                             </div>
                           )}

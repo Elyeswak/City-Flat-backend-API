@@ -15,11 +15,12 @@ import { useTranslation } from "react-i18next";
 import { US, DE, FR } from "country-flag-icons/react/3x2";
 
 function Navbar() {
-  const [currentLanguage, setCurrentLanguage] = useState("de");
+  const [currentLanguage, setCurrentLanguage] = useState(i18n.language);
   const { t } = useTranslation();
   function handleLanguageChange(language) {
     setCurrentLanguage(language);
     i18n.changeLanguage(language);
+    localStorage.setItem("language", language);
   }
 
   const [openProfile, setOpenProfile] = useState(false);

@@ -20,7 +20,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-
+import i18n from "../../i18next";
 
 function PaymentPage() {
   const { t } = useTranslation();

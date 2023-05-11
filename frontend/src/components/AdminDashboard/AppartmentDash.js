@@ -5,6 +5,8 @@ import "./AppartmentDash.css";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import AllAppartments from "./AllAppartments";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAdd } from "@fortawesome/free-solid-svg-icons";
 
 export default function AppartmentDash() {
   // const [postSuccess, setPostSuccess] = useState(false)
@@ -142,7 +144,7 @@ export default function AppartmentDash() {
                   setShow("add");
                 }}
               >
-                <button className="btn btn-success">➕ Add</button>
+                <button className="btn btn-success"><FontAwesomeIcon icon={faAdd}/> Add</button>
               </li>
             </ul>
             {show === "all" ? (

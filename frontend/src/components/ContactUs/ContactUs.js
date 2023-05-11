@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
+import i18n from "../../i18next";
 
 function ContactUs() {
 

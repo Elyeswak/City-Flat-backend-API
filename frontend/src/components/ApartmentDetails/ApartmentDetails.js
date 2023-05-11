@@ -19,7 +19,7 @@ import { Card, Carousel } from "react-bootstrap";
 import { Button, Form } from "react-bootstrap";
 import ReviewCard from "./ReviewCard";
 import { useTranslation } from "react-i18next";
-
+import i18n from "../../i18next";
 import { Rating } from "react-simple-star-rating";
 import ProgressBar from "./ProgressBar";
 

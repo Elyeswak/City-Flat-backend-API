@@ -14,6 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./AccountPage.css";
 import { Cloudinary } from "@cloudinary/base";
 import { useTranslation } from "react-i18next";
+import i18n from "../../i18next";
 
 
 function AccountPage() {

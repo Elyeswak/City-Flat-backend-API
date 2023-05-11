@@ -3,6 +3,9 @@ import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "./AppartmentDash.css";
 import { Button, Form, Modal } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faInfoCircle, faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
+import Swal from 'sweetalert2';
 
 export default function AllAppartmentsRow({
   index,
@@ -58,21 +61,86 @@ export default function AllAppartmentsRow({
 
   const user = JSON.parse(localStorage.getItem("user"));
   const token = user.token;
+  // const handleDelete = (appartId) => {
+  //   if (confirmingDelete) {
+  //     axios
+  //       .delete(`http://localhost:9090/user/appartments/${appartId}`, {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       })
+  //       .then((response) => {
+  //         // remove the declined order from the orders array
+  //         const updatedAppartments = allAppartments.filter(
+  //           (appart) => appart.id !== appartId
+  //         );
+  //         setAllAppartments(updatedAppartments);
+
+  //         toast.success("✅ Appartment deleted successfully", {
+  //           position: "top-right",
+  //           autoClose: 2000,
+  //           hideProgressBar: false,
+  //           closeOnClick: true,
+  //           pauseOnHover: true,
+  //           draggable: true,
+  //           progress: undefined,
+  //           theme: "light",
+  //         });
+
+  //         // add the declined order to the declinedOrders array
+  //         // const declinedOrder = orders.find((order) => order.id === appartId);
+  //         // setDeclinedOrders([...declinedOrders, declinedOrder]);
+
+  //         console.log(response.data); // handle response data
+  //       })
+  //       .catch((e) => {
+  //         console.log(e.message); // handle error
+  //         toast.error(
+  //           "❌ An error occured while trying to delete the appartment!",
+  //           {
+  //             position: "top-right",
+  //             autoClose: 2000,
+  //             hideProgressBar: false,
+  //             closeOnClick: true,
+  //             pauseOnHover: true,
+  //             draggable: true,
+  //             progress: undefined,
+  //             theme: "light",
+  //           }
+  //         );
+  //       })
+  //       .finally(() => {
+  //         setConfirmingDelete(false);
+  //       });
+  //   } else {
+  //     setConfirmingDelete(true);
+  //     setTimeout(() => {
+  //       setConfirmingDelete(false);
+  //     }, 3000);
+  //   }
+  // };
   const handleDelete = (appartId) => {
-    if (confirmingDelete) {
-      axios
-        .delete(`http://localhost:9090/user/appartments/${appartId}`, {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will not be able to recover this appartment!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel',
+      confirmButtonClass: 'btn btn-danger',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // The user confirmed, delete the appartment
+        axios.delete(`http://localhost:9090/user/appartments/${appartId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         })
         .then((response) => {
-          // remove the declined order from the orders array
           const updatedAppartments = allAppartments.filter(
             (appart) => appart.id !== appartId
           );
           setAllAppartments(updatedAppartments);
-
           toast.success("✅ Appartment deleted successfully", {
             position: "top-right",
             autoClose: 2000,
@@ -83,11 +151,6 @@ export default function AllAppartmentsRow({
             progress: undefined,
             theme: "light",
           });
-
-          // add the declined order to the declinedOrders array
-          // const declinedOrder = orders.find((order) => order.id === appartId);
-          // setDeclinedOrders([...declinedOrders, declinedOrder]);
-
           console.log(response.data); // handle response data
         })
         .catch((e) => {
@@ -105,16 +168,9 @@ export default function AllAppartmentsRow({
               theme: "light",
             }
           );
-        })
-        .finally(() => {
-          setConfirmingDelete(false);
         });
-    } else {
-      setConfirmingDelete(true);
-      setTimeout(() => {
-        setConfirmingDelete(false);
-      }, 3000);
-    }
+      }
+    });
   };
 
   const handleSaveChanges = (e) => {
@@ -224,20 +280,20 @@ export default function AllAppartmentsRow({
               className="btn btn-danger"
               onClick={() => handleDelete(appart.id)}
             >
-              {confirmingDelete ? "✔️" : "🗑️"}
+              {confirmingDelete ? "✔️" : <FontAwesomeIcon icon={faTrash} />}
             </button>
           </div>
           <button
             className="btn btn-secondary me-2"
             onClick={handleShowEditModal}
           >
-            🖋️
+            <FontAwesomeIcon icon={faPencil} />
           </button>
           <button
             className="btn btn-primary"
             onClick={() => handleShowDetails(appart)}
           >
-            ℹ️
+            <FontAwesomeIcon icon={faInfoCircle} />
           </button>
         </td>
       </tr>

@@ -28,7 +28,7 @@ appartmentRouter
   .route("/reviews/:param")
   .post(ensureUser, createReview)
   .put(ensureUser, updateReview)
-  .get(ensureUser, getAllReviews)
+  .get(getAllReviews)
   .delete(ensureUser, deleteReview);
 appartmentRouter.route("/review/:param").get(getReviewById);
 

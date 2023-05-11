@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/footer";
-import Rate from "../Rate/Rate";
+// import Rate from "../Rate/Rate";
 import "./ApartmentDetails.css";
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
@@ -12,7 +12,7 @@ import { DateRange } from "react-date-range";
 import { format } from "date-fns";
 import { MapContainer, TileLayer, Popup, Marker } from "react-leaflet";
 import L from "leaflet";
-import axios from "axios";
+import axios, { all } from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import MultiSelect from "react-multiple-select-dropdown-lite";
 import { Card, Carousel } from "react-bootstrap";
@@ -20,6 +20,8 @@ import { Button, Form } from "react-bootstrap";
 import ReviewCard from "./ReviewCard";
 import { useTranslation } from "react-i18next";
 
+import { Rating } from "react-simple-star-rating";
+import ProgressBar from "./ProgressBar";
 
 function ApartmentDetails() {
   /*
@@ -33,19 +35,20 @@ function ApartmentDetails() {
   const [bookedDates, setBookedDates] = useState([]);
   const [allReviews, setAllReviews] = useState([]);
   const [rate, setRate] = useState(0);
+  const [ratingPercentages, setRatingPercentages] = useState([]);
   // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
+  const [reviewsToShow, setReviewsToShow] = useState([]);
   const checkItemInLocalStorage = (itemName) => {
     const item = localStorage.getItem(itemName);
     return item !== null;
   };
-  const itemExists = checkItemInLocalStorage("user");
 
   //user info
   const user = JSON.parse(localStorage.getItem("user"));
-  const userId = itemExists ? user.id : "no user";
-  const userToken = itemExists ? user.token : "no user";
+  const userId = user?.id;
+  const userToken = user?.token;
 
   const [formData, setFormData] = useState({
     rating: "",
@@ -57,6 +60,8 @@ function ApartmentDetails() {
     review: "",
   });
 
+  const [refresh, setRefresh] = useState(0);
+
   /**AXIOS REQUESTS */
 
   useEffect(() => {
@@ -67,7 +72,9 @@ function ApartmentDetails() {
         setApartment(response.data);
         localStorage.setItem("apartment", JSON.stringify(response.data));
         setServices(response.data.services);
-        setAllReviews(response.data.reviews);
+        const gotReviews = response.data.reviews;
+        setAllReviews(gotReviews.reverse());
+        setReviewsToShow(response.data.reviews.slice(0, 3));
 
         // fetch booked dates data
         const bookedDatesPromise = axios
@@ -91,19 +98,15 @@ function ApartmentDetails() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:9090/appartments/reviews/${apartment?.id}`, {
-        headers: {
-          Authorization: `Bearer ${userToken}`, // if authentication is required
-        },
-      })
+      .get(`http://localhost:9090/appartments/reviews/${apartment?.id}`)
       .then((response) => {
-        setAllReviews(response.data);
+        const gotReviews = response.data;
+        setAllReviews(gotReviews.reverse());
+        setReviewsToShow(response.data.slice(0, 3));
       })
-      .catch(() => {
-        console.log("error"); // handle error
-      });
+      .catch(() => {});
     getRate();
-  }, [formData]);
+  }, [refresh]);
 
   const getRate = () => {
     axios
@@ -304,49 +307,46 @@ function ApartmentDetails() {
         rating: "",
         review: "",
       });
+      setRefresh(refresh + 1);
       getRate();
     } catch (error) {}
   };
 
-  // const handleDeleteReview = async (ID, rating) => {
-  //   const numOfRatings = apartment.numOfRatings;
-  //   const sumOfRatings = apartment.sumOfRatings;
-  //   try {
-  //     // Send delete request and log response data
-  //     const { data } = await axios.delete(
-  //       `http://localhost:9090/appartments/reviews/${ID}`,
-  //       {
-  //         headers: { Authorization: `Bearer ${userToken}` },
-  //       }
-  //     );
-  //     // Update the reviews array and ratings data
-  //     const updatedReviews = await Promise.all(
-  //       allReviews.map(async (review) => {
-  //         if (review._id === ID) {
-  //           await axios.put(
-  //             `http://localhost:9090/appartments/updateRate/${params.id}`,
-  //             {
-  //               sumOfRatings: sumOfRatings - rating,
-  //               numOfRatings: numOfRatings - 1,
-  //             },
-  //             {
-  //               headers: { Authorization: `Bearer ${userToken}` },
-  //             }
-  //           );
-  //           return null; // exclude the deleted review from the updated array
-  //         }
-  //         return review;
-  //       })
-  //     );
-  //     const filteredReviews = updatedReviews.filter(
-  //       (review) => review !== null
-  //     );
-  //     setAllReviews(filteredReviews);
-  //     getRate();
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+  const testData = [
+    { bgcolor: "#FFBC0B", completed: ratingPercentages[0] },
+    { bgcolor: "#FFBC0B", completed: ratingPercentages[1] },
+    { bgcolor: "#FFBC0B", completed: ratingPercentages[2] },
+    { bgcolor: "#FFBC0B", completed: ratingPercentages[3] },
+    { bgcolor: "#FFBC0B", completed: ratingPercentages[4] },
+  ];
+
+  useEffect(() => {
+    const ratingCounts = allReviews.reduce(
+      (acc, review) => {
+        const rating = Math.floor(review.Rating);
+        acc[rating - 1]++;
+        return acc;
+      },
+      [0, 0, 0, 0, 0]
+    );
+
+    const totalReviews = allReviews.length;
+    setRatingPercentages(
+      ratingCounts.map((count) => ((count / totalReviews) * 100).toFixed(0))
+    );
+  }, [allReviews]);
+
+  const [showBtn, setShowBtn] = useState(false);
+
+  const showReviews = () => {
+    if (showBtn) {
+      setShowBtn(false);
+      setReviewsToShow(allReviews.slice(0, 3));
+    } else {
+      setShowBtn(true);
+      setReviewsToShow(allReviews);
+    }
+  };
 
   /**RENDERING COMPONENT*/
   return (
@@ -387,7 +387,12 @@ function ApartmentDetails() {
                       <div className="app_title">
                         <h1>{apartment.name}</h1>
                         <h5>{apartment.location}</h5>
-                        <Rate rating={rate} />
+                        <Rating
+                          initialValue={rate}
+                          readonly
+                          allowFraction
+                          size={25}
+                        />
                       </div>
                     </div>
 
@@ -504,73 +509,97 @@ function ApartmentDetails() {
                 </div>
               </div>
             </div>
-            {itemExists ? (
-              <div className="review-cards-cont">
-                <Card className="text-dark review-card">
-                  <Card.Body>
-                    <Card.Title className="border-bottom border-5 fs-3">
-                      Write a review
-                    </Card.Title>
-                    <div className="row px-5">
-                      <div className="col-4 d-flex justify-content-center align-items-center">
-                        <img
-                          src={user.img}
-                          className="img-fluid img-thumbnail rounded-circle write-review-img"
-                        />
-                        <p className="ms-3 fs-4">
-                          {itemExists ? user.name : null}
-                        </p>
-                      </div>
-                      <div className="col-8">
-                        <Form onSubmit={handleSubmit}>
-                          <Form.Group controlId="rating" className="mb-2">
-                            <Form.Control
-                              type="number"
-                              min="0"
-                              max="5"
-                              placeholder="Rating (0-5)"
-                              value={formData.rating}
-                              onChange={(event) =>
-                                setFormData({
-                                  ...formData,
-                                  rating: event.target.value,
-                                })
-                              }
-                              isInvalid={!!errors.rating}
-                            />
-                            <Form.Control.Feedback type="invalid">
-                              {errors.rating}
-                            </Form.Control.Feedback>
-                          </Form.Group>
-                          <Form.Group controlId="review" className="mb-2">
-                            <Form.Control
-                              as="textarea"
-                              rows={2}
-                              minLength={20}
-                              maxLength={250}
-                              placeholder="Review"
-                              value={formData.review}
-                              onChange={(event) =>
-                                setFormData({
-                                  ...formData,
-                                  review: event.target.value,
-                                })
-                              }
-                              isInvalid={!!errors.review}
-                            />
-                            <Form.Control.Feedback type="invalid">
-                              {errors.review}
-                            </Form.Control.Feedback>
-                          </Form.Group>
-                          <Button type="submit" className="w-50 add-review-btn">
-                            Submit
-                          </Button>
-                        </Form>
-                      </div>
+            <div className="review-cards-cont row mt-5">
+              {user ? (
+                <div className="text-light col-md-5 col-12">
+                  <div className="write-review-cont">
+                    <div className="d-flex align-items-center">
+                      <img
+                        src={user.img}
+                        className="img-fluid img-thumbnail rounded-circle write-review-img"
+                      />
+                      <p className="ms-3 fs-4 text-light">
+                        {user && user.name}
+                      </p>
                     </div>
-                  </Card.Body>
-                </Card>
-                {allReviews.map((review, index) => (
+                    <p className="text-start fs-5 mt-3">Rate the house</p>
+                    <div className="">
+                      <Form onSubmit={handleSubmit}>
+                        <div className="rate-cont d-flex justify-content-start mb-4">
+                          <Rating
+                            initialValue={formData.rate}
+                            allowFraction
+                            size={25}
+                            onClick={(rate) => {
+                              setFormData({
+                                ...formData,
+                                rating: rate,
+                              });
+                              console.log(formData);
+                            }}
+                            showTooltip
+                          />
+                        </div>
+                        <Form.Group controlId="review" className="mb-2">
+                          <Form.Control
+                            as="textarea"
+                            rows={3}
+                            minLength={20}
+                            maxLength={250}
+                            value={formData.review}
+                            onChange={(event) =>
+                              setFormData({
+                                ...formData,
+                                review: event.target.value,
+                              })
+                            }
+                            isInvalid={!!errors.review}
+                            className="review-textArea mt-5"
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {errors.review}
+                          </Form.Control.Feedback>
+                        </Form.Group>
+                        <Button type="submit" className="w-50 add-review-btn">
+                          Submit
+                        </Button>
+                      </Form>
+                    </div>
+                  </div>
+                </div>
+              ) : null}
+              <div className="col-md-7 col-12">
+                <div className="row reviews-stats">
+                  <div className="col text-start d-flex flex-column justify-content-between">
+                    <p className="d-flex  align-items-end">
+                      <span className="display-1 fw-bold text-light">
+                        {rate}
+                      </span>{" "}
+                      <span
+                        className="display-2 fw-bold text-light"
+                        style={{ marginBottom: "10px" }}
+                      >
+                        ⭐
+                      </span>
+                    </p>
+                    <p className="text-uppercase text-light m-0 fs-4">
+                      from all {allReviews.length} reviews
+                    </p>
+                  </div>
+                  <div className="col">
+                    {testData.map((item, idx) => (
+                      <div className="d-flex align-items-center">
+                        <span className="text-light me-2">{idx + 1}⭐</span>
+                        <ProgressBar
+                          key={idx}
+                          bgcolor={item.bgcolor}
+                          completed={item.completed}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                {reviewsToShow.map((review, index) => (
                   <ReviewCard
                     key={index + 1}
                     review={review}
@@ -578,12 +607,18 @@ function ApartmentDetails() {
                     allReviews={allReviews}
                     setAllReviews={setAllReviews}
                     getRate={getRate}
-                    setFormData={setFormData}
+                    setRefresh={setRefresh}
                     index={index + 1}
                   />
                 ))}
+                <button
+                  className="btn btn-success float-end mt-3"
+                  onClick={showReviews}
+                >
+                  {showBtn ? "Show less" : "Show all"}
+                </button>
               </div>
-            ) : null}
+            </div>
           </div>
           <Footer />
         </div>

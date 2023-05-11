@@ -12,7 +12,6 @@ import { useTranslation } from "react-i18next";
 import "./luxuriouCollection.css";
 
 function LuxuriousCollection() {
-
   const { t } = useTranslation();
   const [apartments, setApartments] = useState([]);
 
@@ -20,23 +19,76 @@ function LuxuriousCollection() {
     axios
       .get("http://localhost:9090/appartments/getAllAppart")
       .then((result) => {
-        setApartments(result.data.map((apartment) => ({ ...apartment, liked: false })));
-        
+        setApartments(
+          result.data.map((apartment) => ({ ...apartment, liked: false }))
+        );
+
         // Log the data here
         console.log(result.data);
       })
       .catch((error) => console.log(error));
   }, []);
 
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userId = user?.id;
+  const userToken = user?.token;
+
+  const [wishlist, setWishlist] = useState([]);
+
+  useEffect(() => {
+    try {
+      axios
+        .get(`http://localhost:9090/user/${userId}`)
+        .then((response) => {
+          setWishlist(response.data.wishlist);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
   const handleLikeClick = (id) => {
-    setApartments((prevApartments) =>
-      prevApartments.map((apartment) =>
-        apartment.id === id ? { ...apartment, liked: !apartment.liked } : apartment
-      )
-    );
+    if (user) {
+      setApartments((prevApartments) =>
+        prevApartments.map((apartment) =>
+          apartment.id === id
+            ? { ...apartment, liked: !apartment.liked }
+            : apartment
+        )
+      );
+
+      if (wishlist.includes(id)) {
+        fetch(`http://localhost:9090/user/rmwishlist/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userToken}`,
+          },
+        })
+          .then(() =>
+            setWishlist((prevWishlist) =>
+              prevWishlist.filter((item) => item !== id)
+            )
+          )
+          .catch((error) => console.log(error));
+      } else {
+        fetch(`http://localhost:9090/user/wishlist/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userToken}`,
+          },
+        })
+          .then(() => setWishlist((prevWishlist) => [...prevWishlist, id]))
+          .catch((error) => console.log(error));
+      }
+    } else {
+      return;
+    }
   };
-
-
 
   return (
     <section className="luxury__collection__page">
@@ -73,19 +125,23 @@ function LuxuriousCollection() {
                         </div>
                         <div className="card_body">
                           <div className="like_button_luxury">
-                          <button onClick={() => handleLikeClick(data.id)}>
+                            <button onClick={() => handleLikeClick(data.id)}>
                               <FontAwesomeIcon
-                                icon={data.liked ? faHeart : faHeartEmpty}
-                                className={`heart-icon ${data.liked ? "liked" : ""}`}
+                                icon={
+                                  wishlist.includes(data.id)
+                                    ? faHeart
+                                    : faHeartEmpty
+                                }
+                                className={`heart-icon ${
+                                  wishlist.includes(data.id) ? "liked" : ""
+                                }`}
                               />
                             </button>
                           </div>
                           <div className="card_content_luxury">
                             <h3>{data.name}</h3>
                             <p>{data.description}</p>
-                            <Rate
-                              rating={data.rating}
-                            />
+                            <Rate rating={data.rating} />
                             <strong>{data.pricePerNight}€</strong>
                           </div>
                         </div>

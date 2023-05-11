@@ -219,6 +219,11 @@
   background-color: #000 !important;
 }
 
+.write-review-cont {
+  position: sticky;
+  top: 20px;
+}
+
 .review-card {
   background-color: #d7d7d7 !important;
 }
@@ -230,12 +235,17 @@
 }
 
 .add-review-btn {
-  background-color: #000 !important;
+  background-color: #d7d7d7 !important;
   outline: none !important;
   border-color: #000 !important;
+  color: #000 !important;
 }
 
 .write-review-img {
   width: 5rem !important;
   height: 5rem !important;
+}
+
+.review-textArea {
+  background-color: #d7d7d7 !important;
 }

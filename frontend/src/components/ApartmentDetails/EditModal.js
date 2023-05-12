@@ -84,6 +84,7 @@ export default function EditModal({
               onClick={(rate) => {
                 setEditedRating(rate);
               }}
+              tooltipDefaultText={t("YOUR RATE")}
               showTooltip
             />
           </div>
@@ -97,7 +98,9 @@ export default function EditModal({
               onChange={(e) => setEditedReview(e.target.value)}
               className="review-textArea"
             />
-            <Form.Control.Feedback type="invalid">{t("Error")}</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              {t("Error")}
+            </Form.Control.Feedback>
           </Form.Group>
           <div className="d-flex justify-content-center">
             <Button type="submit" className="edit-btn w-25 mt-3">

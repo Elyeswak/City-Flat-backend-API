@@ -128,7 +128,7 @@ function ApartmentDetails() {
   /**SERVICES OF THE APARTMENT */
   const options = services.map((service) => {
     return {
-      label: service.name,
+      label: t(service.name),
       value: service._id,
     };
   });
@@ -522,7 +522,7 @@ function ApartmentDetails() {
                       </p>
                     </div>
                     <p className="text-start fs-5 mt-3">
-                      {t("Rate the apartment")}
+                      {t("Give us a rate")}
                     </p>
                     <div className="">
                       <Form onSubmit={handleSubmit}>
@@ -540,6 +540,7 @@ function ApartmentDetails() {
                               });
                             }}
                             showTooltip
+                            tooltipDefaultText={t("YOUR RATE")}
                           />
                         </div>
                         <Form.Group controlId="review" className="mb-2">

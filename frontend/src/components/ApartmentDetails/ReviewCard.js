@@ -23,9 +23,9 @@ export default function ReviewCard({
   const userToken = user?.token;
   const isReviewOwner = userId === review.User;
   const [userImg, setUserImg] = useState("");
-  const {t} = useTranslation();
   const [getReviewData, setGetReviewData] = useState(0);
 
+  const {t} = useTranslation();
   useEffect(() => {
     // fetch user img
     axios

@@ -47,7 +47,6 @@ export default function Paynow() {
     fetchData();
   }, []);
 
-
   /**DISPLAY ICONS ACCORDING TO THE SERVICES */
   const serviceIcons = {
     Car: <FontAwesomeIcon icon={faCar} />,
@@ -83,33 +82,35 @@ export default function Paynow() {
       <div className="payment__body">
         <div className="payment__content">
           <div className="payment_title">
-            <h3>PROCEED YOUR PAYMENT</h3>
+            <h3>{t("PROCEED YOUR PAYMENT")}</h3>
           </div>
           <div className="row row_props ">
             <div className="col payment_col">
               <div className="card__body__payment">
-                <h4>RESERVATION DETAILS</h4>
+                <h4>{t("RESERVATION DETAILS")}</h4>
 
                 <h5>
-                  FROM{" "}
+                  {t("FROM")}{" "}
                   <strong>
                     {moment(order.checkIn).format("DD MMMM YYYY")}
                   </strong>{" "}
-                  TO
+                  {t("TO")}
                   <strong>
                     {" "}
                     {moment(order.checkOut).format("DD MMMM YYYY")}
                   </strong>
                 </h5>
                 <hr />
-                <h4>SERVICES</h4>
+                <h4>{t("SERVICES")}</h4>
 
                 <div className="row services">
                   {order?.services?.map((service) => (
-                    <div className="col col-sm-2" key={service.name}>
+                    <div
+                      className="col col-sm-2 mx-3 d-flex flex-column align-items-center mt-3"
+                      key={service.name}
+                    >
                       {serviceIcons[service.name]}
-                      <br />
-                      <p className="service_title">{service.name}</p>
+                      <p className="service_title">{t(service.name)}</p>
                     </div>
                   ))}
                 </div>
@@ -138,15 +139,22 @@ export default function Paynow() {
                     className="apartment_picture"
                     src="./interior-design-ga22c634af_19201.png"
                   />
-                  <h4>PAYMENT DETAILS:</h4>
-                  <p>NIGHTS FEES: €{order.nightsFee}</p>
-                  <p>SERVICES FEES: €{order.servicesFee}</p>
-                  <p>TOTAL PRICE: €{order.totalPrice}</p>
+                  {/* {t("")} */}
+                  <h4>{t("PAYMENT DETAILS")}:</h4>
+                  <p>
+                    {t("NIGHTS FEES")}: €{order.nightsFee}
+                  </p>
+                  <p>
+                    {t("SERVICES FEES")}: €{order.servicesFee}
+                  </p>
+                  <p>
+                    {t("TOTAL PRICE")}: €{order.totalPrice}
+                  </p>
                   <button
                     className="btn btn-dark custom-confirm-button w-50"
                     onClick={animateDisplay}
                   >
-                    Pay now
+                    {t("PAY NOW")}
                   </button>
                   <div className="pay-meth hidden" id="toAnimate">
                     <button

@@ -124,6 +124,13 @@
   "Subscribe to our Newsletter": "Abonnieren Sie unseren Newsletter",
   "Subscribe": "Abonnieren",
   "2023 All Rights Reserved.": "2023 Alle Rechte vorbehalten.",
+  "By creating an account, you agree to the": "Durch Erstellen eines Kontos stimmen Sie den",
+  "terms & conditions": "AGB",
+  "You have an account": "Sie haben ein Konto",
+  "Login now": "Jetzt anmelden",
+  "Verify your account": "Bestätigen Sie Ihr Konto",
+  "Verification code": "Verification-Code",
+  "Sign up for an account": "Registrieren Sie sich für ein Konto",
   "MY BOOKING REQUESTS": "MY BUCHUNGSANFRAGEN",
   "WELCOME": "WILLKOMMEN",
   "Login to your account": "Anmelden in deinem Konto",
@@ -133,13 +140,5 @@
   "You don't have an account": "Du hast noch kein Konto",
   "Join for free today": "Jetzt kostenlos anmelden",
   "You are already logged in": "Du bist bereits angemeldet",
-  "GO HOME": "ZUR STARTSEITE",
-  "By creating an account, you agree to the": "Durch Erstellen eines Kontos stimmen Sie den",
-  "terms & conditions": "Geschäftsbedingungen",
-  "You have an account": "Sie haben ein Konto",
-  "Login now": "Jetzt anmelden",
-  "Verify your account": "Bestätigen Sie Ihr Konto",
-  "Verification code": "Verification-Code",
-  "Sign up for an account": "Registrieren Sie sich für ein Konto",
-  "Password": "Passwort"
+  "GO HOME": "ZUR STARTSEITE"
 }

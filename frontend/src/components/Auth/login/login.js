@@ -124,7 +124,7 @@ function Login() {
                     </p>
 
                     <div className="heading">
-                      <h2>WELCOME</h2>
+                      <h2>{t("WELCOME")}</h2>
                       <h4>{t("Login to your account")}</h4>
                     </div>
 

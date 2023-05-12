@@ -43,7 +43,7 @@ export default function AllAppartmentsRow({
       })
       .catch((error) => {
         console.log(error);
-        toast.error("❌ An error occured while trying to get the services!", {
+        toast.error("❌ Beim Abrufen der Dienste ist ein Fehler aufgetreten!", {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,
@@ -121,12 +121,12 @@ export default function AllAppartmentsRow({
   // };
   const handleDelete = (appartId) => {
     Swal.fire({
-      title: 'Are you sure?',
-      text: 'You will not be able to recover this appartment!',
+      title: 'Sind Sie sicher?',
+      text: 'Sie werden nicht in der Lage sein, diese Wohnung wiederherzustellen!',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'Cancel',
+      confirmButtonText: 'Ja, löschen Sie es!',
+      cancelButtonText: 'ABBRECHEN',
       confirmButtonClass: 'btn btn-danger',
     }).then((result) => {
       if (result.isConfirmed) {
@@ -141,7 +141,7 @@ export default function AllAppartmentsRow({
             (appart) => appart.id !== appartId
           );
           setAllAppartments(updatedAppartments);
-          toast.success("✅ Appartment deleted successfully", {
+          toast.success("✅ Appartment wurde erfolgreich gelöscht.", {
             position: "top-right",
             autoClose: 2000,
             hideProgressBar: false,
@@ -156,7 +156,7 @@ export default function AllAppartmentsRow({
         .catch((e) => {
           console.log(e.message); // handle error
           toast.error(
-            "❌ An error occured while trying to delete the appartment!",
+            "❌ Ein Fehler ist aufgetreten beim Versuch, die Wohnung zu löschen!",
             {
               position: "top-right",
               autoClose: 2000,
@@ -204,7 +204,7 @@ export default function AllAppartmentsRow({
         );
         setAllAppartments(updatedApparts);
 
-        toast.success("✅ Changes saved successfully", {
+        toast.success("✅ Changes erfolgreich gespeichert.", {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,
@@ -219,7 +219,7 @@ export default function AllAppartmentsRow({
       })
       .catch((error) => {
         console.log(error);
-        toast.error("❌ An error occured while trying to save the changes!", {
+        toast.error("❌ Es ist ein Fehler aufgetreten beim Versuch, die Änderungen zu speichern!", {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,
@@ -329,7 +329,7 @@ export default function AllAppartmentsRow({
               <Form.Label>Name</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Enter name"
+                placeholder="Name Eingeben"
                 value={name}
                 onChange={(event) => setName(event.target.value)}
               />
@@ -339,10 +339,10 @@ export default function AllAppartmentsRow({
             </Form.Group>
 
             <Form.Group controlId="formPrice" className="col-6">
-              <Form.Label>Price per night</Form.Label>
+              <Form.Label>Preis pro Nacht</Form.Label>
               <Form.Control
                 type="number"
-                placeholder="Enter price per night"
+                placeholder="Preis pro Nacht eingeben"
                 value={pricePerNight}
                 onChange={(event) => setPricePerNight(event.target.value)}
               />
@@ -351,11 +351,11 @@ export default function AllAppartmentsRow({
               )}
             </Form.Group>
             <Form.Group controlId="formDescription" className="col-12">
-              <Form.Label>Description</Form.Label>
+              <Form.Label>Beschreibung</Form.Label>
               <Form.Control
                 as="textarea"
                 rows={3}
-                placeholder="Enter description"
+                placeholder="Beschreibung Eingeben"
                 value={description}
                 onChange={(event) => setDescription(event.target.value)}
               />
@@ -365,10 +365,10 @@ export default function AllAppartmentsRow({
             </Form.Group>
 
             <Form.Group controlId="formLocation" className="col-6">
-              <Form.Label>Location</Form.Label>
+              <Form.Label>Ort</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Enter location"
+                placeholder="Ort eingeben"
                 value={location}
                 onChange={(event) => setLocation(event.target.value)}
               />
@@ -378,18 +378,18 @@ export default function AllAppartmentsRow({
             </Form.Group>
 
             <Form.Group controlId="formType" className="col-6">
-              <Form.Label>Type</Form.Label>
+              <Form.Label>Typ</Form.Label>
               <Form.Control
                 as="select"
                 value={type}
                 onChange={(event) => setType(event.target.value)}
               >
                 <option value="" selected>
-                  Select type
+                Wählen Sie den Typ aus
                 </option>
                 <option value="STANDARD">Standard</option>
                 <option value="PREMIUM">Premium</option>
-                <option value="LUXURY">Luxury</option>
+                <option value="LUXURY">Luxus</option>
               </Form.Control>
               {typeError && (
                 <div className="invalid-feedback d-block">{typeError}</div>
@@ -398,10 +398,10 @@ export default function AllAppartmentsRow({
 
             <div className="col-6">
               <Form.Group controlId="formRooms">
-                <Form.Label>Rooms</Form.Label>
+                <Form.Label>Zimmer</Form.Label>
                 <Form.Control
                   type="number"
-                  placeholder="Enter number of rooms"
+                  placeholder="Anzahl der Zimmer eingeben"
                   value={rooms}
                   onChange={(event) => setRooms(event.target.value)}
                 />
@@ -410,10 +410,10 @@ export default function AllAppartmentsRow({
                 )}
               </Form.Group>
               <Form.Group controlId="formRate">
-                <Form.Label>Rating</Form.Label>
+                <Form.Label>Bewertung</Form.Label>
                 <Form.Control
                   type="number"
-                  placeholder="Enter Rating bypassing value"
+                  placeholder="Rating eingeben"
                   value={rating}
                   onChange={(event) => setRating(event.target.value)}
                 />
@@ -424,7 +424,7 @@ export default function AllAppartmentsRow({
             </div>
 
             <Form.Group controlId="services" className="col-6">
-              <Form.Label>Services</Form.Label>
+              <Form.Label>Dienstleistungen</Form.Label>
               <div>
                 {foundSrv.map((service) => (
                   <Form.Check
@@ -451,12 +451,12 @@ export default function AllAppartmentsRow({
             </Form.Group>
 
             <Form.Group controlId="image">
-              <Form.Label>Images</Form.Label>
+              <Form.Label>Bilder</Form.Label>
               {img.map((imgField, index) => (
                 <div key={index} className="d-flex mb-2 align-items-center">
                   <Form.Control
                     type="url"
-                    placeholder={`Image URL ${index + 1}`}
+                    placeholder={`Bild-URL ${index + 1}`}
                     value={imgField}
                     onChange={(e) =>
                       setImg((prevImg) =>
@@ -496,7 +496,7 @@ export default function AllAppartmentsRow({
               type="submit"
               className="w-25 mx-auto mt-3"
             >
-              Submit
+              Einreichen
             </Button>
           </Form>
           {/* add any other details here */}

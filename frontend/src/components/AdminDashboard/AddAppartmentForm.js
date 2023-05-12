@@ -29,8 +29,8 @@ function AddApartmentForm({ onSubmit }) {
     event.preventDefault();
     //name field validation
     if (!name) {
-      setNameError("❌ Please enter a name for the appartment.");
-      toast.error("❌ Please enter a name for the appartment.", {
+      setNameError("❌ Bitte geben Sie einen Namen für das Apartment ein.");
+      toast.error("❌ Bitte geben Sie einen Namen für das Apartment ein.", {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: false,
@@ -47,8 +47,8 @@ function AddApartmentForm({ onSubmit }) {
 
       return;
     } else if (!validator.isAlpha(name.replace(/\s/g, ""))) {
-      setNameError("❌ Name must contain only letters and spaces.");
-      toast.error("❌ Name must contain only letters and spaces.", {
+      setNameError("❌ Der Name darf nur Buchstaben und Leerzeichen enthalten.");
+      toast.error("❌ Der Name darf nur Buchstaben und Leerzeichen enthalten.", {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: false,
@@ -67,8 +67,8 @@ function AddApartmentForm({ onSubmit }) {
     }
     //pricePerNight field validation
     if (!pricePerNight) {
-      setPriceError("❌ Please enter a price per night for the appartment.");
-      toast.error("❌ Please enter a price per night for the appartment.", {
+      setPriceError("❌ Bitte geben Sie einen Preis pro Nacht für das Apartment ein.");
+      toast.error("❌ Bitte geben Sie einen Preis pro Nacht für das Apartment ein.", {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: false,
@@ -85,8 +85,8 @@ function AddApartmentForm({ onSubmit }) {
 
       return;
     } else if (pricePerNight <= 0) {
-      setPriceError("❌ Price per night value cannot be negative or zero");
-      toast.error("❌ Price per night value cannot be negative or zero", {
+      setPriceError("❌ Der Preis pro Nacht kann nicht negativ oder null sein");
+      toast.error("❌ Der Preis pro Nacht kann nicht negativ oder null sein", {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: false,
@@ -105,8 +105,8 @@ function AddApartmentForm({ onSubmit }) {
     }
     //description field validation
     if (!description) {
-      setDescError("❌ Please enter a description for the appartment.");
-      toast.error("❌ Please enter a description for the appartment.", {
+      setDescError("❌ Bitte geben Sie eine Beschreibung für das Apartment ein..");
+      toast.error("❌ Bitte geben Sie eine Beschreibung für das Apartment ein.", {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: false,
@@ -123,8 +123,8 @@ function AddApartmentForm({ onSubmit }) {
 
       return;
     } else if (description.length < 10) {
-      setDescError("❌ Description value must be at least 10 characters long");
-      toast.error("❌ Description value must be at least 10 characters long", {
+      setDescError("❌ Die Beschreibung muss mindestens 10 Zeichen lang sein.");
+      toast.error("❌ Die Beschreibung muss mindestens 10 Zeichen lang sein.", {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: false,
@@ -143,8 +143,8 @@ function AddApartmentForm({ onSubmit }) {
     }
     //location field validation
     if (!location) {
-      setLocationError("❌ Please enter a location for the appartment.");
-      toast.error("❌ Please enter a location for the appartment.", {
+      setLocationError("❌ Bitte geben Sie einen Standort für die Wohnung ein.");
+      toast.error("❌ Bitte geben Sie einen Standort für die Wohnung ein.", {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: false,
@@ -161,8 +161,8 @@ function AddApartmentForm({ onSubmit }) {
 
       return;
     } else if (location.length < 5) {
-      setLocationError("❌ Location value must be at least 5 characters long");
-      toast.error("❌ Location value must be at least 5 characters long", {
+      setLocationError("❌ Der Wert für den Standort muss mindestens 5 Zeichen lang sein");
+      toast.error("❌ Der Wert für den Standort muss mindestens 5 Zeichen lang sein", {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: false,
@@ -181,8 +181,8 @@ function AddApartmentForm({ onSubmit }) {
     }
     //type field validation
     if (type === "") {
-      setTypeError("❌ Please select a type for the appartment.");
-      toast.error("❌ Please select a type for the appartment.", {
+      setTypeError("❌ Bitte wählen Sie einen Typ für das Apartment aus.");
+      toast.error("❌ Bitte wählen Sie einen Typ für das Apartment aus.", {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: false,
@@ -201,8 +201,8 @@ function AddApartmentForm({ onSubmit }) {
     }
     //rooms field validation
     if (!rooms) {
-      setRoomsError("❌ Please enter number of rooms for the appartment.");
-      toast.error("❌ Please enter number of rooms for the appartment.", {
+      setRoomsError("❌ Bitte geben Sie die Anzahl der Zimmer für die Wohnung ein.");
+      toast.error("❌ Bitte geben Sie die Anzahl der Zimmer für die Wohnung ein.", {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: false,
@@ -219,8 +219,8 @@ function AddApartmentForm({ onSubmit }) {
 
       return;
     } else if (rooms <= 0) {
-      setRoomsError("❌ Rooms value cannot be negative or zero");
-      toast.error("❌ Rooms value cannot be negative or zero", {
+      setRoomsError("❌ Zimmerzahl darf nicht negativ oder null sein.");
+      toast.error("❌ Zimmerzahl darf nicht negativ oder null sein.", {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: false,
@@ -239,8 +239,8 @@ function AddApartmentForm({ onSubmit }) {
     }
     //image field validation
     if (img === "") {
-      setImageError("❌ Please choose an image for the appartment.");
-      toast.error("❌ Please choose an image for the appartment.", {
+      setImageError("❌ Bitte wählen Sie ein Bild für das Apartment aus.");
+      toast.error("❌ Bitte wählen Sie ein Bild für die Wohnung aus.", {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: false,
@@ -291,7 +291,7 @@ function AddApartmentForm({ onSubmit }) {
       })
       .catch((error) => {
         // console.log(error);
-        toast.error("❌ An error occured while trying to get the services!", {
+        toast.error("❌ Ein Fehler ist aufgetreten, während versucht wurde, die Dienstleistungen abzurufen!", {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,
@@ -334,7 +334,7 @@ function AddApartmentForm({ onSubmit }) {
         <Form.Label>Name</Form.Label>
         <Form.Control
           type="text"
-          placeholder="Enter name"
+          placeholder="Name eingeben"
           value={name}
           onChange={(event) => setName(event.target.value)}
         />
@@ -344,10 +344,10 @@ function AddApartmentForm({ onSubmit }) {
       </Form.Group>
 
       <Form.Group controlId="formPrice" className="col-6">
-        <Form.Label>Price per night</Form.Label>
+        <Form.Label>Preis pro Nacht</Form.Label>
         <Form.Control
           type="number"
-          placeholder="Enter price per night"
+          placeholder="Preis pro Nacht eingeben"
           value={pricePerNight}
           onChange={(event) => setPricePerNight(event.target.value)}
         />
@@ -356,11 +356,11 @@ function AddApartmentForm({ onSubmit }) {
         )}
       </Form.Group>
       <Form.Group controlId="formDescription" className="col-12">
-        <Form.Label>Description</Form.Label>
+        <Form.Label>Beschreibung </Form.Label>
         <Form.Control
           as="textarea"
           rows={3}
-          placeholder="Enter description"
+          placeholder="Beschreibung eingeben"
           value={description}
           onChange={(event) => setDescription(event.target.value)}
         />
@@ -373,7 +373,7 @@ function AddApartmentForm({ onSubmit }) {
         <Form.Label>Location</Form.Label>
         <Form.Control
           type="text"
-          placeholder="Enter location"
+          placeholder="Ort eingeben"
           value={location}
           onChange={(event) => setLocation(event.target.value)}
         />
@@ -383,18 +383,18 @@ function AddApartmentForm({ onSubmit }) {
       </Form.Group>
 
       <Form.Group controlId="formType" className="col-6">
-        <Form.Label>Type</Form.Label>
+        <Form.Label>Typ</Form.Label>
         <Form.Control
           as="select"
           value={type}
           onChange={(event) => setType(event.target.value)}
         >
           <option value="" selected>
-            Select type
+          Typ auswählen
           </option>
           <option value="STANDARD">Standard</option>
           <option value="PREMIUM">Premium</option>
-          <option value="LUXURY">Luxury</option>
+          <option value="LUXURY">Luxus</option>
         </Form.Control>
         {typeError && (
           <div className="invalid-feedback d-block">{typeError}</div>
@@ -402,7 +402,7 @@ function AddApartmentForm({ onSubmit }) {
       </Form.Group>
 
       <Form.Group controlId="formRooms" className="col-6">
-        <Form.Label>Rooms</Form.Label>
+        <Form.Label>Zimmer</Form.Label>
         <Form.Control
           type="number"
           placeholder="Enter number of rooms"
@@ -415,7 +415,7 @@ function AddApartmentForm({ onSubmit }) {
       </Form.Group>
 
       <Form.Group controlId="services" className="col-6">
-        <Form.Label>Services</Form.Label>
+        <Form.Label>Dienstleistungen</Form.Label>
         <div>
           {foundSrv.map((service) => (
             <Form.Check
@@ -441,12 +441,12 @@ function AddApartmentForm({ onSubmit }) {
       </Form.Group>
 
       <Form.Group controlId="image">
-        <Form.Label>Images</Form.Label>
+        <Form.Label>Bilder</Form.Label>
         {img.map((imgField, index) => (
           <div key={index} className="d-flex mb-2 align-items-center">
             <Form.Control
               type="url"
-              placeholder={`Image URL ${index + 1}`}
+              placeholder={`Bild-URL ${index + 1}`}
               value={imgField}
               onChange={(e) =>
                 setImg((prevImg) =>
@@ -482,7 +482,7 @@ function AddApartmentForm({ onSubmit }) {
       </Form.Group>
 
       <Button variant="primary" type="submit" className="w-25 mx-auto mt-3">
-        Submit
+      Hinzufügen
       </Button>
     </Form>
   );

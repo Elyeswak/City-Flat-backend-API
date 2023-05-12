@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import "./ServicesDash.css";
 import { Button, Form, Modal } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheckCircle, faInfoCircle, faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 export default function AllServicesRow({
   index,
@@ -75,7 +77,7 @@ export default function AllServicesRow({
         );
         setAllServices(updatedSrv);
 
-        toast.success("✅ Changes saved successfully", {
+        toast.success("✅ Changes erfolgreich gespeichert.", {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,
@@ -90,7 +92,7 @@ export default function AllServicesRow({
       })
       .catch((error) => {
         console.log(error);
-        toast.error("❌ An error occured while trying to save the changes!", {
+        toast.error("❌ Es ist ein Fehler aufgetreten beim Versuch, die Änderungen zu speichern!", {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,
@@ -128,20 +130,20 @@ export default function AllServicesRow({
               className="btn btn-danger"
               onClick={() => handleDelete(srv.id)}
             >
-              {confirmingDelete ? "✔️" : "🗑️"}
+              {confirmingDelete ? <FontAwesomeIcon icon={faCheckCircle}/>: <FontAwesomeIcon icon={faTrash}/>}
             </button>
           </div>
           <button
             className="btn btn-secondary me-2"
             onClick={handleShowEditModal}
           >
-            🖋️
+            <FontAwesomeIcon icon={faPencil}/>
           </button>
           <button
             className="btn btn-primary"
             onClick={() => handleShowDetails(srv)}
           >
-            ℹ️
+            <FontAwesomeIcon icon={faInfoCircle}/>
           </button>
         </td>
       </tr>

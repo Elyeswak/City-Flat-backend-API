@@ -37,8 +37,8 @@ export default function AllServices() {
             <tr>
               <th>#</th>
               <th>Name</th>
-              <th>Night price</th>
-              <th colSpan={2}>Services action</th>
+              <th>Preis pro Nacht</th>
+              <th colSpan={2}>Aktionen</th>
             </tr>
           </thead>
           <tbody>

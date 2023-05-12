@@ -521,9 +521,7 @@ function ApartmentDetails() {
                         {user && user.name}
                       </p>
                     </div>
-                    <p className="text-start fs-5 mt-3">
-                      {t("Rate the apartment")}
-                    </p>
+                    <p className="text-start fs-5 mt-3">{t("Give us a rate")}</p>
                     <div className="">
                       <Form onSubmit={handleSubmit}>
                         <div className="rate-cont d-flex justify-content-start mb-4">
@@ -563,7 +561,7 @@ function ApartmentDetails() {
                           </Form.Control.Feedback>
                         </Form.Group>
                         <Button type="submit" className="w-50 add-review-btn">
-                          Submit
+                          {t("RATE")}
                         </Button>
                       </Form>
                     </div>

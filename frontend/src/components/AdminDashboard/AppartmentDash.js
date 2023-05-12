@@ -124,7 +124,7 @@ export default function AppartmentDash() {
           />
           <div className="appart-dash-cont bg-dark text-light">
             <h1 className="text-light text-center my-3">
-              Apartments Dashboard
+            Apartment-Dashboard
             </h1>
             <ul className="appart-dash-nav d-flex">
               <li
@@ -134,7 +134,7 @@ export default function AppartmentDash() {
                 className=""
               >
                 <button className="btn btn-primary me-3">
-                  All apartments
+                  Alle apartments
                 </button>
               </li>
               <li

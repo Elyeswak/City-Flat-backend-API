@@ -80,7 +80,7 @@ export default function UsersDash() {
       {isAdmin ? (
         <div className="bg-dark userDashContainer">
           <Sidebar />
-          <h1 className="text-light text-center pt-5">Users Dashboard</h1>
+          <h1 className="text-light text-center pt-5">Benutzer-Dashboard</h1>
           <div className="dash-table">
             <ToastContainer
               position="top-right"
@@ -109,8 +109,8 @@ export default function UsersDash() {
                           {filterValue === "" ? "Filter" : "Reset"}
                         </option>
                         <optgroup label="ACCOUNT STATE">
-                          <option value="active">Active</option>
-                          <option value="inactive">Inactive</option>
+                          <option value="active">Aktiv</option>
+                          <option value="inactive">Inaktiv</option>
                         </optgroup>
                       </select>
                     </div>
@@ -119,10 +119,10 @@ export default function UsersDash() {
                 <tr>
                   <th>#</th>
                   <th>Name</th>
-                  <th>Email</th>
-                  <th>Number</th>
-                  <th>State</th>
-                  <th>User action</th>
+                  <th>E-MAIL</th>
+                  <th>Telefonnummer</th>
+                  <th>Zustand </th>
+                  <th>Aktionen</th>
                 </tr>
               </thead>
               <tbody>
@@ -130,7 +130,7 @@ export default function UsersDash() {
                   <tr>
                     <td colSpan={6}>
                       <p className="text-light text-center">
-                        No matching users found
+                      Keine übereinstimmenden Benutzer gefunden
                       </p>
                     </td>
                   </tr>

@@ -59,20 +59,20 @@ function Sidebar(props) {
               <Link to={"/"}>Home</Link>
             </li>
             <li className="fs-5">
-              <Link to={"/ordersdash"}>Orders</Link>
+              <Link to={"/ordersdash"}>Buchungen</Link>
             </li>
             <li className="fs-5">
               <Link to={"/appartdash"}>Apartments</Link>
             </li>
             <li className="fs-5">
-              <Link to={"/servdash"}>Services</Link>
+              <Link to={"/servdash"}>Dienstleistungen</Link>
             </li>
             <li className="fs-5">
-              <Link to={"/userdash"}>Users</Link>
+              <Link to={"/userdash"}>Benutzer</Link>
             </li>
             <li className="fs-5">
               <a href="#" onClick={handleOpenHelpModal}>
-                Help
+              Hilfe
               </a>
             </li>
           </ul>

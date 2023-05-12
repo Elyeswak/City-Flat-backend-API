@@ -23,17 +23,17 @@ export default function AllAppartments() {
         setAllAppartments(response.data);
       })
       .catch((error) => {
-        // console.log(error);
-        // toast.error("❌ An error occured while trynig to get appartments!", {
-        //   position: "top-right",
-        //   autoClose: 2000,
-        //   hideProgressBar: false,
-        //   closeOnClick: true,
-        //   pauseOnHover: true,
-        //   draggable: true,
-        //   progress: undefined,
-        //   theme: "light",
-        // });
+        console.log(error);
+        toast.error("❌ Ein Fehler ist aufgetreten, während versucht wurde, Wohnungen zu erhalten!", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       });
   }, []);
 
@@ -112,8 +112,8 @@ export default function AllAppartments() {
                     <option selected value="">
                       {filterValue === "" ? "Filter" : "Reset"}
                     </option>
-                    <optgroup label="APPARTMENT TYPE">
-                      <option value="LUXURY">Luxury</option>
+                    <optgroup label="APARTMENTTYP">
+                      <option value="LUXURY">Luxus</option>
                       <option value="PREMIUM">Premium</option>
                       <option value="STANDARD">Standard</option>
                     </optgroup>
@@ -124,12 +124,12 @@ export default function AllAppartments() {
             <tr>
               <th>#</th>
               <th>Name</th>
-              <th>Night price</th>
-              <th>Location</th>
-              <th>Type</th>
-              <th>Rooms</th>
-              <th>Rating</th>
-              <th>Appartment action</th>
+              <th>Preis pro Nacht</th>
+              <th>Ort</th>
+              <th>Typ</th>
+              <th>Zimmer</th>
+              <th>Bewertung</th>
+              <th>Aktionen </th>
             </tr>
           </thead>
           <tbody>
@@ -137,7 +137,7 @@ export default function AllAppartments() {
               <tr>
                 <td colSpan={7}>
                   <p className="text-light text-center">
-                    No matching appartments found
+                  Keine passenden Wohnungen gefunden.
                   </p>
                 </td>
               </tr>

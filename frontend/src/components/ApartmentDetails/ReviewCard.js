@@ -4,6 +4,7 @@ import axios from "axios";
 import { Card, Dropdown } from "react-bootstrap";
 import EditModal from "./EditModal";
 import { Rating } from "react-simple-star-rating";
+import { useTranslation } from "react-i18next";
 
 export default function ReviewCard({
   review,
@@ -24,6 +25,7 @@ export default function ReviewCard({
   const [userImg, setUserImg] = useState("");
   const [getReviewData, setGetReviewData] = useState(0);
 
+  const {t} = useTranslation();
   useEffect(() => {
     // fetch user img
     axios
@@ -112,7 +114,7 @@ export default function ReviewCard({
                         setGetReviewData(getReviewData + 1);
                       }}
                     >
-                      Edit
+                      {t("Edit")}
                     </button>
                   </Dropdown.Item>
                   <Dropdown.Item>
@@ -122,7 +124,7 @@ export default function ReviewCard({
                         handleDeleteReview();
                       }}
                     >
-                      Delete
+                      {t("Delete")}
                     </button>
                   </Dropdown.Item>
                 </Dropdown.Menu>

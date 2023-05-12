@@ -31,21 +31,21 @@ function AddServiceForm({ onSubmit }) {
       </Form.Group>
 
       <Form.Group controlId="formPrice" className="col-6">
-        <Form.Label>Price per night</Form.Label>
+        <Form.Label>Preis pro Nacht</Form.Label>
         <Form.Control
           type="number"
-          placeholder="Enter price per night"
+          placeholder="Preis pro Nacht eingeben"
           value={pricePerNight}
           onChange={(event) => setPricePerNight(event.target.value)}
           required
         />
       </Form.Group>
       <Form.Group controlId="formDescription" className="col-12">
-        <Form.Label>Description</Form.Label>
+        <Form.Label>Beschreibung</Form.Label>
         <Form.Control
           as="textarea"
           rows={3}
-          placeholder="Enter description"
+          placeholder="Beschreibung eingeben"
           value={description}
           onChange={(event) => setDescription(event.target.value)}
           required
@@ -53,7 +53,7 @@ function AddServiceForm({ onSubmit }) {
       </Form.Group>
 
       <Button variant="primary" type="submit" className="w-25 mx-auto mt-3">
-        Submit
+      Hinzufügen
       </Button>
     </Form>
   );

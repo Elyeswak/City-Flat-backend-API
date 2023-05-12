@@ -77,10 +77,8 @@ function Login() {
   useEffect(() => {
     if (!user) {
       setLoginForm(true);
-      console.log("user is not logged in");
     } else if (!user.isVerified){
       setLoginForm(true);
-      console.log("user is logged in");
     }else{
       setLoginForm(false);
     }

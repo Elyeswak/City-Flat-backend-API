@@ -73,23 +73,7 @@ export default function AllAppartments() {
   if (value == 0) {
     filteredAppartments = filteredAllAppartments;
   }
-  // if (filterValue === "true" || filterValue === "false") {
-  //   if (filterValue === "false") {
-  //     filteredAllAppartments = allAppartments.filter(
-  //       (order) => order.isPaid === false
-  //     );
-  //   }
-
-  //   if (filterValue === "true") {
-  //     filteredAllAppartments = allAppartments.filter(
-  //       (order) => order.isPaid === true
-  //     );
-  //   }
-
-  //   console.log(filterValue);
-  //   console.log(filteredAllAppartments);
-  // }
-
+  
   return (
     <>
       <div className="all-apparts-cont">

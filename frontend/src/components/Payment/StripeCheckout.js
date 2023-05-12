@@ -44,7 +44,6 @@ function PaymentForm(props) {
       Order,
       Card: card,
     };
-    console.log(reservationData);
     axios
       .post(
         "http://localhost:9090/user/reservations/addReservation",
@@ -57,7 +56,6 @@ function PaymentForm(props) {
         }
       )
       .then((response) => {
-        console.log(response.data);
         window.location.replace("/thankyou");
       })
       .catch((error) => {

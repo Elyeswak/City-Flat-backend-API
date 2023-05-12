@@ -99,7 +99,6 @@ export async function removeApartmentFromOrders(apartmentId) {
       { appartment: apartmentId },
       { $unset: { appartment: 1 } }
     );
-    console.log(result);
     return result;
   } catch (err) {
     console.error(err);
@@ -207,7 +206,6 @@ export async function updateBookedDates(
 
     // Save the apartment document
     await apartment.save();
-    console.log(apartment);
 
     // Return a success response
     //return res.status(200).json(apartment);

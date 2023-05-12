@@ -25,7 +25,6 @@ export default function AppartmentDash() {
           `http://localhost:9090/user/${User.id}`
         );
         const user = response.data;
-        console.log("returned user from db", user);
         setIsAdmin(user.role === "ADMIN");
       } catch (error) {
         console.error(error);
@@ -72,7 +71,6 @@ export default function AppartmentDash() {
         progress: undefined,
         theme: "light",
       });
-      console.log(res.data); // Log the response data
       setShow("all");
       // setPostSuccess(true)
     } catch (err) {

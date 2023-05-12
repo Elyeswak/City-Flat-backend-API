@@ -15,7 +15,6 @@ function ForgetPassword() {
   
     try {
       const response = await axios.get(`http://localhost:9090/user/reset/${email}`);
-      console.log(response.data);
       toast.success("password reset successfully, an Email is sent to you with the new password", {
         position: "top-right",
         autoClose: 2000,

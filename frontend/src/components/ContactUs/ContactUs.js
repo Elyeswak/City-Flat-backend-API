@@ -37,7 +37,6 @@ function ContactUs() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = values;
-    console.log(data);
   
     try {
       const response = await axios.post(
@@ -49,8 +48,6 @@ function ContactUs() {
           },
         }
       );
-      console.log("Message sent successfully!");
-      console.log(response);
       setValues(help); // Reset form values
       toast.success("✅ Your message is sent, We'll reach you soon", {
         position: "top-right",

@@ -24,8 +24,10 @@ export default function ReviewCard({
   const isReviewOwner = userId === review.User;
   const [userImg, setUserImg] = useState("");
   const {t} = useTranslation();
+  const [getReviewData, setGetReviewData] = useState(0);
+
   useEffect(() => {
-    // fetch all services
+    // fetch user img
     axios
       .get(`http://localhost:9090/user/${review.User}`)
       .then((response) => {
@@ -42,7 +44,7 @@ export default function ReviewCard({
         `http://localhost:9090/appartments/reviews/${review._id}`,
         {
           headers: {
-            Authorization: `Bearer ${userToken}`, // authentication is required
+            Authorization: `Bearer ${userToken}`,
           },
           data: {
             appartmentId: apartment.id,
@@ -50,7 +52,6 @@ export default function ReviewCard({
         }
       );
       const ResData = response.data;
-      console.log(ResData);
       // Remove the deleted review from the allReviews array
       const updatedReviews = allReviews.filter(
         (deleteReview) => deleteReview._id !== review._id
@@ -58,7 +59,7 @@ export default function ReviewCard({
 
       setAllReviews(updatedReviews);
       setRefresh(refresh + 1);
-      getRate(); 
+      getRate();
     } catch (error) {
       console.error(error);
     }
@@ -110,6 +111,7 @@ export default function ReviewCard({
                       className="btn btn-link text-primary"
                       onClick={() => {
                         handleShowModal();
+                        setGetReviewData(getReviewData + 1);
                       }}
                     >
                       {t("Edit")}
@@ -140,6 +142,7 @@ export default function ReviewCard({
         setRefresh={setRefresh}
         refresh={refresh}
         setShowModal={setShowModal}
+        getReviewData={getReviewData}
       />
     </>
   );

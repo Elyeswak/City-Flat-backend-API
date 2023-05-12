@@ -68,11 +68,6 @@ function AccountPage() {
         `http://localhost:9090/delete-from-cloudinary/${userId}`
       );
       try {
-        // const timestamp = Date.now();
-        // console.log(timestamp);
-        // const signature = await axios.get(
-        //   `http://localhost:9090/signature?timestamp=${timestamp}`
-        // );
 
         // Delete all files with userId in their names
 
@@ -87,8 +82,6 @@ function AccountPage() {
           `https://api.cloudinary.com/v1_1/${cloudinary.cloudinaryConfig.cloud.cloudName}/image/upload`,
           formData
         );
-
-        console.log(response);
 
         const uploadedImageUrl = response.data.secure_url;
         setImageUrl(uploadedImageUrl);
@@ -240,7 +233,6 @@ function AccountPage() {
           },
         }
       );
-      console.log(response.data);
       toast.success("✔️ Password updated successfully!", {
         position: "top-right",
         autoClose: 2000,
@@ -320,10 +312,8 @@ function AccountPage() {
           },
         }
       );
-      console.log(response.data);
       const data = response.data;
       data["token"] = userToken;
-      // console.log(data);
       localStorage.setItem("user", JSON.stringify(data));
       setShowModal(false);
     } catch (error) {
@@ -341,10 +331,8 @@ function AccountPage() {
       })
       .then((response) => {
         setReservations(response.data);
-        // console.log(response.data); // handle response data
       })
       .catch((error) => {
-        // console.log(error.response.data); // handle error
       });
   }, []);
 
@@ -358,10 +346,8 @@ function AccountPage() {
       })
       .then((response) => {
         setOrders(response.data);
-        // console.log(response.data); // handle response data
       })
       .catch((error) => {
-        // console.log(error.response.data); // handle error
       });
   }, []);
 

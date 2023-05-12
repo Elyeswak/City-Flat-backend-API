@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/footer";
-import Rate from "../Rate/Rate";
+import { Rating } from "react-simple-star-rating";
 import "./paynow.css";
 import moment from "moment";
 import {
@@ -18,7 +18,6 @@ import PaypalCheckout from "./PaypalCheckout";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 
-
 export default function Paynow() {
   const [order, setOrderData] = useState("");
 
@@ -27,22 +26,6 @@ export default function Paynow() {
   const user = JSON.parse(localStorage.getItem("user"));
   const token = user.token;
   const { t } = useTranslation();
-
-  // useEffect(() => {
-  //   axios
-  //     .get(`http://localhost:9090/user/reservations/getOneOrder/${orderID}`, {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`, // if authentication is required
-  //       },
-  //     })
-  //     .then((response) => {
-  //       setOrderData(response.data);
-  //       // handle response data
-  //     })
-  //     .catch((error) => {
-  //       console.log(error.response.data); // handle error
-  //     });
-  // }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,7 +47,6 @@ export default function Paynow() {
     fetchData();
   }, []);
 
-  console.log(order);
 
   /**DISPLAY ICONS ACCORDING TO THE SERVICES */
   const serviceIcons = {
@@ -118,7 +100,6 @@ export default function Paynow() {
                     {" "}
                     {moment(order.checkOut).format("DD MMMM YYYY")}
                   </strong>
-                  
                 </h5>
                 <hr />
                 <h4>SERVICES</h4>
@@ -144,7 +125,14 @@ export default function Paynow() {
                   <strong style={{ marginBottom: "7%" }}>
                     {order.description}
                   </strong>
-                  <Rate rating={rating} onRating={(rate) => setRating(rate)} />
+                  <div>
+                    <Rating
+                      initialValue={order?.appartment?.rating}
+                      readonly
+                      allowFraction
+                      size={25}
+                    />
+                  </div>
                   <img
                     alt="apartment_picture"
                     className="apartment_picture"

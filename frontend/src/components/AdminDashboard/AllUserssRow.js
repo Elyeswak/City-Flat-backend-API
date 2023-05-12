@@ -15,7 +15,6 @@ export default function AllUserssRow({ index, usr, allUsers, setAllUsers }) {
   const handleCheckboxChange = (event) => {
     const isChecked = event.target.checked;
     setVerified(isChecked);
-    console.log(verified);
 
     const updatedUser = {
       isVerified: isChecked,
@@ -33,7 +32,6 @@ export default function AllUserssRow({ index, usr, allUsers, setAllUsers }) {
           a.id === usr.id ? response.data : a
         );
         setAllUsers(updatedUsers);
-        console.log("updatedUser", updatedUser);
 
         toast.success("✅ Changes saved successfully", {
           position: "top-right",

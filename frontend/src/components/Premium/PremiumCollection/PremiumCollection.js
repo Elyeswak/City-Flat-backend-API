@@ -9,9 +9,11 @@ import { motion } from "framer-motion";
 import i18n from "./../../../i18next";
 import { useTranslation } from "react-i18next";
 import "./PremiumCollection.css";
+import Loader from "../../Loader/Loader";
 
 function PremiumCollection() {
   const [apartments, setApartments] = useState([]);
+  const [premiumLoader, setPremiumLoader] = useState(true);
   /**LANGUAGE SETTINGS */
   const { t } = useTranslation();
 
@@ -45,7 +47,7 @@ function PremiumCollection() {
         );
 
         // Log the data here
-        console.log(result.data);
+        setPremiumLoader(false);
       })
       .catch((error) => console.log(error));
   }, []);
@@ -101,70 +103,78 @@ function PremiumCollection() {
   };
 
   return (
-    <section className="premium__collection__page">
-      <motion.div
-        whileInView={{ y: [100, 50, 0], opacity: [0, 0, 1] }}
-        transition={{ duration: 0.5 }}
-      >
-        <div className="premium_collection_items_title">
-          <h2>{t("OUR PREMIUM COLLECTION")}</h2>
-          <div className="line-in-middle"></div>
-        </div>
-        <div className="premium_collection_items_content">
-          <div className="premium_collection_content">
-            <div className="row">
-              {apartments.map((data) => {
-                if (data.type === "PREMIUM") {
-                  return (
-                    <div className="col-sm-4" key={data.id}>
-                      {" "}
-                      <div className="card">
-                        <div className="card_img">
-                          <Link to={`/details/${data.id}`}>
-                            <motion.img
-                              whileHover={{ scale: 0.95 }}
-                              whileTap={{ scale: 0.8 }}
-                              whileInView={{ opacity: [0, 1] }}
-                              transition={{ duration: 0.7 }}
-                              src={data.img[0]}
-                              height={250}
-                              className="card-img-top"
-                              alt="..."
-                            />
-                          </Link>
-                        </div>
-                        <div className="card_body">
-                          <div className="like_button">
-                            <button onClick={() => handleLikeClick(data.id)}>
-                              <FontAwesomeIcon
-                                icon={
-                                  wishlist.includes(data.id)
-                                    ? faHeart
-                                    : faHeartEmpty
-                                }
-                                className={`heart-icon ${
-                                  wishlist.includes(data.id) ? "liked" : ""
-                                }`}
-                              />
-                            </button>
-                          </div>
-                          <div className="card_content">
-                            <h3>{data.name}</h3>
-                            <p>{data.description}</p>
-                            <Rate rating={data.rating} />
-                            <strong>{data.pricePerNight}€</strong>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                }
-              })}
+    <>
+      {premiumLoader ? (
+        <Loader className={"percent-height"} />
+      ) : (
+        <section className="premium__collection__page">
+          <motion.div
+            whileInView={{ y: [100, 50, 0], opacity: [0, 0, 1] }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="premium_collection_items_title">
+              <h2>{t("OUR PREMIUM COLLECTION")}</h2>
+              <div className="line-in-middle"></div>
             </div>
-          </div>
-        </div>
-      </motion.div>
-    </section>
+            <div className="premium_collection_items_content">
+              <div className="premium_collection_content">
+                <div className="row">
+                  {apartments.map((data) => {
+                    if (data.type === "PREMIUM") {
+                      return (
+                        <div className="col-sm-4" key={data.id}>
+                          {" "}
+                          <div className="card">
+                            <div className="card_img">
+                              <Link to={`/details/${data.id}`}>
+                                <motion.img
+                                  whileHover={{ scale: 0.95 }}
+                                  whileTap={{ scale: 0.8 }}
+                                  whileInView={{ opacity: [0, 1] }}
+                                  transition={{ duration: 0.7 }}
+                                  src={data.img[0]}
+                                  height={250}
+                                  className="card-img-top"
+                                  alt="..."
+                                />
+                              </Link>
+                            </div>
+                            <div className="card_body">
+                              <div className="like_button">
+                                <button
+                                  onClick={() => handleLikeClick(data.id)}
+                                >
+                                  <FontAwesomeIcon
+                                    icon={
+                                      wishlist.includes(data.id)
+                                        ? faHeart
+                                        : faHeartEmpty
+                                    }
+                                    className={`heart-icon ${
+                                      wishlist.includes(data.id) ? "liked" : ""
+                                    }`}
+                                  />
+                                </button>
+                              </div>
+                              <div className="card_content">
+                                <h3>{data.name}</h3>
+                                <p>{data.description}</p>
+                                <Rate rating={data.rating} />
+                                <strong>{data.pricePerNight}€</strong>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    }
+                  })}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </section>
+      )}
+    </>
   );
 }
 

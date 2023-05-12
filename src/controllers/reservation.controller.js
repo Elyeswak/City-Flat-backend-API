@@ -35,7 +35,6 @@ const stripe = new Stripe(process.env.SECRET_KEY, {
   apiVersion: "2020-08-27",
 });
 export async function httpGetMyReservations(req, res) {
-  console.log(req.user);
 
   try {
     const foundUser = await userDb.findOne(req.user);
@@ -66,7 +65,6 @@ export async function httpGetMyReservations(req, res) {
 }
 
 export function httpGetMyOrders(req, res) {
-  console.log(req.user);
   findOneUserByFilter(req.user.id)
     .then((foundUser) => {
       if (!foundUser) {
@@ -131,7 +129,6 @@ export function httpCreateOrder(req, res) {
       }
 
       newOrder.User = foundUser;
-      console.log("appartment id : " + req.body.appartment);
       findOneAppartByFilter(req.body.appartment)
         .then(async (foundAppartment) => {
           if (!foundAppartment) {
@@ -140,7 +137,6 @@ export function httpCreateOrder(req, res) {
 
           newOrder.appartment = foundAppartment;
           ///newOrder.code = generateRandomCode(6);
-          console.log(newOrder.appartment);
 
           // Call payment function to make payment
 
@@ -149,8 +145,6 @@ export function httpCreateOrder(req, res) {
           const services = await serviceDb.find({
             _id: { $in: serviceIds }, // Find all services with IDs in the serviceIds array
           });
-
-          console.log("services found : " + services);
 
           newOrder.services = services;
 
@@ -178,8 +172,6 @@ export function httpCreateReservation(req, res) {
   const order = req.body.Order;
 
   var newReservation = new reservationDb();
-
-  console.log("total price :" + order.totalPrice);
 
   userDb
     .findOne({ email: user.email })
@@ -239,10 +231,8 @@ export function httpCreateReservation(req, res) {
                   if (err) {
                     return res.status(500).json({ error: err.message });
                   }
-                  console.log(token);
                   addCard(customerId, token.id)
                     .then((card) => {
-                      console.log(card);
                       // Check if the card is not null before creating the payment intent
                       if (card) {
                         stripe.paymentMethods
@@ -263,7 +253,6 @@ export function httpCreateReservation(req, res) {
                               .then((payment_method) => {
                                 findOneOrderByFilter(order.id)
                                   .then((orderfound) => {
-                                    console.log("hetha howa " + order.id);
                                     httpMakePayment(
                                       req,
                                       res,
@@ -284,7 +273,6 @@ export function httpCreateReservation(req, res) {
                                                 },
                                               })
                                               .then((orderF) => {
-                                                console.log(orderF);
 
                                                 findOneReservationByFilter(
                                                   result._id
@@ -313,10 +301,6 @@ export function httpCreateReservation(req, res) {
                                                     " , reservation code : " +
                                                     newReservation.code,
                                                 };
-                                                console.log(
-                                                  "Debuging order state : " +
-                                                    orderF.state
-                                                );
                                                 createNotification(
                                                   notification
                                                 ).catch((err) =>
@@ -394,8 +378,6 @@ export function httpDeclineOrder(req, res) {
       if (!foundOrder) {
         res.status(404).json({ error: "Reservation not found!" });
       } else {
-        console.log("found user : " + foundOrder.User._id);
-        console.log("param user : " + user.id);
         if (user.id == foundOrder.User._id) {
           orderDb
             .findByIdAndDelete(foundOrder._id)
@@ -537,7 +519,6 @@ export function httpGetAllReservations(req, res) {
 export async function httpGetAllOrdersForUser(req, res) {
   try {
     const userId = req.user.id;
-    console.log(userId);
 
     const orders = await orderDb
       .find({ User: userId })

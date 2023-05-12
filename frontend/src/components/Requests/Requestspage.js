@@ -26,7 +26,6 @@ function Requestspage() {
       })
       .then((response) => {
         setOrders(response.data);
-        console.log(response.data); // handle response data
       })
       .catch((error) => {
         console.log(error.response.data); // handle error
@@ -74,7 +73,6 @@ function Requestspage() {
               }
             )
             .then((response) => {
-              console.log(response.data);
               // Update the orders array in state to remove the deleted order
               setOrders(orders.filter((order) => order._id !== orderId));
               // Retrieve the updated list of orders from the server
@@ -86,7 +84,6 @@ function Requestspage() {
                 })
                 .then((response) => {
                   setOrders(response.data);
-                  console.log(response.data); // handle response data
                 })
                 .catch((error) => {
                   console.log(error.response.data); // handle error

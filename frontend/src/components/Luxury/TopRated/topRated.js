@@ -20,7 +20,6 @@ function TopRated() {
       .then((result) => {
         setApartments(result.data);
         // Log the data here
-        console.log(result.data);
       })
       .catch((error) => console.log(error));
   }, []);

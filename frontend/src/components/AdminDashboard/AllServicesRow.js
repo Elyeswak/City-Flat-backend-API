@@ -34,12 +34,6 @@ export default function AllServicesRow({
             (appart) => appart.id !== srvId
           );
           setAllServices(updatedAppartments);
-
-          // add the declined order to the declinedOrders array
-          // const declinedOrder = orders.find((order) => order.id === appartId);
-          // setDeclinedOrders([...declinedOrders, declinedOrder]);
-
-          console.log(response.data); // handle response data
         })
         .catch((e) => {
           console.log(e.message); // handle error

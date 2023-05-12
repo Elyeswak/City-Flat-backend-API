@@ -40,7 +40,6 @@ export async function getNotificationsForUser(req, res) {
     const notificationId = req.params.param;
     
     const notification = await getNotificationByIdForUser(notificationId, userId);
-    console.log(userId);
     res.status(200).json(notificationFormat(notification));
   } catch (err) {
     console.error(err);

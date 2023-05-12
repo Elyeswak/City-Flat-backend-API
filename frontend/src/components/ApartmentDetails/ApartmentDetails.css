@@ -234,7 +234,8 @@
   right: 5px;
 }
 
-.add-review-btn {
+.add-review-btn,
+.edit-btn {
   background-color: #d7d7d7 !important;
   outline: none !important;
   border-color: #000 !important;
@@ -248,4 +249,9 @@
 
 .review-textArea {
   background-color: #d7d7d7 !important;
+}
+
+.modal-content {
+  background-color: #000 !important;
+  color: white !important;
 }

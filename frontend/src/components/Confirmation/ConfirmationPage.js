@@ -57,7 +57,6 @@ function PaymentPage() {
 
   /**CREATE AN ORDER */
   function postData() {
-
     axios
       .post(
         "http://localhost:9090/user/reservations/createOrder",
@@ -152,7 +151,7 @@ function PaymentPage() {
                       key={serviceName}
                     >
                       {serviceIcons[serviceName]}
-                      <p className="service_title">{serviceName}</p>
+                      <p className="service_title">{t(serviceName)}</p>
                     </div>
                   ))}
                 </div>

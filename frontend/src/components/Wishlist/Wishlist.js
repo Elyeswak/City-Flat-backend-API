@@ -4,12 +4,14 @@ import Footer from "../Footer/footer";
 import "./Wishlist.css";
 import axios from "axios";
 import { Carousel } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 function Wishlist() {
   const user = JSON.parse(localStorage.getItem("user"));
   const userId = user.id;
   const userToken = user.token;
+  const { t } = useTranslation();
 
   const [allApartments, setAllApartments] = useState([]);
 
@@ -47,7 +49,7 @@ function Wishlist() {
       <div className="content_page">
         <div className="upper__space"></div>
         <div className="upper__space wishlist_title">
-          <h1>WISHLIST</h1>
+          <h1>{t("WISHLIST")}</h1>
         </div>
         <div className="wishlist__body">
           <div className="wishlist__content">

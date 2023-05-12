@@ -128,7 +128,7 @@ function ApartmentDetails() {
   /**SERVICES OF THE APARTMENT */
   const options = services.map((service) => {
     return {
-      label: service.name,
+      label: t(service.name),
       value: service._id,
     };
   });
@@ -521,7 +521,9 @@ function ApartmentDetails() {
                         {user && user.name}
                       </p>
                     </div>
-                    <p className="text-start fs-5 mt-3">{t("Give us a rate")}</p>
+                    <p className="text-start fs-5 mt-3">
+                      {t("Give us a rate")}
+                    </p>
                     <div className="">
                       <Form onSubmit={handleSubmit}>
                         <div className="rate-cont d-flex justify-content-start mb-4">
@@ -538,6 +540,7 @@ function ApartmentDetails() {
                               });
                             }}
                             showTooltip
+                            tooltipDefaultText={t("YOUR RATE")}
                           />
                         </div>
                         <Form.Group controlId="review" className="mb-2">

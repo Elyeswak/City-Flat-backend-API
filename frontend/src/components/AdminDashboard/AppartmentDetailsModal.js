@@ -35,20 +35,6 @@ export default function AppartmentDetailsModal(props) {
             <p>{appartment.description}</p>
           </div>
           <div className="my-2">
-            <strong>Appartment reviews: </strong>
-            {appartment.reviews.length === 0 ? (
-              <p>
-                <strong>no reviews</strong>
-              </p>
-            ) : (
-              <ul>
-                {appartment.reviews.map((review) => (
-                  <li>{review}</li>
-                ))}
-              </ul>
-            )}
-          </div>
-          <div className="my-2">
             <strong>Appartment services: </strong>
             <Table>
               <thead>

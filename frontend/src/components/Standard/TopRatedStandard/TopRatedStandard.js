@@ -28,7 +28,7 @@ const filteredApartments = apartments.filter(data => data.rating === 5 && data.t
     whileInView={{ y: [100, 50, 0], opacity: [0, 0, 1] }}
     transition={{ duration: 0.5 }}>
     <div className="col image_col">
-      <img alt="" src={filteredApartments[0].img} />
+      <img alt="" src={filteredApartments[0].img[0]} />
     </div>
     <div className="col content_col" style={{ backgroundColor: "white" }}>
       <div className="card_infos_luxury">

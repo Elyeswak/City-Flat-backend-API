@@ -259,7 +259,7 @@ function Navbar() {
                 type="button"
                 className="btn btn-dark"
               >
-                {("SIGNUP")}
+                {t("SIGNUP")}
               </motion.button>
             </a>
             <a href="/login">

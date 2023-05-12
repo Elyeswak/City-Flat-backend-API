@@ -9,7 +9,7 @@ import validator from "validator";
 import { isValidNumber } from "libphonenumber-js";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { useTranslation } from "react-i18next";
 import "./signup.css";
 
 function Signup() {
@@ -29,7 +29,7 @@ function Signup() {
   const [errMsg, setErrMsg] = useState("");
   const [successful, setSuccessful] = useState(false);
   const [message, setMessage] = useState("");
-
+  const { t } = useTranslation();
   const [isChecked, setIsChecked] = useState(false);
 
   /**CHECK FOR PASSWORD VISIBILTY */
@@ -240,7 +240,7 @@ function Signup() {
                     </p>
                     <div className="heading">
                       <h2>WELCOME</h2>
-                      <h4>Verify your account</h4>
+                      <h4>{t("Verify your account")}</h4>
                     </div>
 
                     <div className="actual-form">
@@ -249,7 +249,7 @@ function Signup() {
                           className="label-form"
                           htmlFor="verificationCode"
                         >
-                          Verification code
+                          {t("Verification code")}
                         </label>
                         <input
                           type="text"
@@ -309,13 +309,13 @@ function Signup() {
                     </p>
                     <div className="heading">
                       <h2>WELCOME</h2>
-                      <h4>Signup to your account</h4>
+                      <h4>{t("Sign up for an account")}</h4>
                     </div>
 
                     <div className="actual-form">
                       <div className="input-wrap">
                         <label className="label-form" htmlFor="name">
-                          Your name
+                          {t("Name")}
                         </label>
                         <input
                           type="text"
@@ -328,7 +328,7 @@ function Signup() {
                       </div>
                       <div className="input-wrap">
                         <label className="label-form" htmlFor="email">
-                          Email
+                          {t("Email")}
                         </label>
                         <input
                           type="text"
@@ -342,7 +342,7 @@ function Signup() {
 
                       <div className="input-wrap">
                         <label className="label-form" htmlFor="enumbermail">
-                          Phone Number
+                          {t("Phone Number")}
                         </label>
                         <PhoneInput
                           id="number"
@@ -355,7 +355,7 @@ function Signup() {
 
                       <div className="input-wrap">
                         <label className="label-form" htmlFor="password">
-                          Password
+                          {t("Password")}
                         </label>
                         <input
                           type={passwordVisible ? "text" : "password"}
@@ -387,21 +387,15 @@ function Signup() {
                               type="checkbox"
                               checked={isChecked}
                               onChange={handleCheckboxChange}
-                            />{" "}
-                            By creating an account, you agree to the{" "}
-                            <a href="/terms">
-                              <strong>terms</strong>
-                            </a>{" "}
-                            and{" "}
-                            <a href="/conditions">
-                              <strong>conditions</strong>
-                            </a>
+                            />
+                           {t("By creating an account, you agree to the")} <a href="/conditions">{t("terms & conditions")}</a>
+                           
                           </label>
                           <input
                             type="submit"
                             disabled={!isChecked}
                             className="submit-btn"
-                            value="SIGNIN"
+                            value={t("SIGNUP")}
                           />
                         </div>
                       </div>
@@ -409,7 +403,7 @@ function Signup() {
                   </form>
                   <div className="separators-signup">
                     <hr className="seperator left" />{" "}
-                    <b style={{ fontFamily: "font-alethia-pro" }}>OR</b>
+                    <b style={{ fontFamily: "font-alethia-pro" }}>{t("Or")}</b>
                     <hr className="seperator right" />
                   </div>
 
@@ -426,7 +420,8 @@ function Signup() {
                   </div>
                   <div className="signup">
                     <span>
-                      You have an account? <a href="/login">Login now</a>
+                      {t("You have an account")}?{" "}
+                      <a href="/login">{t("Login now")}</a>
                     </span>
                   </div>
                 </div>

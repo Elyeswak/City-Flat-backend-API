@@ -36,11 +36,7 @@ export default function AppartmentDetailsModal(props) {
           </div>
 
           <div className="my-2">
-<<<<<<< HEAD
-            <strong>Appartment services: </strong>
-=======
             <strong>Apartment-Dienstleistungen: </strong>
->>>>>>> 1518c2bd872302e2ea03f5910429060296106008
             <Table>
               <thead style={{color:"white"}}>
                 <tr>

@@ -4,6 +4,8 @@ import "./ServicesDash.css";
 import axios from "axios";
 import AllServices from "./AllServices";
 import AddServiceForm from "./AddServiceForm";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAdd } from "@fortawesome/free-solid-svg-icons";
 
 export default function ServicesDash() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -66,7 +68,7 @@ export default function ServicesDash() {
         <>
           <Sidebar />
           <div className="services-dash-cont bg-dark text-light">
-            <h1 className="text-light text-center">Services Dashboard</h1>
+            <h1 className="text-light text-center">Dienstleistungen-Dashboard</h1>
             <ul className="services-dash-nav d-flex">
               <li
                 onClick={() => {
@@ -74,14 +76,14 @@ export default function ServicesDash() {
                 }}
                 className=""
               >
-                <button className="btn btn-primary me-3">All services</button>
+                <button className="btn btn-primary me-3">Alle Dienstleistungen</button>
               </li>
               <li
                 onClick={() => {
                   setShow("add");
                 }}
               >
-                <button className="btn btn-success">➕ Add</button>
+                <button className="btn btn-success"><FontAwesomeIcon icon={faAdd}/> Hinzufügen</button>
               </li>
             </ul>
             {show === "all" ? (

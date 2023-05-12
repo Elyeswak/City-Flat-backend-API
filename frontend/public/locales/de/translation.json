@@ -87,10 +87,12 @@
   "Error" : "Fehler",
   "Review (20-250 characters)":"Bewertung (20-250 Zeichen)",
   "Rating":"Bewertung",
-  "Give us a rate":"",
-  "FROM ALL":"",
-  "REVIEWS":"",
-  "Show All":""
-  
+  "Give us a rate":"Bitte bewerten Sie uns",
+  "FROM ALL":"VON ALLEN",
+  "REVIEWS":"BEWERTUNGEN",
+  "Show All":"Alle anzeigen",
+  "Edit" : "Editieren",
+  "Delete" : "löschen",
+  "Details" : "Einzelheiten"
 
 }

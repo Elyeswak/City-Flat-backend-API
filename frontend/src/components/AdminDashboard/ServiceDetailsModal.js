@@ -7,7 +7,7 @@ export default function ServiceDetailsModal(props) {
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Service Details</Modal.Title>
+        <Modal.Title>Service-Details</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <div>
@@ -15,10 +15,10 @@ export default function ServiceDetailsModal(props) {
             <strong>Name: </strong> {service.name}
           </div>
           <div className="my-2">
-            <strong>Price per night: </strong>£ {service.pricePerNight}
+            <strong>Preis pro Nacht: </strong>£ {service.pricePerNight}
           </div>
           <div>
-            <strong>Description: </strong>
+            <strong>Beschreibung: </strong>
             <p>{service.description}</p>
           </div>
         </div>

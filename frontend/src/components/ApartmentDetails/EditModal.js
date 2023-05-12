@@ -85,7 +85,7 @@ export default function EditModal({
               value={editedReview}
               onChange={(e) => setEditedReview(e.target.value)}
             />
-            <Form.Control.Feedback type="invalid">Error</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">{t("Error")}</Form.Control.Feedback>
           </Form.Group>
           <Button type="submit">{t("RATE")}</Button>
         </Form>

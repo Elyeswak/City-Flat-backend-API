@@ -522,7 +522,7 @@ function ApartmentDetails() {
                         {user && user.name}
                       </p>
                     </div>
-                    <p className="text-start fs-5 mt-3">Rate the house</p>
+                    <p className="text-start fs-5 mt-3">{t("Give us a rate")}</p>
                     <div className="">
                       <Form onSubmit={handleSubmit}>
                         <div className="rate-cont d-flex justify-content-start mb-4">
@@ -561,7 +561,7 @@ function ApartmentDetails() {
                           </Form.Control.Feedback>
                         </Form.Group>
                         <Button type="submit" className="w-50 add-review-btn">
-                          Submit
+                          {t("RATE")}
                         </Button>
                       </Form>
                     </div>
@@ -583,7 +583,7 @@ function ApartmentDetails() {
                       </span>
                     </p>
                     <p className="text-uppercase text-light m-0 fs-4">
-                      from all {allReviews.length} reviews
+                      {t("FROM ALL")} {allReviews.length} {t("REVIEWS")}
                     </p>
                   </div>
                   <div className="col">

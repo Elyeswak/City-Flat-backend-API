@@ -5,6 +5,13 @@ import moment from "moment";
 import axios from "axios";
 import Sidebar from "./Sidebar";
 import OrderDetailsModal from "./OrderDetailsModal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCancel,
+  faCheck,
+  faInfoCircle,
+} from "@fortawesome/free-solid-svg-icons";
+import Swal from "sweetalert2";
 
 export default function OrdersDash() {
   const [orders, setOrders] = useState([]);
@@ -66,29 +73,49 @@ export default function OrdersDash() {
 
   const handleDecline = (orderId) => {
     if (confirmingDecline) {
-      axios
-        .delete(`http://localhost:9090/user/order/adminDecline/${orderId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((response) => {
-          // remove the declined order from the orders array
-          const updatedOrders = orders.filter((order) => order.id !== orderId);
-          setOrders(updatedOrders);
+      Swal.fire({
+        title: "Sind Sie sicher, dass Sie die Buchungsanfrage ablehnen möchten?",
+        text: "Sie werden dies nicht rückgängig machen können!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        confirmButtonText: "Ja, ablehnen!",
+        cancelButtonColor: "#3085d6",
+        cancelButtonText: "Nein, behalte es.",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios
+            .delete(
+              `http://localhost:9090/user/order/adminDecline/${orderId}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            )
+            .then((response) => {
+              // remove the declined order from the orders array
+              const updatedOrders = orders.filter(
+                (order) => order.id !== orderId
+              );
+              setOrders(updatedOrders);
 
-          // add the declined order to the declinedOrders array
-          // const declinedOrder = orders.find((order) => order.id === orderId);
-          // setDeclinedOrders([...declinedOrders, declinedOrder]);
+              // add the declined order to the declinedOrders array
+              // const declinedOrder = orders.find((order) => order.id === orderId);
+              // setDeclinedOrders([...declinedOrders, declinedOrder]);
 
-          console.log(response.data); // handle response data
-        })
-        .catch((e) => {
-          console.log(e.message); // handle error
-        })
-        .finally(() => {
+              console.log(response.data); // handle response data
+            })
+            .catch((e) => {
+              console.log(e.message); // handle error
+            })
+            .finally(() => {
+              setConfirmingDecline(false);
+            });
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
           setConfirmingDecline(false);
-        });
+        }
+      });
     } else {
       setConfirmingDecline(true);
       setTimeout(() => {
@@ -120,6 +147,38 @@ export default function OrdersDash() {
           setConfirmingAccept(false);
         });
     } else {
+      Swal.fire({
+        title: "Sind Sie sicher, dass Sie diese Buchungsanfrage annehmen möchten?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        cancelButtonText :"Stornieren",
+        confirmButtonText: "Akzeptieren",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios
+            .post(`http://localhost:9090/user/order/accept/${orderId}`, null, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+            .then((response) => {
+              // remove the accepted order from the orders array
+              const acceptedOrder = orders.find((order) => order.id === orderId);
+              setAcceptedOrders([...acceptedOrders, acceptedOrder]);
+              const acceptedOrdersUpdated = new Date();
+              setAcceptedOrdersUpdated(acceptedOrdersUpdated);
+              console.log(response.data); // handle response data
+            })
+            .catch((e) => {
+              console.log(e.message); // handle error
+            })
+            .finally(() => {
+              setConfirmingAccept(false);
+            });
+        }
+      });
       setConfirmingAccept(true);
       setTimeout(() => {
         setConfirmingAccept(false);
@@ -144,17 +203,18 @@ export default function OrdersDash() {
           <Sidebar />
 
           <div className="orders_page_content">
-            <h1 className="text-light text-center mt-5">Orders Dashboard</h1>
+            <h1 className="text-light text-center mt-5">Dashboard für Buchungsanfragen</h1>
             <div className="orders_table">
               <Table responsive className="orders_table">
                 <thead>
                   <tr>
                     <th>#</th>
                     <th>Apartment</th>
-                    <th>check-in</th>
-                    <th>check-out</th>
-                    <th>Total price</th>
-                    <th colSpan={3}>Order action</th>
+                    <th>Einchecken</th>
+                    <th>Auschecken</th>
+                    <th>Gesamtpreis</th>
+                    <th>Status</th>
+                    <th colSpan={3}>Aktionen</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -168,39 +228,56 @@ export default function OrdersDash() {
                         <td>€ {order.totalPrice}</td>
                         {order.state === "ACCEPTED" ? (
                           <td colSpan={2}>
-                            <div className="text-success">Accepted</div>
+                            <div className="text-success">Akzeptiert</div>
                           </td>
                         ) : (
-                          <td>
-                            <div>
-                              <button
-                                className="btn btn-success rounded-pill"
-                                disabled={order.state === "DECLINED"}
-                                onClick={() => handleAccept(order.id)}
-                              >
-                                {confirmingAccept ? "Confirm" : "Accept"}
-                              </button>
-                            </div>
-                          </td>
-                        )}
-                        {order.state === "ACCEPTED" ? null : (
-                          <td>
-                            <div>
-                              <button
-                                className="btn btn-danger rounded-pill"
-                                onClick={() => handleDecline(order.id)}
-                              >
-                                {confirmingDecline ? "Confirm" : "Decline"}
-                              </button>
-                            </div>
-                          </td>
+                          <>
+                            <td colSpan={2}>
+                              <div>
+                                <div
+                                  style={{
+                                    display: "inline-block",
+                                    marginRight: "2px",
+                                  }}
+                                >
+                                  {order.state === "DECLINED" ? null : (
+                                    <button
+                                      className="btn btn-success rounded-pill"
+                                      disabled={order.state === "DECLINED"}
+                                      onClick={() => handleAccept(order.id)}
+                                    >
+                                      <FontAwesomeIcon icon={faCheck} />
+                                    </button>
+                                  )}
+                                </div>
+
+                                <div
+                                  style={{
+                                    display: "inline-block",
+                                    marginLeft: "2px",
+                                  }}
+                                >
+                                  {order.state === "DECLINED" ? (
+                                    <p className="text-danger">Abgelehnt</p>
+                                  ) : (
+                                    <button
+                                      className="btn btn-danger rounded-pill"
+                                      onClick={() => handleDecline(order.id)}
+                                    >
+                                      <FontAwesomeIcon icon={faCancel} />
+                                    </button>
+                                  )}
+                                </div>
+                              </div>
+                            </td>
+                          </>
                         )}
                         <td>
                           <button
-                            className="btn btn-info rounded-pill ml-2"
+                            className="btn btn-warning rounded-pill ml-2"
                             onClick={() => handleShowDetails(order)}
                           >
-                            Details
+                            <FontAwesomeIcon icon={faInfoCircle}/>
                           </button>
                         </td>
                       </tr>

@@ -143,7 +143,7 @@ export default function AllServicesRow({
       </tr>
       <Modal show={showEditModal} onHide={handleCloseEditModal}>
         <Modal.Header closeButton>
-          <Modal.Title>Update Appartment</Modal.Title>
+          <Modal.Title>Service-Details aktualisieren</Modal.Title>
         </Modal.Header>
         {/* handleEditChange */}
         <Modal.Body>
@@ -163,21 +163,21 @@ export default function AllServicesRow({
             </Form.Group>
 
             <Form.Group controlId="formPrice" className="col-6">
-              <Form.Label>Price per night</Form.Label>
+              <Form.Label>Preis pro Nacht</Form.Label>
               <Form.Control
                 type="number"
-                placeholder="Enter price per night"
+                placeholder="Preis pro Nacht Eingeben"
                 value={pricePerNight}
                 onChange={(event) => setPricePerNight(event.target.value)}
                 required
               />
             </Form.Group>
             <Form.Group controlId="formDescription" className="col-12">
-              <Form.Label>Description</Form.Label>
+              <Form.Label>Beschreibung</Form.Label>
               <Form.Control
                 as="textarea"
                 rows={3}
-                placeholder="Enter description"
+                placeholder="Beschreibung Eingeben"
                 value={description}
                 onChange={(event) => setDescription(event.target.value)}
                 required
@@ -189,7 +189,7 @@ export default function AllServicesRow({
               type="submit"
               className="w-25 mx-auto mt-3"
             >
-              Submit
+              Hinzufügen
             </Button>
           </Form>
         </Modal.Body>

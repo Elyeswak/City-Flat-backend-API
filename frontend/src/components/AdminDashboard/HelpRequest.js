@@ -45,7 +45,7 @@ function HelpRequest(props) {
       <Modal.Body>
         <Form>
           <Form.Group controlId="input1">
-            <Form.Label>Request subject</Form.Label>
+            <Form.Label>Anfragebetreff</Form.Label>
             <Form.Control
               type="text"
               value={subject}
@@ -53,7 +53,7 @@ function HelpRequest(props) {
             />
           </Form.Group>
           <Form.Group controlId="input2">
-            <Form.Label>Request details</Form.Label>
+            <Form.Label>Anfrage-Details</Form.Label>
             <Form.Control
               as="textarea"
               rows={3}
@@ -65,7 +65,7 @@ function HelpRequest(props) {
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose} className="w-25">
-          Cancel
+        Abbrechen
         </Button>
         <Button variant="success" onClick={handleSend} className="w-25">
           Send

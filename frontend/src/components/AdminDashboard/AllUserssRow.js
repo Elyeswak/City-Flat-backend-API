@@ -2,6 +2,11 @@ import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "./UsersDash.css";
 import axios from "axios";
+import Toggle from "react-toggle";
+import Swal from "sweetalert2";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+
 
 export default function AllUserssRow({ index, usr, allUsers, setAllUsers }) {
   const [confirmingDelete, setConfirmingDelete] = useState(false);
@@ -12,7 +17,8 @@ export default function AllUserssRow({ index, usr, allUsers, setAllUsers }) {
   const userLoc = JSON.parse(localStorage.getItem("user"));
   const userId = userLoc.id;
   const userToken = userLoc.token;
-  const handleCheckboxChange = (event) => {
+
+  const handleToggleChange = (event) => {
     const isChecked = event.target.checked;
     setVerified(isChecked);
 
@@ -33,7 +39,7 @@ export default function AllUserssRow({ index, usr, allUsers, setAllUsers }) {
         );
         setAllUsers(updatedUsers);
 
-        toast.success("✅ Changes saved successfully", {
+        toast.success("✅ Änderungen erfolgreich gespeichert.", {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,
@@ -46,7 +52,7 @@ export default function AllUserssRow({ index, usr, allUsers, setAllUsers }) {
       })
       .catch((error) => {
         console.log(error);
-        toast.error("❌ An error occured while trying to save the changes!", {
+        toast.error("❌Ein Fehler ist aufgetreten, während versucht wurde, die Änderungen zu speichern!", {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,
@@ -60,58 +66,59 @@ export default function AllUserssRow({ index, usr, allUsers, setAllUsers }) {
   };
 
   const handleDelete = (deleteId) => {
-    if (confirmingDelete) {
-      axios
-        .delete(`http://localhost:9090/user/${deleteId}`, {
-          headers: {
-            Authorization: `Bearer ${userToken}`,
-          },
-        })
-        .then((response) => {
-          // remove the deleted user from the users array
-          const updatedUsers = allUsers.filter((user) => user.id !== deleteId);
-          setAllUsers(updatedUsers);
-
-          toast.success("✅ User deleted successfully", {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
+    Swal.fire({
+      title: "Sind Sie sicher?",
+      text: "Sie können dies nicht rückgängig machen!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      cancelButtonText:"Abbrechen",
+      confirmButtonText: "Ja, löschen Sie es!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`http://localhost:9090/user/${deleteId}`, {
+            headers: {
+              Authorization: `Bearer ${userToken}`,
+            },
+          })
+          .then((response) => {
+            // remove the deleted user from the users array
+            const updatedUsers = allUsers.filter((user) => user.id !== deleteId);
+            setAllUsers(updatedUsers);
+  
+            toast.success("✅ Benutzer erfolgreich gelöscht.", {
+              position: "top-right",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+  
+            console.log(response.data); // handle response data
+          })
+          .catch((e) => {
+            console.log(e.message); // handle error
+            toast.error("❌ Ein Fehler ist aufgetreten, während versucht wurde, den Benutzer zu löschen!", {
+              position: "top-right",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
           });
-
-          // add the declined order to the deletedUser array
-          // const deletedUser = orders.find((order) => order.id === appartId);
-          // setdeletedUsers([...deletedUsers, deletedUser]);
-
-          console.log(response.data); // handle response data
-        })
-        .catch((e) => {
-          console.log(e.message); // handle error
-          toast.error("❌ An error occured while trying to delete the User!", {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-        })
-        .finally(() => {
-          setConfirmingDelete(false);
-        });
-    } else {
-      setConfirmingDelete(true);
-      setTimeout(() => {
-        setConfirmingDelete(false);
-      }, 3000);
-    }
+      }
+    });
   };
+
+
   useEffect(() => {
     setName(usr.name);
     setEmail(usr.email);
@@ -145,17 +152,10 @@ export default function AllUserssRow({ index, usr, allUsers, setAllUsers }) {
               className="btn btn-danger"
               onClick={() => handleDelete(usr.id)}
             >
-              {confirmingDelete ? "✔️" : "🗑️"}
+              <FontAwesomeIcon icon={faTrash}/>
             </button>
           </div>
-          <label className="switch">
-            <input
-              type="checkbox"
-              checked={verified}
-              onChange={handleCheckboxChange}
-            />
-            <span className="slider" />
-          </label>
+          <Toggle checked={verified} onChange={handleToggleChange} />
         </td>
       </tr>
     </>

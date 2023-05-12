@@ -107,6 +107,9 @@ function Requestspage() {
       <Navbar />
       <div className="upper__space"></div>
       <div className="requests_page_content">
+      <h1 className="text-light text-center my-3">
+            {t("MY BOOKING REQUESTS")}
+            </h1>
         <div className="requests_table">
           {orders.length > 0 ? (
             <Table responsive className="requests_table">

@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 function Login() {
   const errRef = useRef();
@@ -18,6 +19,7 @@ function Login() {
   const [successMsg, setSuccessMsg] = useState(false);
   const [loginForm, setLoginForm] = useState(false);
   const [isVerified,setIsVerified] = useState(false);
+  const {t} = useTranslation()
 
   /**CHECK FOR PASSWORD VISIBILTY */
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -123,13 +125,13 @@ function Login() {
 
                     <div className="heading">
                       <h2>WELCOME</h2>
-                      <h4>Login to your account</h4>
+                      <h4>{t("Login to your account")}</h4>
                     </div>
 
                     <div className="actual-form">
                       <div className="input-wrap">
                         <label className="label-form" htmlFor="email">
-                          Email
+                          {t("Email")}
                         </label>
                         <input
                           type="email"
@@ -144,7 +146,7 @@ function Login() {
 
                       <div className="input-wrap">
                         <label className="label-form" htmlFor="password">
-                          Password
+                          {t("Password")}
                         </label>
                         <input
                           type={passwordVisible ? "text" : "password"}
@@ -177,18 +179,18 @@ function Login() {
                             type="checkbox"
                             className="form-check-input"
                           />{" "}
-                          Remember me{" "}
+                          {t("Remember me")}{" "}
                         </div>
                         <div className="forgot-password">
-                          <a href="/forget-password">Forgot password?</a>
+                          <a href="/forget-password">{t("Forgot password")}?</a>
                         </div>
                       </div>
-                      <button className="sign-btn"> LOGIN </button>
+                      <button className="sign-btn"> {t("LOGIN")} </button>
                     </div>
                   </form>
                   <div className="separators">
                     <hr className="seperator left" />{" "}
-                    <b style={{ fontFamily: "font-alethia-pro" }}>OR</b>
+                    <b style={{ fontFamily: "font-alethia-pro" }}>{t("OR")}</b>
                     <hr className="seperator right" />
                   </div>
 
@@ -205,8 +207,8 @@ function Login() {
                   </div>
                   <div className="signup">
                     <span>
-                      You don't have an account?{" "}
-                      <a href="/signup">Join for free today</a>
+                      {t("You don't have an account")}?{" "}
+                      <a href="/signup">{t("Join for free today")}</a>
                     </span>
                   </div>
                 </div>
@@ -214,13 +216,13 @@ function Login() {
                 <div className="go-home-space">
                   <div className="go-home ">
                     <h4>
-                      You are already logged in{" "}
+                      {t("You are already logged in")}{" "}
                       <a
                         href="/"
                         className="link link--metis"
                         style={{ color: "#bd8f1c" }}
                       >
-                        GO HOME
+                        {t("GO HOME")}
                       </a>
                     </h4>
                   </div>

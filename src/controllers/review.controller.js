@@ -31,7 +31,6 @@ export async function createReview(req, res) {
 }
 
 export async function deleteReview(req, res) {
-  console.log(req.body);
   try {
     const reviewRate = await Review.findById(req.params.param);
     const review = await Review.findByIdAndDelete(req.params.param);
@@ -42,8 +41,6 @@ export async function deleteReview(req, res) {
       newSumOfRatings === 0 || numberOfRatings === 0
         ? 0
         : Math.round((newSumOfRatings / numberOfRatings) * 2) / 2;
-    console.log(newSumOfRatings);
-    console.log(numberOfRatings);
     await Appartment.findByIdAndUpdate(req.body.appartmentId, {
       $pull: { reviews: review._id },
       sumOfRatings: newSumOfRatings,
@@ -61,70 +58,21 @@ export async function deleteReview(req, res) {
   }
 }
 
-export async function deleteAllReviews(req, res) {
-  // try {
-  //   // Find all reviews and delete them
-  //   const reviews = await Review.find();
-  //   await Review.deleteMany();
-  //   // Loop through all apartments and remove the deleted reviews from their reviews array
-  //   const apartments = await Appartment.find();
-  //   for (const apartment of apartments) {
-  //     const updatedReviews = [];
-  //     await Appartment.findByIdAndUpdate(apartment._id, {
-  //       reviews: updatedReviews,
-  //       sumOfRatings: 0,
-  //       numOfRatings: 0,
-  //       rating: 5,
-  //     });
-  //   }
-  //   res.status(200).json({ message: "All reviews deleted successfully!" });
-  // } catch (error) {
-  //   res.status(500).json({ message: error.message });
-  // }
-}
-
-// export async function updateReview(req, res) {
-//   try {
-//     const updatedReview = await Review.findByIdAndUpdate(
-//       req.params.param,
-//       { Rating: req.body.rating, Description: req.body.description },
-//       { new: true }
-//     )
-//       .then((result) => {
-//         res
-//           .status(201)
-//           .json({ message: "review updated successfuly !", object: result });
-//       })
-//       .catch((err) => res.status(500).json({ error: err.message }));
-//     const apartment = await Appartment.findById(req.body.appartmentId);
-//     console.log(apartment);
-//   } catch (error) {
-//     throw new Error(error.message);
-//   }
-// }
-
 export async function updateReview(req, res) {
   try {
     const review = await Review.findById(req.params.param);
     const oldRating = review.Rating;
-    console.log("oldRating", oldRating, typeof oldRating);
     const newRating = parseFloat(req.body.rating);
-    console.log("newRating", newRating, typeof newRating);
     const apartmentId = req.body.appartmentId;
     const apartment = await Appartment.findById(apartmentId);
     const oldSumOfRatings = parseFloat(apartment.sumOfRatings);
-    console.log("oldSumOfRatings", oldSumOfRatings, typeof oldSumOfRatings);
     const oldNumOfRatings = parseFloat(apartment.numOfRatings);
-    console.log("oldNumOfRatings", oldNumOfRatings, typeof oldNumOfRatings);
     const newSumOfRatings = oldSumOfRatings - oldRating + newRating;
-    console.log("newSumOfRatings", newSumOfRatings, typeof newSumOfRatings);
     const newNumOfRatings = oldNumOfRatings;
-    console.log("newNumOfRatings", newNumOfRatings, typeof newNumOfRatings);
     const newRatingValue =
       newNumOfRatings === 0
         ? 0
         : Math.round((newSumOfRatings / newNumOfRatings) * 2) / 2;
-    console.log("newRatingValue", newRatingValue, typeof newRatingValue);
     const updatedReview = await Review.findByIdAndUpdate(
       req.params.param,
       { Rating: req.body.rating, Description: req.body.description },
@@ -141,7 +89,6 @@ export async function updateReview(req, res) {
       numOfRatings: newNumOfRatings,
       rating: newRatingValue,
     });
-    console.log(updatedApartment);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -164,7 +111,6 @@ export async function getAllReviews(req, res) {
 }
 
 export async function getReviewById(req, res) {
-  console.log(req.params.param);
   try {
     const review = await Review.findById(req.params.param);
     if (!review) {

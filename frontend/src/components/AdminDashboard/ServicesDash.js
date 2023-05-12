@@ -23,7 +23,6 @@ export default function ServicesDash() {
           `http://localhost:9090/user/${User.id}`
         );
         const user = response.data;
-        console.log("returned user from db", user);
         setIsAdmin(user.role === "ADMIN");
       } catch (error) {
         console.error(error);
@@ -51,8 +50,6 @@ export default function ServicesDash() {
           },
         }
       );
-
-      console.log(res.data); // Log the response data
     } catch (err) {
       console.error(err); // Handle error here
     }

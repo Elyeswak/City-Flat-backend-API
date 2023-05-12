@@ -25,7 +25,6 @@ export default function UsersDash() {
           `http://localhost:9090/user/${User.id}`
         );
         const user = response.data;
-        console.log("returned user from db", user);
         setIsAdmin(user.role === "ADMIN");
       } catch (error) {
         console.error(error);
@@ -70,15 +69,11 @@ export default function UsersDash() {
     filteredAllUsers = allUsers.filter(
       (userInactive) => userInactive.isVerified === false
     );
-    console.log(filterValue);
-    console.log(filteredAllUsers);
   }
   if (filterValue === "active") {
     filteredAllUsers = allUsers.filter(
       (userActive) => userActive.isVerified === true
     );
-    console.log(filterValue);
-    console.log(filteredAllUsers);
   }
   return (
     <>
@@ -141,10 +136,6 @@ export default function UsersDash() {
                   </tr>
                 ) : (
                   filteredAllUsers.map((usr, index) => {
-                    console.log("user to be displayed", usr); // <-- add this line
-                    console.log("all users array", allUsers);
-                    console.log("filtered users", filteredAllUsers);
-                    console.log("filter value", filterValue);
                     return (
                       <AllUserssRow
                         usr={usr}

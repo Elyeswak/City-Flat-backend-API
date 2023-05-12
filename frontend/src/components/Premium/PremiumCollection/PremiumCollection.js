@@ -47,7 +47,6 @@ function PremiumCollection() {
         );
 
         // Log the data here
-        console.log(result.data);
         setPremiumLoader(false);
       })
       .catch((error) => console.log(error));

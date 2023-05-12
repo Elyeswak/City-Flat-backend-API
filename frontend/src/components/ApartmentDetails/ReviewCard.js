@@ -50,7 +50,6 @@ export default function ReviewCard({
         }
       );
       const ResData = response.data;
-      console.log(ResData);
       // Remove the deleted review from the allReviews array
       const updatedReviews = allReviews.filter(
         (deleteReview) => deleteReview._id !== review._id

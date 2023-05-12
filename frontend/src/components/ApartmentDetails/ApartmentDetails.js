@@ -51,7 +51,7 @@ function ApartmentDetails() {
   const userToken = user?.token;
 
   const [formData, setFormData] = useState({
-    rating: "",
+    rating: 0,
     review: "",
   });
 
@@ -114,7 +114,6 @@ function ApartmentDetails() {
       .then((response) => {
         setRate(response.data.rating);
       });
-    console.log("current rate", rate);
   };
 
   /*
@@ -124,10 +123,7 @@ function ApartmentDetails() {
   const [value, setvalue] = useState("");
   const handleOnchange = (val) => {
     setvalue(val);
-    console.log("selected service", val);
   };
-
-  // console.log("services", services)
 
   /**SERVICES OF THE APARTMENT */
   const options = services.map((service) => {
@@ -302,14 +298,15 @@ function ApartmentDetails() {
         }
       );
       const review = response.data;
-      console.log(review);
       setFormData({
-        rating: "",
+        rating: 0,
         review: "",
       });
       setRefresh(refresh + 1);
       getRate();
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const testData = [
@@ -321,19 +318,23 @@ function ApartmentDetails() {
   ];
 
   useEffect(() => {
-    const ratingCounts = allReviews.reduce(
-      (acc, review) => {
-        const rating = Math.floor(review.Rating);
-        acc[rating - 1]++;
-        return acc;
-      },
-      [0, 0, 0, 0, 0]
-    );
+    if (allReviews.length !== 0) {
+      const ratingCounts = allReviews.reduce(
+        (acc, review) => {
+          const rating = Math.floor(review.Rating);
+          acc[rating - 1]++;
+          return acc;
+        },
+        [0, 0, 0, 0, 0]
+      );
 
-    const totalReviews = allReviews.length;
-    setRatingPercentages(
-      ratingCounts.map((count) => ((count / totalReviews) * 100).toFixed(0))
-    );
+      const totalReviews = allReviews.length;
+      setRatingPercentages(
+        ratingCounts.map((count) => ((count / totalReviews) * 100).toFixed(0))
+      );
+    } else {
+      setRatingPercentages([0, 0, 0, 0, 0]);
+    }
   }, [allReviews]);
 
   const [showBtn, setShowBtn] = useState(false);
@@ -402,14 +403,6 @@ function ApartmentDetails() {
 
                     <div className="row">
                       <div className="col"></div>
-                      {/* <div className="col justify-content-end">
-                        <button
-                          type="button"
-                          className="btn btn-light custom-button "
-                        >
-                          Show reviews
-                        </button>
-                      </div> */}
                     </div>
                     <div className="services_details">
                       <div className="row" style={{ padding: "2%" }}>
@@ -528,12 +521,16 @@ function ApartmentDetails() {
                         {user && user.name}
                       </p>
                     </div>
-                    <p className="text-start fs-5 mt-3">Rate the house</p>
+                    <p className="text-start fs-5 mt-3">
+                      {t("Rate the apartment")}
+                    </p>
                     <div className="">
                       <Form onSubmit={handleSubmit}>
                         <div className="rate-cont d-flex justify-content-start mb-4">
                           <Rating
-                            initialValue={formData.rate}
+                            initialValue={formData.rating}
+                            transition
+                            emptyColor="#d7d7d7"
                             allowFraction
                             size={25}
                             onClick={(rate) => {
@@ -541,7 +538,6 @@ function ApartmentDetails() {
                                 ...formData,
                                 rating: rate,
                               });
-                              console.log(formData);
                             }}
                             showTooltip
                           />
@@ -589,7 +585,9 @@ function ApartmentDetails() {
                       </span>
                     </p>
                     <p className="text-uppercase text-light m-0 fs-4">
-                      from all {allReviews.length} reviews
+                      {allReviews.length === 1
+                        ? `${t("from")} ${allReviews.length} ${t("review")}`
+                        : `${t("from")} ${allReviews.length} ${t("reviews")}`}
                     </p>
                   </div>
                   <div className="col">
@@ -624,7 +622,7 @@ function ApartmentDetails() {
                   className="btn btn-success float-end mt-3"
                   onClick={showReviews}
                 >
-                  {showBtn ? "Show less" : "Show all"}
+                  {showBtn ? `${t("Show less")}` : `${t("Show all")}`}
                 </button>
               </div>
             </div>

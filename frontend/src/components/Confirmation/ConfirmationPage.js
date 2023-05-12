@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/footer";
-import Rate from "../Rate/Rate";
+import { Rating } from "react-simple-star-rating";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./ConfirmationPage.css";
@@ -27,7 +27,6 @@ function PaymentPage() {
 
   const [rating, setRating] = useState(0);
   const navigate = useNavigate();
-  
 
   /**GET ALL ITEMS FROM LOCAL STORAGE */
   const user = JSON.parse(localStorage.getItem("user"));
@@ -54,14 +53,11 @@ function PaymentPage() {
     Cleaning: <FontAwesomeIcon icon={faTrashArrowUp} />,
   };
 
-  
-
-  const apartmentID = apartment.id
+  const apartmentID = apartment.id;
 
   /**CREATE AN ORDER */
   function postData() {
-    console.log("Request data:");
-  
+
     axios
       .post(
         "http://localhost:9090/user/reservations/createOrder",
@@ -84,7 +80,6 @@ function PaymentPage() {
         }
       )
       .then((response) => {
-        console.log("Response data:", response.data);
         // Handle success
         toast.success("Your request is sent", {
           position: "top-right",
@@ -97,7 +92,7 @@ function PaymentPage() {
           theme: "light",
         });
         setTimeout(() => {
-          navigate('/requests');
+          navigate("/requests");
         }, 2600);
       })
       .catch((error) => {
@@ -141,7 +136,9 @@ function PaymentPage() {
             <div className="col payment_col">
               <div className="card__body__payment">
                 <h4>{t("RESERVATION DETAILS")}</h4>
-                <h5>{t("NIGHTS")} :{diffInDays}</h5>
+                <h5>
+                  {t("NIGHTS")} :{diffInDays}
+                </h5>
                 <h5>
                   {t("FROM")} <strong>{startDate}</strong> {t("TO")}{" "}
                   <strong>{endDate}</strong>.
@@ -150,7 +147,10 @@ function PaymentPage() {
                 <h4>{t("SERVICES")}</h4>
                 <div className="row services">
                   {serviceNames.map((serviceName) => (
-                    <div className="col col-sm-2 mx-3 d-flex flex-column align-items-center" key={serviceName}>
+                    <div
+                      className="col col-sm-2 mx-3 d-flex flex-column align-items-center"
+                      key={serviceName}
+                    >
                       {serviceIcons[serviceName]}
                       <p className="service_title">{serviceName}</p>
                     </div>
@@ -168,16 +168,29 @@ function PaymentPage() {
                   <strong style={{ marginBottom: "7%" }}>
                     {apartment.description}
                   </strong>
-                  <Rate rating={rating} onRating={(rate) => setRating(rate)} />
+                  <div>
+                    <Rating
+                      initialValue={apartment.rating}
+                      readonly
+                      allowFraction
+                      size={25}
+                    />
+                  </div>
                   <img
                     alt="apartment_picture"
                     className="apartment_picture"
                     src="./interior-design-ga22c634af_19201.png"
                   />
                   <h4>{t("PAYMENT DETAILS")}:</h4>
-                  <p>{t("NIGHTS FEES")}: €{apartmentPrice}</p>
-                  <p>{t("SERVICES FEES")}: €{servicesPrice}</p>
-                  <p>{t("TOTAL PRICE")}: €{totalPrice}</p>
+                  <p>
+                    {t("NIGHTS FEES")}: €{apartmentPrice}
+                  </p>
+                  <p>
+                    {t("SERVICES FEES")}: €{servicesPrice}
+                  </p>
+                  <p>
+                    {t("TOTAL PRICE")}: €{totalPrice}
+                  </p>
                   <button className="btn btn-dark custom-confirm-button">
                     <Link
                       to={"/paystate"}

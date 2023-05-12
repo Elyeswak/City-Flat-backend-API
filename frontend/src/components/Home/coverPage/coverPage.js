@@ -61,7 +61,6 @@ function CoverPage() {
       .get("http://localhost:9090/appartments/getAllAppart")
       .then((result) => {
         setData(result.data);
-        console.log(result.data);
       })
       .catch((error) => console.log(error));
   }, []);

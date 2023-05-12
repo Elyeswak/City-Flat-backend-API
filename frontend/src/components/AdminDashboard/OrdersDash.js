@@ -29,7 +29,6 @@ export default function OrdersDash() {
           `http://localhost:9090/user/${User.id}`
         );
         const user = response.data;
-        console.log("returned user from db", user);
         setIsAdmin(user.role === "ADMIN");
       } catch (error) {
         console.error(error);
@@ -54,7 +53,6 @@ export default function OrdersDash() {
       })
       .then((response) => {
         setOrders(response.data);
-        console.log(response.data); // handle response data
       })
       .catch(() => {
         console.log("error"); // handle error
@@ -76,12 +74,6 @@ export default function OrdersDash() {
           // remove the declined order from the orders array
           const updatedOrders = orders.filter((order) => order.id !== orderId);
           setOrders(updatedOrders);
-
-          // add the declined order to the declinedOrders array
-          // const declinedOrder = orders.find((order) => order.id === orderId);
-          // setDeclinedOrders([...declinedOrders, declinedOrder]);
-
-          console.log(response.data); // handle response data
         })
         .catch((e) => {
           console.log(e.message); // handle error
@@ -111,7 +103,6 @@ export default function OrdersDash() {
           setAcceptedOrders([...acceptedOrders, acceptedOrder]);
           const acceptedOrdersUpdated = new Date();
           setAcceptedOrdersUpdated(acceptedOrdersUpdated);
-          console.log(response.data); // handle response data
         })
         .catch((e) => {
           console.log(e.message); // handle error

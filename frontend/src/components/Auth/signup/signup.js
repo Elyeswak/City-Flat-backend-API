@@ -141,7 +141,6 @@ function Signup() {
             number: Number,
           }
         );
-        console.log(response.data);
         setSuccessful(true); // response data if successful
         localStorage.setItem("user", JSON.stringify(response.data));
         toast.success("✅ Verification code sent", {
@@ -179,7 +178,6 @@ function Signup() {
           verificationCode: verificationCode,
         }
       );
-      console.log(response.data);
       const userString = localStorage.getItem("user");
       if (userString) {
         const user = JSON.parse(userString);

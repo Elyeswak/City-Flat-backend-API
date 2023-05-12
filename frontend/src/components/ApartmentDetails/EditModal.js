@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-
+import { Rating } from "react-simple-star-rating";
 export default function EditModal({
   showModal,
   review,
@@ -25,7 +25,6 @@ export default function EditModal({
       .then((response) => {
         setEditedRating(response.data.Rating);
         setEditedReview(response.data.Description);
-        console.log("getting old review data", response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -48,7 +47,6 @@ export default function EditModal({
         }
       );
       const ResData = response.data;
-      console.log(ResData);
       handleCloseModal();
       setRefresh(refresh + 1);
       getRate();
@@ -66,7 +64,7 @@ export default function EditModal({
             handleEditReview();
           }}
         >
-          <Form.Group>
+          {/* <Form.Group>
             <Form.Label>{t("Rating")} (0-5)</Form.Label>
             <Form.Control
               type="number"
@@ -75,20 +73,37 @@ export default function EditModal({
               onChange={(e) => setEditedRating(e.target.value)}
             />
             <Form.Control.Feedback type="invalid">Error</Form.Control.Feedback>
-          </Form.Group>
+          </Form.Group> */}
+          <div className="rate-cont d-flex justify-content-start mb-4">
+            <Rating
+              initialValue={editedRating}
+              transition
+              emptyColor="#d7d7d7"
+              allowFraction
+              size={25}
+              onClick={(rate) => {
+                setEditedRating(rate);
+              }}
+              showTooltip
+            />
+          </div>
           <Form.Group>
-            <Form.Label>{t("Review (20-250 characters)")}</Form.Label>
             <Form.Control
               as="textarea"
-              rows={2}
+              rows={4}
               minLength={15}
               maxLength={250}
               value={editedReview}
               onChange={(e) => setEditedReview(e.target.value)}
+              className="review-textArea"
             />
             <Form.Control.Feedback type="invalid">Error</Form.Control.Feedback>
           </Form.Group>
-          <Button type="submit">{t("RATE")}</Button>
+          <div className="d-flex justify-content-center">
+            <Button type="submit" className="edit-btn w-25 mt-3">
+              {t("SAVE")}
+            </Button>
+          </div>
         </Form>
       </Modal.Body>
     </Modal>

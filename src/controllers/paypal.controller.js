@@ -36,7 +36,6 @@ export async function Paypalexecute(amount, req, res) {
       } else {
         res.status(200).json({ message: "success payment !" });
 
-        console.log(JSON.stringify(payment));
       }
     }
   );
@@ -78,13 +77,10 @@ export async function PaypalPay(amount, req, res) {
     if (error) {
       throw error;
     } else {
-      console.log("Create Payment Response");
-      console.log(payment);
       for (var index = 0; index < payment.links.length; index++) {
         //Redirect user to this endpoint for redirect url
         if (payment.links[index].rel === "approval_url") {
           res.redirect(payment.links[index].href);
-          console.log("Redirected to approval_url successfully");
         }
       }
     }

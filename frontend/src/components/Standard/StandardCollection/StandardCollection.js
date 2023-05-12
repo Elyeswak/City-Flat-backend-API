@@ -26,7 +26,6 @@ function StandardCollection() {
         );
 
         // Log the data here
-        console.log(result.data);
         setStandardLoder(false);
       })
       .catch((error) => console.log(error));

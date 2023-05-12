@@ -41,8 +41,6 @@ paypalRouter.get("/success", (req, res) => {
         throw error;
       } else {
         res.status(200).json({ message: "success payment !" });
-
-        console.log(JSON.stringify(payment));
       }
     }
   );

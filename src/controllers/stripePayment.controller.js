@@ -37,7 +37,6 @@ export async function addCard(customerId, token) {
 }
 
 export async function createPaymentIntent(amount, customerId, paymentMethod,orderid) {
-  console.log("hethi mta ayoub "+ orderid);
   try {
     const paymentIntent = await stripe.paymentIntents.create({
       amount: amount,

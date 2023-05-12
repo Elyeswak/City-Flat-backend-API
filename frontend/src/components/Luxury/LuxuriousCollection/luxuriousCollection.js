@@ -27,7 +27,6 @@ function LuxuriousCollection() {
         );
 
         // Log the data here
-        console.log(result.data);
         setLuxuryloading(false);
       })
       .catch((error) => console.log(error));

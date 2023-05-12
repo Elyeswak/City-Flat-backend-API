@@ -231,7 +231,6 @@ userRouter
             const orderId = paymentIntent.metadata.orderId;
             try {
                const order =  orderdb.findByIdAndUpdate(orderId, { isPaied: true });
-               console.log(`Order ${orderId} updated: isPaid = true`);
              } catch (err) {
                console.error(`Error updating order ${orderId}: ${err.message}`);
              }

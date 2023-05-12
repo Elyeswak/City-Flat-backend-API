@@ -10,7 +10,6 @@ const getApartments = () => {
     .get(API_URL + "appartments/getAllAppart", {})
     .then((res) => {
       const data = res.data;
-      console.log(data);
     })
     .catch((error) => {
       console.log(error);

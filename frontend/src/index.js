@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import "react-toggle/style.css" 
 import './i18next';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

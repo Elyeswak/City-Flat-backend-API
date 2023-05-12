@@ -125,9 +125,10 @@ export default function AllAppartmentsRow({
       text: 'Sie werden nicht in der Lage sein, diese Wohnung wiederherzustellen!',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Ja, löschen Sie es!',
-      cancelButtonText: 'ABBRECHEN',
-      confirmButtonClass: 'btn btn-danger',
+      confirmButtonColor: "#d33",
+      confirmButtonText: "Ja, ablehnen!",
+      cancelButtonColor: "#3085d6",
+      cancelButtonText: "Nein, behalte es.",
     }).then((result) => {
       if (result.isConfirmed) {
         // The user confirmed, delete the appartment
@@ -299,7 +300,7 @@ export default function AllAppartmentsRow({
       </tr>
       <Modal show={showEditModal} onHide={handleCloseEditModal}>
         <Modal.Header closeButton>
-          <Modal.Title>Update Appartment</Modal.Title>
+          <Modal.Title> Appartement-Details aktualisieren</Modal.Title>
         </Modal.Header>
         {/* handleEditChange */}
         <Modal.Body>

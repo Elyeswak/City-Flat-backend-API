@@ -23,7 +23,7 @@ export default function AppartmentDetailsModal(props) {
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Apartment Details</Modal.Title>
+        <Modal.Title>Appartement-Details </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <div>
@@ -31,34 +31,21 @@ export default function AppartmentDetailsModal(props) {
             <strong>Name: </strong> {appartment.name}
           </div>
           <div>
-            <strong>Description: </strong>
+            <strong>Beschreibung: </strong>
             <p>{appartment.description}</p>
           </div>
+
           <div className="my-2">
-            <strong>Appartment reviews: </strong>
-            {appartment.reviews.length === 0 ? (
-              <p>
-                <strong>no reviews</strong>
-              </p>
-            ) : (
-              <ul>
-                {appartment.reviews.map((review) => (
-                  <li>{review}</li>
-                ))}
-              </ul>
-            )}
-          </div>
-          <div className="my-2">
-            <strong>Appartment services: </strong>
+            <strong>Apartment-Dienstleistungen: </strong>
             <Table>
-              <thead>
+              <thead style={{color:"white"}}>
                 <tr>
                   <th>Name</th>
-                  <th>Description</th>
-                  <th>Night price</th>
+                  <th>Beschreibung</th>
+                  <th>Preis pro Nacht</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody style={{color:"white"}}>
                 {serviceDetails.map((service) => (
                   <tr>
                     <td>{service.name}</td>

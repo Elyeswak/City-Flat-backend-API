@@ -6,6 +6,9 @@
   flex-direction: column;
 }
 
+.requests_page_content{
+  font-family: font-alethia-pro;
+}
 .requests_table {
   padding: 4%;
   color: white !important;

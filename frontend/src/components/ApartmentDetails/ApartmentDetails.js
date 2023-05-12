@@ -224,7 +224,7 @@ function ApartmentDetails() {
       } else if (user && isVerified === false) {
         // user is logged in but account is not verified
         console.log("account not verified");
-        toast.error("❌ Your account is disabled please contact the admin", {
+        toast.error("❌ Dein Konto ist deaktiviert, bitte kontaktiere den Administrator.", {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,
@@ -236,7 +236,7 @@ function ApartmentDetails() {
         });
       } else {
         // user is not logged in
-        toast.error("❌ Login before making any further actions", {
+        toast.error("❌  Bitte einloggen, bevor weitere Aktionen durchgeführt werden.", {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,
@@ -276,8 +276,8 @@ function ApartmentDetails() {
     // Check for validation errors
     if (!formData.rating || !formData.review) {
       setErrors({
-        rating: formData.rating ? "" : "Please enter a rating",
-        review: formData.review ? "" : "Please enter a review",
+        rating: formData.rating ? "" : "Bitte geben Sie eine Bewertung ein.",
+        review: formData.review ? "" : "Bitte geben Sie eine Bewertung ein.",
       });
       return;
     }

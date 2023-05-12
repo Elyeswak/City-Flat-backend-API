@@ -61,7 +61,7 @@ export default function AppartmentDash() {
         "http://localhost:9090/appartments/addAppart",
         formData
       );
-      toast.success("✅ Appartment added successfully", {
+      toast.success("✅ Appartment erfolgreich hinzugefügt", {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: false,
@@ -78,7 +78,7 @@ export default function AppartmentDash() {
       // setPostSuccess(false);
       let message = err.message;
       if (message.includes("409")) {
-        toast.error("❌ An appartment with this name already exists!", {
+        toast.error("❌ Ein Appartement mit diesem Namen existiert bereits!", {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,
@@ -89,7 +89,7 @@ export default function AppartmentDash() {
           theme: "light",
         });
       } else {
-        toast.error("❌ An error occured while trying to add the appartment!", {
+        toast.error("❌ Ein Fehler ist aufgetreten beim Versuch, das Apartment hinzuzufügen!", {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,
@@ -142,7 +142,7 @@ export default function AppartmentDash() {
                   setShow("add");
                 }}
               >
-                <button className="btn btn-success"><FontAwesomeIcon icon={faAdd}/> Add</button>
+                <button className="btn btn-success"><FontAwesomeIcon icon={faAdd}/> Hinzufügen</button>
               </li>
             </ul>
             {show === "all" ? (

@@ -93,5 +93,16 @@
   "review": "Bewertung",
   "Show all": "Alle anzeigen",
   "Show less": "Alle anzeigen",
-  "Rate the apartment": "Bewerte die Wohnung"
+  "Rate the apartment": "Bewerte die Wohnung",
+  "MY BOOKING REQUESTS":"MY BUCHUNGSANFRAGEN",
+  "WELCOME" : "WILLKOMMEN",
+  "Login to your account" : "Anmelden in deinem Konto",
+  "OR" : "ODER",
+  "Password" : "Passwort",
+  "Remember me": "Angemeldet bleiben",
+  "Forgot password" : "Passwort vergessen",
+  "You don't have an account" : "Du hast noch kein Konto",
+  "Join for free today": "Jetzt kostenlos anmelden",
+  "You are already logged in": "Du bist bereits angemeldet",
+  "GO HOME" : "ZUR STARTSEITE"
 }

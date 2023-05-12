@@ -17,7 +17,7 @@ export default function OrderDetailsModal(props) {
             <strong>Apartment:</strong> {order.appartment.name}
           </p>
           <p>
-            <strong>Services:</strong>
+            <strong>Dienstleistungen:</strong>
             <ul>
               {order.services.map((service, index) => (
                 <li>{service}</li>
@@ -25,7 +25,7 @@ export default function OrderDetailsModal(props) {
             </ul>
           </p>
           <p>
-            <strong>created at:</strong>{" "}
+            <strong>Erstellt am:</strong>{" "}
             {moment(order.createdAt).format("DD MMMM YYYY")}
           </p>
           <p>
@@ -37,16 +37,16 @@ export default function OrderDetailsModal(props) {
             {moment(order.checkOut).format("DD MMMM YYYY")}
           </p>
           <p>
-            <strong>Total Price:</strong> €{order.totalPrice}
+            <strong>Gesamtpreis:</strong> €{order.totalPrice}
           </p>
           <p>
-            <strong>State:</strong> {order.state}
+            <strong>Status:</strong> {order.state}
           </p>
         </div>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
-          Close
+        Schließen
         </Button>
       </Modal.Footer>
     </Modal>

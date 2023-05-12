@@ -9,14 +9,14 @@ import validator from "validator";
 import { isValidNumber } from "libphonenumber-js";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { useTranslation } from "react-i18next";
 import "./signup.css";
 
 function Signup() {
   const userRef = useRef();
   const errRef = useRef();
   const navigate = useNavigate();
-
+  const { t } = useTranslation();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

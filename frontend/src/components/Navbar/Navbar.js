@@ -141,16 +141,18 @@ function Navbar() {
                         {t("LUXURY")}
                       </a>
                     </motion.li>
-                    <motion.li
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.8 }}
-                      transition={{ duration: 0.7 }}
-                    >
-                      {" "}
-                      <a href="/wishlist" className="link__item">
-                        {t("WISHLIST")}
-                      </a>
-                    </motion.li>
+                    {isLoggedIn ? (
+                      <motion.li
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.8 }}
+                        transition={{ duration: 0.7 }}
+                      >
+                        {" "}
+                        <a href="/wishlist" className="link__item">
+                          {t("WISHLIST")}
+                        </a>
+                      </motion.li>
+                    ) : null}
                     <motion.li
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.8 }}
@@ -224,9 +226,11 @@ function Navbar() {
                   <a href="/requests">
                     <button className="button-31">{t("Orders")}</button>
                   </a>
-                  <a href="/wishlist">
-                    <button className="button-31">{t("Wishlist")}</button>
-                  </a>
+                  {isLoggedIn ? (
+                    <a href="/wishlist">
+                      <button className="button-31">{t("Wishlist")}</button>
+                    </a>
+                  ) : null}
 
                   <a href="/account">
                     <button className="button-31">{t("Account")}</button>

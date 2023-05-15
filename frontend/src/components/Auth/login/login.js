@@ -5,12 +5,13 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 function Login() {
   const errRef = useRef();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,8 +19,8 @@ function Login() {
   const [isLoggedin, setIsLoggedin] = useState(false);
   const [successMsg, setSuccessMsg] = useState(false);
   const [loginForm, setLoginForm] = useState(false);
-  const [isVerified,setIsVerified] = useState(false);
-  const {t} = useTranslation()
+  const [isVerified, setIsVerified] = useState(false);
+  const { t } = useTranslation();
 
   /**CHECK FOR PASSWORD VISIBILTY */
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -50,7 +51,11 @@ function Login() {
           progress: undefined,
           theme: "light",
         });
-        navigate("/");
+        const { state } = location;
+        console.log("state", state);
+        const redirectTo = state ? state.from : "/"; // Default to home page
+
+        navigate(redirectTo);
       },
       (error) => {
         const resMessage =
@@ -79,9 +84,9 @@ function Login() {
   useEffect(() => {
     if (!user) {
       setLoginForm(true);
-    } else if (!user.isVerified){
+    } else if (!user.isVerified) {
       setLoginForm(true);
-    }else{
+    } else {
       setLoginForm(false);
     }
   }, []);

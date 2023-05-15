@@ -5,13 +5,15 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 
 function Login() {
   const errRef = useRef();
   const navigate = useNavigate();
+  const location = useLocation();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
@@ -51,13 +53,11 @@ function Login() {
           progress: undefined,
           theme: "light",
         });
-        const redirectUrl = localStorage.getItem("redirectUrl");
-        if (redirectUrl) {
-          localStorage.removeItem("redirectUrl"); // Remove the stored URL
-          navigate(redirectUrl); // Redirect the user to the stored URL
-        } else {
-          navigate("/"); // Redirect to a default page if no stored URL found
-        }
+        const { state } = location;
+        console.log("state", state);
+        const redirectTo = state ? state.from : "/"; // Default to home page
+
+        navigate(redirectTo);
       },
       (error) => {
         const resMessage =
@@ -131,7 +131,7 @@ function Login() {
                     </p>
 
                     <div className="heading">
-                      <h2>WELCOME</h2>
+                      <h2>{t("WELCOME")}</h2>
                       <h4>{t("Login to your account")}</h4>
                     </div>
 

@@ -13,7 +13,7 @@ import { format } from "date-fns";
 import { MapContainer, TileLayer, Popup, Marker } from "react-leaflet";
 import L from "leaflet";
 import axios, { all } from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import MultiSelect from "react-multiple-select-dropdown-lite";
 import { Card, Carousel } from "react-bootstrap";
 import { Button, Form } from "react-bootstrap";
@@ -38,6 +38,7 @@ function ApartmentDetails() {
   const [ratingPercentages, setRatingPercentages] = useState([]);
   // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [reviewsToShow, setReviewsToShow] = useState([]);
   const checkItemInLocalStorage = (itemName) => {
@@ -224,35 +225,40 @@ function ApartmentDetails() {
       } else if (user && isVerified === false) {
         // user is logged in but account is not verified
         console.log("account not verified");
-        toast.error("❌ Dein Konto ist deaktiviert, bitte kontaktiere den Administrator.", {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        toast.error(
+          "❌ Dein Konto ist deaktiviert, bitte kontaktiere den Administrator.",
+          {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          }
+        );
       } else {
         // user is not logged in
-        localStorage.setItem("redirectUrl", window.location.pathname);
-        toast.error("❌  Bitte einloggen, bevor weitere Aktionen durchgeführt werden.", {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        toast.error(
+          "❌  Bitte einloggen, bevor weitere Aktionen durchgeführt werden.",
+          {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          }
+        );
         setTimeout(() => {
-          navigate("/login");
+          navigate("/login", { state: { from: location } });
         }, 2600);
       }
     } else {
-      navigate("/login");
+      navigate("/login", { state: { from: location } });
     }
   };
 

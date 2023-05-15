@@ -1,9 +1,12 @@
 import React from "react";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/footer";
+import { useTranslation } from "react-i18next";
 import "./ThankyouPage.css";
 
 function ThankyouPage() {
+
+  const {t} = useTranslation()
   return (
     <div className="thankyou_page" style={{ backgroundColor: "black" }}>
       <Navbar/>
@@ -13,7 +16,7 @@ function ThankyouPage() {
             <div className="thankyou__image">
                 <img className="thankyou__image__class" src="./logo-cityflat.png"/>
             </div>
-            <div className="thankyou__message"><h1>THANK YOU FOR CHOOSING CITY FLAT</h1> <br/> <h1>SEE YOU SOON!</h1></div>
+            <div className="thankyou__message"><h1>{t("THANK YOU FOR CHOOSING CITY FLAT")}</h1> <br/> <h1>{t("SEE YOU SOON!")}</h1></div>
         </div>
       </div>
       <Footer/>

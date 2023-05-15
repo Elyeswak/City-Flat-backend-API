@@ -269,7 +269,7 @@ function Signup() {
                           <input
                             type="submit"
                             className="submit-btn"
-                            value="VERIFY"
+                            value={t("VERIFY")}
                           />
                         </div>
                       </div>

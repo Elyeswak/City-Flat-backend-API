@@ -236,6 +236,7 @@ function ApartmentDetails() {
         });
       } else {
         // user is not logged in
+        localStorage.setItem("redirectUrl", window.location.pathname);
         toast.error("❌  Bitte einloggen, bevor weitere Aktionen durchgeführt werden.", {
           position: "top-right",
           autoClose: 2000,

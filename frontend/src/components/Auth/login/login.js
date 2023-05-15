@@ -8,18 +8,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
+
 function Login() {
   const errRef = useRef();
   const navigate = useNavigate();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [isLoggedin, setIsLoggedin] = useState(false);
   const [successMsg, setSuccessMsg] = useState(false);
   const [loginForm, setLoginForm] = useState(false);
-  const [isVerified,setIsVerified] = useState(false);
-  const {t} = useTranslation()
+  const [isVerified, setIsVerified] = useState(false);
+  const { t } = useTranslation();
 
   /**CHECK FOR PASSWORD VISIBILTY */
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -40,6 +40,7 @@ function Login() {
       () => {
         setSuccessMsg(true);
         setIsLoggedin(true);
+
         toast.success("✅ Welcome to CITYFLAT", {
           position: "top-right",
           autoClose: 2000,
@@ -50,7 +51,13 @@ function Login() {
           progress: undefined,
           theme: "light",
         });
-        navigate("/");
+        const redirectUrl = localStorage.getItem("redirectUrl");
+        if (redirectUrl) {
+          localStorage.removeItem("redirectUrl"); // Remove the stored URL
+          navigate(redirectUrl); // Redirect the user to the stored URL
+        } else {
+          navigate("/"); // Redirect to a default page if no stored URL found
+        }
       },
       (error) => {
         const resMessage =
@@ -79,9 +86,9 @@ function Login() {
   useEffect(() => {
     if (!user) {
       setLoginForm(true);
-    } else if (!user.isVerified){
+    } else if (!user.isVerified) {
       setLoginForm(true);
-    }else{
+    } else {
       setLoginForm(false);
     }
   }, []);

@@ -52,14 +52,23 @@ export async function updateApartmentRating(req, res) {
 
 export async function updateReview(req, res) {
   try {
-    const updatedReview = await Review.findByIdAndUpdate(
-      req.params.param,
-      { Rating: req.body.rating, Description: req.body.description },
+    const reviewId = req.params.param;
+    const userId = req.user.id; // Assuming the user ID is stored in req.user._id
+
+    const updatedReview = await Review.findOneAndUpdate(
+      { _id: reviewId, User: userId }, // Check if both review ID and user ID match
+      { Rating: req.body.Rating, Description: req.body.Description },
       { new: true }
     );
-    res
-      .status(200)
-      .json({ message: "Review updated successfully!", object: updatedReview });
+
+    if (!updatedReview) {
+      return res.status(404).json({ message: "Review not found or unauthorized" });
+    }
+
+    res.status(200).json({
+      message: "Review updated successfully!",
+      object: updatedReview,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -68,21 +77,23 @@ export async function updateReview(req, res) {
 export async function deleteReview(req, res) {
   try {
     const review = await Review.findById(req.params.param);
-    console.log(review);
+    if (!review) {
+      return res.status(404).json({ error: "Review not found" });
+    }
+    console.log(review.User+"   "+req.user.id);
+    if (review.User != req.user.id) {
+      return res.status(403).json({ error: "Forbidden" });
+    }
+
     const apartment = await Appartment.findByIdAndUpdate(
       req.body.apartmentId,
-      {
-        $pull: { reviews: review._id },
-      },
+      { $pull: { reviews: review._id } },
       { new: true }
     );
 
     if (!apartment) {
       return res.status(404).json({ message: "Apartment not found" });
     }
-
-    console.log(apartment);
-    review.delete();
 
     if (apartment.numOfRatings === 0) {
       // No ratings left, set rating to 0
@@ -98,7 +109,10 @@ export async function deleteReview(req, res) {
         numOfRatings: numberOfRatings,
       });
     }
-    res.status(200).json({ message: "deleted successfully ! " });
+
+    await review.delete();
+
+    res.status(200).json({ message: "Deleted successfully!" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

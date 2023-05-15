@@ -270,7 +270,7 @@ console.log("total price :"+order.totalPrice);
                                           }).then((payment_method) => {
    
                                              findOneOrderByFilter(order.id).then((orderfound)=>{
-    console.log("hetha howa "+ order.id);
+   
                                                 httpMakePayment(req, res, orderfound.totalPrice, customerId, newReservation._id, paymentMethod.id,order.id)
                                                 .then((paymentIntent) => {
    
@@ -340,6 +340,118 @@ console.log("total price :"+order.totalPrice);
       })
       .catch((err) => res.status(500).json({ error: err.message }));
 }
+
+
+
+//*********************************Create a reservation paypal**************************************/
+
+export function httpCreateReservationPaypal(order,req, res) {
+   if (!validationResult(req).isEmpty()) {
+      return res.status(400).json({ error: validationResult(req).array() });
+   }
+
+   const user = req.user;
+
+
+var newReservation=  new reservationDb();
+
+console.log("total price :"+order.totalPrice);
+
+   userDb.findOne({ email: user.email })
+      .then((foundUser) => {
+         if (!foundUser) {
+            return res.status(404).json({ message: 'User not found!' });
+         }
+        newReservation.code = generateRandomCode(6);
+        findOneOrderByFilter(order.id).then((order)=>{
+        var resOrder= order;
+      
+         resOrder.User=foundUser;
+         newReservation.Order=resOrder;
+
+        })
+       
+      
+    
+        
+
+        if(order.isConfirmed===false){
+         return res.status(400).json({ message: 'Order is not confirmed' });
+        }
+           // Call payment function to make payment
+           
+                  
+                     
+
+
+
+                  
+
+         
+                        
+                             
+                                  
+   
+   
+                                             findOneOrderByFilter(order.id).then((orderfound)=>{
+   
+                                          
+   
+                                                 
+                                                
+                                                   reservationDb.create(newReservation)
+                                                      .then((result) => {
+                                                         orderDb.findByIdAndUpdate(order.id, {
+                                                            $set: {
+                                                               isPaied:true
+                                                            },
+                                                         }).then((orderF)=>{
+                                                            console.log(orderF);
+
+                                                            findOneReservationByFilter(result._id);
+                                                            updateBookedDates(newReservation.Order.appartment.id, newReservation.Order.checkIn, newReservation.Order.checkOut, res);
+                                                            sendUserReservationEmail(foundUser, newReservation, newReservation.Order.totalPrice);
+                                                             
+                                                                 
+                                                            // Create notification for the user
+                                                            const notification = {
+                                                               user: foundUser._id,
+                                                               message: 'You have made a reservation for the '+newReservation.Order.appartment.name+' , reservation code : '+newReservation.code,
+                                                            };
+                                                            console.log('Debuging order state : '+orderF.state);
+                                                            createNotification(notification)
+                                                               .catch((err) => console.error(err));
+
+                                                         }).catch((err) => res.status(500).json({ error: err}));
+                                                       
+                                                      })
+                                                      .catch((err) => res.status(500).json({ error: err}));
+                                        
+   
+   
+                                             }) .catch((error) => res.status(500).json({ error: error.message }));
+   
+                                           
+   
+   
+   
+                                          });
+   
+                                       }
+   
+   
+   
+                                  
+   
+                               
+                    
+                        
+                   
+                   
+
+                    
+                 
+            
 
 
 
@@ -533,16 +645,21 @@ export function httpGetAllReservations(req, res) {
       })
       .catch((err) => res.status(500).json({ error: err.message }));
 }
-
 export async function httpGetAllOrdersForUser(req, res) {
    try {
      const userId = req.user.id;
      console.log(userId);
-     
-     const orders = await  orderDb.find({ User: userId }).populate('appartment').populate('User');
-     
+ 
+     const orders = await orderDb
+       .find({ User: userId })
+       .populate({
+         path: "appartment",
+         populate: { path: "services", model: "Service" },
+       })
+       .populate("User").populate("services");
+ 
      if (!orders || orders.length === 0) {
-       return res.status(404).json({ error: 'No orders found for this user!' });
+       return res.status(404).json({ error: "No orders found for this user!" });
      }
  
      res.status(200).json(orderListFormat(orders));

@@ -24,6 +24,10 @@ appartmentRouter
    .get(getAllReviews)
    .delete(ensureUser,deleteReview);
 
+   
+appartmentRouter
+.route('/updateReviews/:param')
+   .put(ensureUser,updateReview);
 appartmentRouter
 .route('/all/getAllAppart')
    .get(httpGetAllApparts);

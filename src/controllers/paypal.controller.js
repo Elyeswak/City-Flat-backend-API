@@ -14,59 +14,50 @@ paypal.configure({
 });
 
 
-export async function Paypalexecute( req,res ){
-
-findOneOrderByFilter(req.body.order.id).then((foundOrder)=>{
-
-    var execute_payment_json = {
+export async function Paypalexecute(req, res) {
+    try {
+      const orderId = "645cf1e79227e39d66d0c721";
+      const foundOrder = await findOneOrderByFilter(orderId);
+  
+      const execute_payment_json = {
         "payer_id": req.query.PayerID,
         "transactions": [{
-            "amount": {
-                "currency": "EUR",
-                "total":String(foundOrder.totalPrice),
-            }
-        }]
-    };
-    
-    var paymentId = req.query.paymentId;
-    
-    paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
-        if (error) {
+          "amount": {
+            "currency": "EUR",
+            "total": String(foundOrder.totalPrice),
+          },
+        }],
+      };
+  
+      const paymentId = req.query.paymentId;
+  
+      const payment = await new Promise((resolve, reject) => {
+        paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
+          if (error) {
             console.log(error.response);
-            throw error;
-        } else {
-            httpCreateReservationPaypal(foundOrder,req,res).then((result)=>{
-
-                res.status(200).json({message:"success payment !"});
-    
-                console.log(JSON.stringify(payment));
-
-            }).catch((err)=>{
-
-res.status(500).json({message:err.message});
-
-            });
-      
-    
-        }
-    });
-    
-    
-
-}).
-catch((err)=>{
-res.status(404).json({message:err.message});
-
-});
-    
+            reject(error);
+          } else {
+            resolve(payment);
+          }
+        });
+      });
+  
+      await httpCreateReservationPaypal(foundOrder, req, res);
  
+      
+        
 
-}
+     
+     
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
 
 
 export  async function  PaypalPay(  req,res ){
-
-    findOneOrderByFilter(req.body.order.id).then((foundOrder)=>{
+var  orderId="645cf1e79227e39d66d0c721";
+    findOneOrderByFilter(orderId).then((foundOrder)=>{
 
 
 

@@ -30,7 +30,7 @@ paypalRouter
 
 paypalRouter
 .route('/pay')
-    .get(PaypalPay);
+    .post(ensureUser,PaypalPay);
 
 
 export { paypalRouter };

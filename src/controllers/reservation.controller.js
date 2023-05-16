@@ -361,6 +361,8 @@ export async function httpCreateReservationPaypal(order, req, res) {
      newReservation.code = generateRandomCode(6);
  
      const orderResult = await findOneOrderByFilter(order.id);
+     orderResult.isPaied=true;
+     await  orderResult.save();
      const resOrder = orderResult;
  
      resOrder.User = foundUser;

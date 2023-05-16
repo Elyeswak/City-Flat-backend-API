@@ -16,7 +16,7 @@ paypal.configure({
 
 export async function Paypalexecute(req, res) {
     try {
-      const orderId = "645cf1e79227e39d66d0c721";
+      var orderId=req.body.orderId;
       const foundOrder = await findOneOrderByFilter(orderId);
   
       const execute_payment_json = {
@@ -56,7 +56,7 @@ export async function Paypalexecute(req, res) {
 
 
 export  async function  PaypalPay(  req,res ){
-var  orderId="645cf1e79227e39d66d0c721";
+  var orderId=req.body.orderId;
     findOneOrderByFilter(orderId).then((foundOrder)=>{
 
 

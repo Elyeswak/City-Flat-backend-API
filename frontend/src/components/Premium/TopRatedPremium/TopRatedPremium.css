@@ -1,0 +1,140 @@
+.top__rated__premium_page {
+  background-color: black;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 3%;
+  text-align: center;
+}
+
+.row_props {
+  padding: 0%;
+  background-color: white;
+}
+
+.image_col {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.image_col > img {
+  object-fit: cover;
+  width: 100%;
+  max-height: 100%;
+}
+
+.content_col {
+  padding: 3%;
+}
+
+.card_infos {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  padding-top: 10%;
+}
+
+.card_infos h2 {
+  font-family: "Lexend Mega", sans-serif;
+  font-size: 3vw !important;
+}
+
+.card_infos h4 {
+  font-family: "Lexend Mega", sans-serif;
+  font-size: 2vw !important;
+}
+
+.card_infos p {
+  font-family: font-alethia-pro;
+  font-size: 1.5vw !important;
+}
+
+.card_infos strong {
+  font-family: font-alethia-pro;
+  font-size: 1.2vw !important;
+}
+
+.card__body {
+  margin-bottom: 3%;
+}
+@media screen and (max-width: 710px) {
+  .col {
+    flex: auto !important;
+  }
+  .card_infos {
+    padding-top: 0%;
+  }
+  .card_infos strong {
+    font-family: font-alethia-pro;
+    font-size: 2vw !important;
+  }
+}
+
+@media screen and (min-width: 980px) {
+  .content_col {
+    padding: auto;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  .top__rated__premium_page {
+    padding: 5%;
+  }
+
+  .card_infos h2 {
+    font-family: "Lexend Mega", sans-serif;
+    font-size: 5vw !important;
+  }
+  
+  .card_infos h4 {
+    font-family: "Lexend Mega", sans-serif;
+    font-size: 4vw !important;
+  }
+  
+  .card_infos p {
+    font-family: font-alethia-pro;
+    font-size: 3.5vw !important;
+  }
+  
+  .card_infos strong {
+    font-family: font-alethia-pro;
+    font-size: 3vw !important;
+  }
+}
+
+
+@media screen and (max-width:1000px) {
+
+
+  .card_infos h2 {
+    font-family: "Lexend Mega", sans-serif;
+    font-size: 3vw !important;
+  }
+  
+  .card_infos h4 {
+    font-family: "Lexend Mega", sans-serif;
+    font-size: 2.5vw !important;
+  }
+  
+  .card_infos p {
+    font-family: font-alethia-pro;
+    font-size: 2vw !important;
+  }
+  
+  .card_infos strong {
+    font-family: font-alethia-pro;
+    font-size: 2vw !important;
+  }
+}
+
+
+@media screen and (min-width: 915px) {
+.card__body{
+  margin-bottom: 5%;
+}
+
+.card__button{
+  margin-top: 5%;
+}
+
+}

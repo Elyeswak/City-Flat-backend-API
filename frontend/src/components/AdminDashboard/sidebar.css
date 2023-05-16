@@ -1,0 +1,48 @@
+.toggler {
+  background: none !important;
+  outline: none !important;
+  border: none !important;
+  position: absolute;
+  left: 0;
+}
+
+.offcanvas {
+  background-color: #2b2e30 !important;
+}
+
+.offcanvas-body {
+  overflow-y: hidden !important;
+}
+
+.btn-close {
+  background-color: white !important;
+}
+
+.sidebar-menu {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 100%;
+  padding: 2rem 0;
+}
+
+.sidebar-menu li a {
+  color: whitesmoke !important;
+}
+
+.sidebar-menu li:hover a {
+  color: rgba(245, 245, 245, 0.66) !important;
+}
+
+.sidebar-menu li {
+  padding: 2rem 0;
+  transition: padding-left 300ms ease-in-out;
+}
+
+.sidebar-menu li:hover {
+  border-top: 1px solid whitesmoke;
+  border-bottom: 1px solid whitesmoke;
+  padding-left: 2rem;
+  transition: padding-left 300ms ease-in-out;
+}

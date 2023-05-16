@@ -1,0 +1,109 @@
+.remember-me-signup {
+  width: 100%;
+  float: left;
+  text-align: left;
+  font-size: 70%;
+  font-family: font-alethia-pro;
+  margin-bottom: 3%;
+}
+
+.password_field {
+  padding-right: 30px; /* make room for the icon */
+  position: relative;
+}
+
+.eyeIcon {
+  position: absolute;
+  top: 110%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.PhoneInputInput {
+  border: 0 !important;
+}
+
+.PhoneInputInput:focus-visible {
+  outline: 0 !important;
+}
+
+.separators-signup {
+  margin: 0% 10% 0% 10%;
+}
+
+.offscreen {
+  margin: 0 !important;
+}
+main {
+  padding-top: 1% !important;
+  padding-bottom: 1% !important;
+}
+.submit-btn {
+  background-color: black;
+  color: white;
+  width: 50%;
+  height: 43px;
+  border-radius: 0.1rem;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  transition: 0.3s;
+  font-family: font-alethia-pro;
+}
+
+.submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  width: 50%;
+  height: 43px;
+  border-radius: 0.1rem;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  transition: 0.3s;
+  font-family: font-alethia-pro;
+}
+
+.sign__up__form {
+  max-width: 80%;
+  width: 100%;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+  transition: opacity 0.02s 0.4s;
+}
+
+@media (max-width: 850px) {
+  .sign__up__form {
+    max-width: 80%;
+    padding: 0;
+    width: 100%;
+    margin: 0 auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    transition: opacity 0.02s 0.4s;
+  }
+}
+
+/* custom swal styles */
+
+.swal2-html-container,
+.my-custom-title-class {
+  color: white !important;
+}
+
+.my-custom-button-class {
+  background-color: #faed81 !important;
+  width: 7rem;
+}
+
+/* .custom-error-icon::before {
+  content: url("https://res.cloudinary.com/dvjvlobqp/image/upload/v1680790014/success-svgrepo-com_fu61nh.svg");
+  width: 50px;
+  height: 50px;
+} */

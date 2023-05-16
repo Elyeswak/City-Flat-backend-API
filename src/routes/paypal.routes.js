@@ -6,16 +6,15 @@ const { PAYPAL_CLIENT_ID, PAYPAL_APP_SECRET } = process.env;
 
 //paypal config
 paypal.configure({
-    'mode': 'sandbox', //sandbox or live
-    'client_id': PAYPAL_CLIENT_ID,
-    'client_secret': PAYPAL_APP_SECRET
+  mode: "sandbox", //sandbox or live
+  client_id: PAYPAL_CLIENT_ID,
+  client_secret: PAYPAL_APP_SECRET,
 });
 
 /** Defining the router */
 const paypalRouter = express.Router();
 
-
-//*********paypal payment routes*******// 
+//*********paypal payment routes*******//
 let amount = 0;
 
 paypalRouter

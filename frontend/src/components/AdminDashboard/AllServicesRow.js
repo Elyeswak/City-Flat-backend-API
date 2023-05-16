@@ -1,0 +1,199 @@
+import axios from "axios";
+import React, { useState } from "react";
+import "./ServicesDash.css";
+import { Button, Form, Modal } from "react-bootstrap";
+import { ToastContainer, toast } from "react-toastify";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheckCircle, faInfoCircle, faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
+
+export default function AllServicesRow({
+  index,
+  allServices,
+  setAllServices,
+  handleShowDetails,
+  srv,
+}) {
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [name, setName] = useState(srv.name);
+  const [description, setDescription] = useState(srv.description);
+  const [pricePerNight, setPricePerNight] = useState(srv.pricePerNight);
+  const user = JSON.parse(localStorage.getItem("user"));
+  const token = user.token;
+  const handleDelete = (srvId) => {
+    if (confirmingDelete) {
+      axios
+        .delete(`http://localhost:9090/user/services/${srvId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          // remove the declined order from the orders array
+          const updatedAppartments = allServices.filter(
+            (appart) => appart.id !== srvId
+          );
+          setAllServices(updatedAppartments);
+        })
+        .catch((e) => {
+          console.log(e.message); // handle error
+        })
+        .finally(() => {
+          setConfirmingDelete(false);
+        });
+    } else {
+      setConfirmingDelete(true);
+      setTimeout(() => {
+        setConfirmingDelete(false);
+      }, 3000);
+    }
+  };
+  const handleShowEditModal = () => setShowEditModal(true);
+  const handleCloseEditModal = () => setShowEditModal(false);
+  const handleSaveChanges = (e) => {
+    e.preventDefault();
+    const updatedSrv = {
+      name: name,
+      description: description,
+      pricePerNight: pricePerNight,
+    };
+
+    axios
+      .put(`http://localhost:9090/user/services/${srv.id}`, updatedSrv, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        // Update the apartment data in the state
+        const updatedSrv = allServices.map((a) =>
+          a.id === srv.id ? response.data : a
+        );
+        setAllServices(updatedSrv);
+
+        toast.success("✅ Changes erfolgreich gespeichert.", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+
+        handleCloseEditModal();
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("❌ Es ist ein Fehler aufgetreten beim Versuch, die Änderungen zu speichern!", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
+  };
+  return (
+    <>
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      <tr key={index + 1} className="services-dash-row">
+        <td className="services-dash-row-index" onClick={handleShowEditModal}>
+          {index + 1}
+        </td>
+        <td>{srv.name}</td>
+        <td>£ {srv.pricePerNight}</td>
+        <td className="d-flex justify-content-center">
+          <div className="me-2">
+            <button
+              className="btn btn-danger"
+              onClick={() => handleDelete(srv.id)}
+            >
+              {confirmingDelete ? <FontAwesomeIcon icon={faCheckCircle}/>: <FontAwesomeIcon icon={faTrash}/>}
+            </button>
+          </div>
+          <button
+            className="btn btn-secondary me-2"
+            onClick={handleShowEditModal}
+          >
+            <FontAwesomeIcon icon={faPencil}/>
+          </button>
+          <button
+            className="btn btn-primary"
+            onClick={() => handleShowDetails(srv)}
+          >
+            <FontAwesomeIcon icon={faInfoCircle}/>
+          </button>
+        </td>
+      </tr>
+      <Modal show={showEditModal} onHide={handleCloseEditModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Service-Details aktualisieren</Modal.Title>
+        </Modal.Header>
+        {/* handleEditChange */}
+        <Modal.Body>
+          <Form
+            onSubmit={handleSaveChanges}
+            className="row gy-3 text-start mx-auto"
+          >
+            <Form.Group controlId="formName" className="col-6">
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter name"
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+                required
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formPrice" className="col-6">
+              <Form.Label>Preis pro Nacht</Form.Label>
+              <Form.Control
+                type="number"
+                placeholder="Preis pro Nacht Eingeben"
+                value={pricePerNight}
+                onChange={(event) => setPricePerNight(event.target.value)}
+                required
+              />
+            </Form.Group>
+            <Form.Group controlId="formDescription" className="col-12">
+              <Form.Label>Beschreibung</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                placeholder="Beschreibung Eingeben"
+                value={description}
+                onChange={(event) => setDescription(event.target.value)}
+                required
+              />
+            </Form.Group>
+
+            <Button
+              variant="primary"
+              type="submit"
+              className="w-25 mx-auto mt-3"
+            >
+              Hinzufügen
+            </Button>
+          </Form>
+        </Modal.Body>
+      </Modal>
+    </>
+  );
+}

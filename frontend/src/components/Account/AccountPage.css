@@ -1,0 +1,50 @@
+.color-white {
+  background-color: white !important;
+}
+
+.reservations_table {
+  color: black;
+}
+
+.profile-img-container {
+  position: relative;
+  display: inline-block;
+}
+
+.profile-img-container:hover .profile-img {
+  opacity: 0.6;
+}
+
+.camera-icon {
+  position: absolute;
+  bottom: 0;
+  right: 40%;
+  width: 30px;
+  height: 30px;
+  background-image: url("https://res.cloudinary.com/dvjvlobqp/image/upload/v1683540662/CityFlat-assets/icons/3178179_xjiq2x.png");
+  background-size: cover;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.camera-icon::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  border-radius: 50%;
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.75);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.profile-img-container:hover .camera-icon {
+  opacity: 1;
+}
+
+.profile-img-container:hover .camera-icon::before {
+  opacity: 1;
+}

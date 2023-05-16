@@ -1,0 +1,22 @@
+.standard__cover__page {
+    background-image: url("../../../../public/interior-design-ga22c634af_19201.png");
+    background-size: cover;
+    background-position: top;
+    height: 100vh;
+}
+
+.standard_cover_page_title {
+    margin-left: auto;
+    margin-right: auto;
+    display: table;
+    position: absolute;
+    top: 50%;
+    left: 23%;
+    transform: translateY(-50%);
+}
+
+.standard_cover_page_title h1 {
+    font-size: 10vw;
+    color: white;
+    font-family: "Spectral SC";
+}

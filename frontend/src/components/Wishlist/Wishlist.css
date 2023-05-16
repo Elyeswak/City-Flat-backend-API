@@ -1,0 +1,41 @@
+@import url(https://fonts.googleapis.com/css?family=Quicksand:400,300);
+
+.wishlist_page {
+  background-color: black;
+  min-height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.wishlist_title{
+    text-align: left;
+    color: white;
+    font-family: "Lexend Mega", sans-serif;
+    margin-bottom: 3%;
+
+}
+.content_page {
+  padding: 3%;
+}
+
+.carousel-item > img {
+  width: 640px;
+  height: 360px;
+}
+
+.wishlist_description {
+  color: white;
+  font-family: "Lexend Mega", sans-serif;
+}
+
+.row_gap{
+    row-gap: 3%;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .col {
+    min-width: 100%;
+  }
+}

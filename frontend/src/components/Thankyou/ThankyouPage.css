@@ -1,0 +1,32 @@
+.thankyou_page{
+    background-color: black;
+    min-height: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.upper__space{
+    min-height: 5rem;
+}
+.thankyou__body{
+    height: 60rem;
+    padding: 5%;
+}
+
+.thankyou__content{
+    border: 2px solid white;
+    min-height: 40rem;
+}
+
+.thankyou__message{
+    color: white;
+    font-family: "Lexend Mega", sans-serif;
+    word-spacing: 2%;
+    line-height: 26pt
+}
+
+.thankyou__image__class{
+    max-width: 100%;
+    max-height: 100%;
+}

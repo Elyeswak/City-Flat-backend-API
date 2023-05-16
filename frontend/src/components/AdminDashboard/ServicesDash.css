@@ -1,0 +1,36 @@
+.services-dash-cont {
+  min-height: 100vh;
+  padding-top: 5rem;
+}
+
+.services-dash-nav {
+  list-style-type: none;
+  position: absolute;
+  top: 45px;
+  left: 0;
+}
+
+.services-dash-nav li {
+  cursor: pointer;
+}
+
+.services-dash-nav li:hover {
+  color: rgba(245, 245, 245, 0.659);
+}
+
+.services-dash-row .services-dash-row-index {
+  cursor: pointer;
+}
+
+.services-dash-row .services-dash-row-index span {
+  display: none;
+}
+
+.services-dash-row:hover .services-dash-row-index span {
+  display: inline-block;
+}
+
+.all-services-cont {
+  width: max-content;
+  margin: 0 auto;
+}

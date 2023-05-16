@@ -1,0 +1,102 @@
+.standard__collection__page{
+    background-color: black;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 3%;
+    padding-top: 3%;
+}
+
+.standard_collection_items_title h2 {
+    margin-top: 3vh;
+    font-weight: 400;
+    font-family: 'Lexend Mega', sans-serif;
+    color: #fff;
+}
+
+.standard_collection_items_content{
+ padding: 3%;
+}
+
+
+.card {
+    background-color: transparent !important;
+    margin-top: 4%;
+}
+
+
+.like_button_standard {
+    width: 10%;
+    float: right;
+    margin-right: 2%;
+    margin-top: 2%;
+    position: relative;
+}
+
+.highligh_standard{
+    color: #EB2733;
+    width: 30px;
+    height: 30px;
+}
+
+.card_content_standard{
+    width: 90%;
+    text-align: left;
+    margin-top: 2%;
+    color: white;
+    padding-left: 2%;
+
+}
+ .card_content_standard h3 {
+    font-family: 'Lexend Mega', sans-serif;
+    font-size: 2vw !important;
+ }
+
+ .card_content_standard p {
+    font-family: font-alethia-pro;
+    font-weight: 10 !important;
+    font-size: 1.2vw;
+ }
+
+.highlight_standard {
+    color: #EB2733;
+    font-size: 30px;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .col{
+        min-width: 100%;
+    }
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 400px) {
+    .standard_collection_items_content{
+        padding: 4%;
+       }
+}
+
+
+@media only screen and (max-width: 400px) {
+    .highlight_standard {
+        color: #EB2733;
+        font-size: 20px;
+    }
+  }
+
+@media screen and (max-width:780px) {
+
+
+    .card_content_standard h3 {
+        font-family: 'Lexend Mega', sans-serif;
+        font-size: 3.5vw !important;
+     }
+    
+     .card_content_standard p {
+        font-family: font-alethia-pro;
+        font-weight: 10 !important;
+        font-size: 2.5vw;
+     }
+    
+}

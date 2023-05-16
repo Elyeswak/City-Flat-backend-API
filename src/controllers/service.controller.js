@@ -122,7 +122,6 @@ export async function httpDeleteOneService(req, res) {
         { services: serviceId },
         { $pull: { services: serviceId } }
       );
-      console.log(result)
   
       res.status(200).json({ message: 'Service deleted successfully' });
     } catch (error) {

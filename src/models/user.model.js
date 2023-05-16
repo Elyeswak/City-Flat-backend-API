@@ -27,7 +27,9 @@ const UserSchema = new Schema(
       maxlength: 100,
       validate: {
         validator: function (v) {
-          return /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(v);
+          return /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(
+            v
+          );
         },
         message:
           "Password should be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
@@ -52,7 +54,8 @@ const UserSchema = new Schema(
         validator: function (v) {
           return /^\d{8,}$/.test(v);
         },
-        message: "Number should be at least 8 digits long and contain only digits.",
+        message:
+          "Number should be at least 8 digits long and contain only digits.",
       },
     },
     address: {
@@ -89,64 +92,74 @@ const UserSchema = new Schema(
     img: {
       type: String,
       required: false,
+      default:
+        "https://res.cloudinary.com/dvjvlobqp/image/upload/v1683540045/CityFlat-assets/icons/blank-profile-picture-g91ef0370b_1280_pqkj43.png",
     },
-    reservations: [{ type: Schema.Types.ObjectId, ref: "Reservation", required: false }],
-    wishlist: [{ type: Schema.Types.ObjectId, ref: "Appartment", required: false }],
+    reservations: [
+      { type: Schema.Types.ObjectId, ref: "Reservation", required: false },
+    ],
+    wishlist: [
+      { type: Schema.Types.ObjectId, ref: "Appartment", required: false },
+    ],
   },
   { timestamps: true }
 );
 
-
 //a middleware for user input control !
 UserSchema.pre("save", async function (next) {
-    try {
-      // validate name field
-      if (this.isModified("name")) {
-        const nameRegex = /^[a-zA-Z]{1,15}$/;
-        if (!nameRegex.test(this.name)) {
-          throw new Error("Name should only contain alphabets, no numbers or spaces, and should be between 1 to 15 characters long.");
-        }
+  try {
+    // validate name field
+    if (this.isModified("name")) {
+      const nameRegex = /^[a-zA-Z]{1,15}$/;
+      if (!nameRegex.test(this.name)) {
+        throw new Error(
+          "Name should only contain alphabets, no numbers or spaces, and should be between 1 to 15 characters long."
+        );
       }
-  
-      // validate password field
-      if (this.isModified("password")) {
-        const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?!.*\s).{8,100}$/;
-        if (!passwordRegex.test(this.password)) {
-          throw new Error("Password should be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character (@#$%^&+=).");
-        }
-      }
-  
-      // validate email field
-      if (this.isModified("email")) {
-        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/ ;
-        if (!emailRegex.test(this.email)) {
-          throw new Error("Email is not valid.");
-        }
-      }
-  
-      // validate number field
-      if (this.isModified("number")) {
-        const numberRegex = /^[0-9]{8,}$/;
-        if (!numberRegex.test(this.number)) {
-          throw new Error("Number should be at least 8 digits long and only contain numbers.");
-        }
-      }
-  
-      // validate birthdate field
-      if (this.isModified("BirthDate")) {
-        const currentDate = new Date();
-        const inputDate = new Date(this.BirthDate);
-        if (inputDate > currentDate) {
-          throw new Error("Birthdate cannot be in the future.");
-        }
-      }
-  
-    
-  
-      next();
-    } catch (err) {
-      next(err);
     }
-  });
+
+    // validate password field
+    if (this.isModified("password")) {
+      const passwordRegex =
+        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?!.*\s).{8,100}$/;
+      if (!passwordRegex.test(this.password)) {
+        throw new Error(
+          "Password should be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character (@#$%^&+=)."
+        );
+      }
+    }
+
+    // validate email field
+    if (this.isModified("email")) {
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailRegex.test(this.email)) {
+        throw new Error("Email is not valid.");
+      }
+    }
+
+    // validate number field
+    if (this.isModified("number")) {
+      const numberRegex = /^[0-9]{8,}$/;
+      if (!numberRegex.test(this.number)) {
+        throw new Error(
+          "Number should be at least 8 digits long and only contain numbers."
+        );
+      }
+    }
+
+    // validate birthdate field
+    if (this.isModified("BirthDate")) {
+      const currentDate = new Date();
+      const inputDate = new Date(this.BirthDate);
+      if (inputDate > currentDate) {
+        throw new Error("Birthdate cannot be in the future.");
+      }
+    }
+
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
 
 export default model("User", UserSchema);

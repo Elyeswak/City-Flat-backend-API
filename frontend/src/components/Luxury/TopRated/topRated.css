@@ -1,0 +1,146 @@
+.top__rated__luxury_page {
+    background-color: black;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 3%;
+    text-align: center;
+  }
+  
+  .row_props_luxury {
+    padding: 0%;
+    background-color: white;
+  }
+  
+  .image_col_luxury  {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  
+  .image_col_luxury  > img {
+    object-fit: cover;
+    width: 100%;
+    max-height: 100%;
+  }
+  
+  .content_col_luxury  {
+    padding: 3%;
+  }
+  
+  .card_infos_luxury  {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    
+  }
+  
+  .card_infos_luxury  h2 {
+    font-family: "Lexend Mega", sans-serif;
+    font-size: 2.5vw !important;
+  }
+  
+  .card_infos_luxury  h4 {
+    font-family: "Lexend Mega", sans-serif;
+    font-size: 1.5vw !important;
+  }
+  
+  .card_infos_luxury  p {
+    font-family: font-alethia-pro;
+    font-size: 1vw !important;
+  }
+  
+  .card_infos_luxury  strong {
+    font-family: font-alethia-pro;
+    font-size: 1.2vw !important;
+  }
+  
+  .card__body_luxury  {
+    margin-bottom: 3%;
+  }
+
+  .apartment_description {
+    font-size: 10px !important;
+  }
+  @media screen and (max-width: 710px) {
+   
+    .card_infos_luxury  {
+      padding-top: 0%;
+    }
+    .card_infos_luxury  strong {
+      font-family: font-alethia-pro;
+      font-size: 2vw !important;
+    }
+  }
+
+  @media screen and (max-width:814px) {
+    .col {
+      flex: auto !important;
+    }
+  }
+  
+  @media screen and (min-width: 980px) {
+    .content_col_luxury  {
+      padding: auto;
+    }
+  }
+  
+  @media screen and (max-width: 420px) {
+    .top__rated__luxury_page {
+      padding: 5%;
+    }
+  
+    .card_infos_luxury  h2 {
+      font-family: "Lexend Mega", sans-serif;
+      font-size: 5vw !important;
+    }
+    
+    .card_infos_luxury  h4 {
+      font-family: "Lexend Mega", sans-serif;
+      font-size: 4vw !important;
+    }
+    
+    .card_infos_luxury  p {
+      font-family: font-alethia-pro;
+      font-size: 3.5vw !important;
+    }
+    
+    .card_infos_luxury  strong {
+      font-family: font-alethia-pro;
+      font-size: 3vw !important;
+    }
+  }
+  
+  
+  @media screen and (max-width:1000px) {
+  
+  
+    .card_infos_luxury  h2 {
+      font-family: "Lexend Mega", sans-serif;
+      font-size: 1.8vw !important;
+    }
+    
+    .card_infos_luxury  h4 {
+      font-family: "Lexend Mega", sans-serif;
+      font-size: 1.5vw !important;
+    }
+    
+    .card_infos_luxury  p {
+      font-family: font-alethia-pro;
+      font-size: 1.2vw !important;
+    }
+    
+    .card_infos_luxury  strong {
+      font-family: font-alethia-pro;
+      font-size: 1.5vw !important;
+    }
+  }
+  
+  
+  @media screen and (min-width: 915px) {
+  .card__body{
+    margin-bottom: 5%;
+  }
+  
+  
+  }
+  

@@ -1,0 +1,40 @@
+.appart-dash-cont {
+  min-height: 100vh;
+  padding-top: 5rem;
+}
+
+.appart-dash-nav {
+  list-style-type: none;
+  position: absolute;
+  top: 3rem;
+  left: 0;
+}
+
+.appart-dash-nav li {
+  cursor: pointer;
+}
+
+.appart-dash-nav li:hover {
+  color: rgba(245, 245, 245, 0.659);
+}
+
+.appart-dash-row .appart-dash-row-index {
+  cursor: pointer;
+}
+
+.appart-dash-row .appart-dash-row-index span {
+  display: none;
+}
+
+.appart-dash-row:hover .appart-dash-row-index span {
+  display: inline-block;
+}
+
+.all-apparts-cont {
+  width: max-content;
+  margin: 0 auto;
+}
+
+.img-field {
+  width: 90% !important;
+}

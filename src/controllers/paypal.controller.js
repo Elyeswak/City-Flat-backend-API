@@ -1,4 +1,3 @@
-
 import fetch from "node-fetch";
 import dotenv from 'dotenv';
 import paypal from 'paypal-rest-sdk';
@@ -8,9 +7,9 @@ const { PAYPAL_CLIENT_ID, PAYPAL_APP_SECRET } = process.env;
 
 //paypal config
 paypal.configure({
-    'mode': 'sandbox', //sandbox or live
-    'client_id': PAYPAL_CLIENT_ID,
-    'client_secret': PAYPAL_APP_SECRET
+  mode: "sandbox", //sandbox or live
+  client_id: PAYPAL_CLIENT_ID,
+  client_secret: PAYPAL_APP_SECRET,
 });
 
 
@@ -127,5 +126,4 @@ res.status(404).json({message:err.message});
 
 
 }
-
-
+//paypal-wa-mou-daijobu

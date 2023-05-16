@@ -140,6 +140,511 @@
 					]
 				},
 				{
+					"name": "wishlist",
+					"item": [
+						{
+							"name": "add to wish list",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQwNzNlOWJjZGJlNzhkYjE5ZTg3OTc3IiwiZW1haWwiOiJlbHllcy5rYWJvdXNAZXNwcml0LnRuIiwicm9sZSI6IkFETUlOIn0sImlhdCI6MTY4MzAyNjM2MiwiZXhwIjoxNjgzNjMxMTYyfQ.l_hp5F3pgaPhtSa4yES2XYbhEK5BUZu6cGT92HWsIC4",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\r\n    \"price\":\"150.0\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:9090/user/wishlist/644bead32ee12b937ab7559e",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "9090",
+									"path": [
+										"user",
+										"wishlist",
+										"644bead32ee12b937ab7559e"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "remove from wishlist",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQwNzNlOWJjZGJlNzhkYjE5ZTg3OTc3IiwiZW1haWwiOiJlbHllcy5rYWJvdXNAZXNwcml0LnRuIiwicm9sZSI6IkFETUlOIn0sImlhdCI6MTY4MzAyNjM2MiwiZXhwIjoxNjgzNjMxMTYyfQ.l_hp5F3pgaPhtSa4yES2XYbhEK5BUZu6cGT92HWsIC4",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\r\n    \"price\":\"150.0\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:9090/user/wishlist/644bead32ee12b937ab7559e",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "9090",
+									"path": [
+										"user",
+										"wishlist",
+										"644bead32ee12b937ab7559e"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List user  wishlist",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQwNzNlOWJjZGJlNzhkYjE5ZTg3OTc3IiwiZW1haWwiOiJlbHllcy5rYWJvdXNAZXNwcml0LnRuIiwicm9sZSI6IkFETUlOIn0sImlhdCI6MTY4MzAyNjM2MiwiZXhwIjoxNjgzNjMxMTYyfQ.l_hp5F3pgaPhtSa4yES2XYbhEK5BUZu6cGT92HWsIC4",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\r\n    \"price\":\"150.0\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:9090/user/wishlist",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "9090",
+									"path": [
+										"user",
+										"wishlist"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "order",
+					"item": [
+						{
+							"name": "create order",
+							"request": {
+								"auth": {
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "grant_type",
+											"value": "authorization_code",
+											"type": "string"
+										},
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"appartment\":\"642d6d96c78168c44f0e7ac0\",\r\n    \"description\": \"elyes order \",\r\n    \"checkIn\": \"2023-03-12\",\r\n    \"checkOut\": \"2023-03-14\",\r\n    \"servicesFee\": 150,\r\n    \"nightsFee\": 250,\r\n    \"services\": [\r\n     \"63b2eb9a9edd0a74ec227479\",\r\n     \"63b2ec0b9edd0a74ec227483\"\r\n\r\n       \r\n    ]\r\n  }\r\n ",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:9090/user/reservations/createOrder",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9090",
+									"path": [
+										"user",
+										"reservations",
+										"createOrder"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get myOrders",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": ""
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get one order",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": ""
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get bookedates(accepted orders)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": ""
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "admin Decline order",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:9090/user/reservations/adminDecline/:param",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9090",
+									"path": [
+										"user",
+										"reservations",
+										"adminDecline",
+										":param"
+									],
+									"variable": [
+										{
+											"key": "param",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "admin accept order",
+							"request": {
+								"auth": {
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "grant_type",
+											"value": "authorization_code",
+											"type": "string"
+										},
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": ""
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "reservations",
+					"item": [
+						{
+							"name": "add reservation",
+							"request": {
+								"auth": {
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "grant_type",
+											"value": "authorization_code",
+											"type": "string"
+										},
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \r\n \"Order\": {\r\n    \"id\": \"642d70f9a5a71305615ecfd8\"\r\n    \r\n  },\r\n\r\n  \"Card\": {\r\n   \r\n      \"number\": \"4242424242424242\",\r\n      \"exp_month\": \"12\",\r\n      \"exp_year\": \"2024\",\r\n      \"cvc\": \"123\"\r\n    \r\n  }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:9090/user/reservations/addReservation",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9090",
+									"path": [
+										"user",
+										"reservations",
+										"addReservation"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get all reservations",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQwNzNlOWJjZGJlNzhkYjE5ZTg3OTc3IiwibmFtZSI6ImVseWVza2Fib3VzIiwiZW1haWwiOiJlbHllcy5rYWJvdXNAZXNwcml0LnRuIiwicm9sZSI6IkFETUlOIn0sImlhdCI6MTY4MDg2NzY2NiwiZXhwIjoxNjgxNDcyNDY2fQ.o1Qnb78Nslu2Gmxz78KteTpGBYGUZVfxhP1ejkzq3CA",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjNhZDlmNmRjMjNkYmJkYTU4ZmFjODczIiwibmFtZSI6ImVseWVza2Fib3VzIiwiZW1haWwiOiJlbHllcy5rYWJvdXNAZ21haWwuY29tIiwicm9sZSI6IlVTRVIifSwiaWF0IjoxNjcyMzIyOTI5LCJleHAiOjE2NzI5Mjc3Mjl9.kP2w_hJC3hhD_pbGAKWPEezngWI_pqQplVUEqczC6FA",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:9090/user/reservations/getallReservations",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9090",
+									"path": [
+										"user",
+										"reservations",
+										"getallReservations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get my reservations",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQwNzNlOWJjZGJlNzhkYjE5ZTg3OTc3IiwibmFtZSI6ImVseWVza2Fib3VzIiwiZW1haWwiOiJlbHllcy5rYWJvdXNAZXNwcml0LnRuIiwicm9sZSI6IkFETUlOIn0sImlhdCI6MTY4MDg2NzY2NiwiZXhwIjoxNjgxNDcyNDY2fQ.o1Qnb78Nslu2Gmxz78KteTpGBYGUZVfxhP1ejkzq3CA",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjNhZDlmNmRjMjNkYmJkYTU4ZmFjODczIiwibmFtZSI6ImVseWVza2Fib3VzIiwiZW1haWwiOiJlbHllcy5rYWJvdXNAZ21haWwuY29tIiwicm9sZSI6IlVTRVIifSwiaWF0IjoxNjcyMzIyOTI5LCJleHAiOjE2NzI5Mjc3Mjl9.kP2w_hJC3hhD_pbGAKWPEezngWI_pqQplVUEqczC6FA",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:9090/user/reservations/getall",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9090",
+									"path": [
+										"user",
+										"reservations",
+										"getall"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "decline one reservation",
+							"request": {
+								"auth": {
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "grant_type",
+											"value": "authorization_code",
+											"type": "string"
+										},
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:9090/user/reservations/decline/069211",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9090",
+									"path": [
+										"user",
+										"reservations",
+										"decline",
+										"069211"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Admin Get all reservations",
+							"request": {
+								"auth": {
+									"type": "oauth2",
+									"oauth2": [
+										{
+											"key": "grant_type",
+											"value": "authorization_code",
+											"type": "string"
+										},
+										{
+											"key": "addTokenTo",
+											"value": "header",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:9090/user/reservations/getallReservations",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9090",
+									"path": [
+										"user",
+										"reservations",
+										"getallReservations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getOne reservation by id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": ""
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
 					"name": "login",
 					"request": {
 						"method": "POST",
@@ -195,96 +700,6 @@
 							"path": [
 								"paypal",
 								"pay"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "add reservation",
-					"request": {
-						"auth": {
-							"type": "oauth2",
-							"oauth2": [
-								{
-									"key": "grant_type",
-									"value": "authorization_code",
-									"type": "string"
-								},
-								{
-									"key": "addTokenTo",
-									"value": "header",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \r\n \"Order\": {\r\n    \"id\": \"642d70f9a5a71305615ecfd8\"\r\n    \r\n  },\r\n\r\n  \"Card\": {\r\n   \r\n      \"number\": \"4242424242424242\",\r\n      \"exp_month\": \"12\",\r\n      \"exp_year\": \"2024\",\r\n      \"cvc\": \"123\"\r\n    \r\n  }\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:9090/user/reservations/addReservation",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "9090",
-							"path": [
-								"user",
-								"reservations",
-								"addReservation"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "create order",
-					"request": {
-						"auth": {
-							"type": "oauth2",
-							"oauth2": [
-								{
-									"key": "grant_type",
-									"value": "authorization_code",
-									"type": "string"
-								},
-								{
-									"key": "addTokenTo",
-									"value": "header",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n   \"appartment\":\"642d6d96c78168c44f0e7ac0\",\r\n    \"description\": \"elyes order \",\r\n    \"checkIn\": \"2023-03-12\",\r\n    \"checkOut\": \"2023-03-14\",\r\n    \"servicesFee\": 150,\r\n    \"nightsFee\": 250,\r\n    \"services\": [\r\n     \"63b2eb9a9edd0a74ec227479\",\r\n     \"63b2ec0b9edd0a74ec227483\"\r\n\r\n       \r\n    ]\r\n  }\r\n ",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:9090/user/reservations/createOrder",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "9090",
-							"path": [
-								"user",
-								"reservations",
-								"createOrder"
 							]
 						}
 					},
@@ -431,104 +846,6 @@
 					"response": []
 				},
 				{
-					"name": "Get all reservations",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQwNzNlOWJjZGJlNzhkYjE5ZTg3OTc3IiwibmFtZSI6ImVseWVza2Fib3VzIiwiZW1haWwiOiJlbHllcy5rYWJvdXNAZXNwcml0LnRuIiwicm9sZSI6IkFETUlOIn0sImlhdCI6MTY4MDg2NzY2NiwiZXhwIjoxNjgxNDcyNDY2fQ.o1Qnb78Nslu2Gmxz78KteTpGBYGUZVfxhP1ejkzq3CA",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "authorization",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjNhZDlmNmRjMjNkYmJkYTU4ZmFjODczIiwibmFtZSI6ImVseWVza2Fib3VzIiwiZW1haWwiOiJlbHllcy5rYWJvdXNAZ21haWwuY29tIiwicm9sZSI6IlVTRVIifSwiaWF0IjoxNjcyMzIyOTI5LCJleHAiOjE2NzI5Mjc3Mjl9.kP2w_hJC3hhD_pbGAKWPEezngWI_pqQplVUEqczC6FA",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:9090/user/reservations/getallReservations",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "9090",
-							"path": [
-								"user",
-								"reservations",
-								"getallReservations"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get my reservations",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQwNzNlOWJjZGJlNzhkYjE5ZTg3OTc3IiwibmFtZSI6ImVseWVza2Fib3VzIiwiZW1haWwiOiJlbHllcy5rYWJvdXNAZXNwcml0LnRuIiwicm9sZSI6IkFETUlOIn0sImlhdCI6MTY4MDg2NzY2NiwiZXhwIjoxNjgxNDcyNDY2fQ.o1Qnb78Nslu2Gmxz78KteTpGBYGUZVfxhP1ejkzq3CA",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "authorization",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjNhZDlmNmRjMjNkYmJkYTU4ZmFjODczIiwibmFtZSI6ImVseWVza2Fib3VzIiwiZW1haWwiOiJlbHllcy5rYWJvdXNAZ21haWwuY29tIiwicm9sZSI6IlVTRVIifSwiaWF0IjoxNjcyMzIyOTI5LCJleHAiOjE2NzI5Mjc3Mjl9.kP2w_hJC3hhD_pbGAKWPEezngWI_pqQplVUEqczC6FA",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:9090/user/reservations/getall",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "9090",
-							"path": [
-								"user",
-								"reservations",
-								"getall"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "reset user password",
 					"request": {
 						"method": "POST",
@@ -654,212 +971,12 @@
 					"response": []
 				},
 				{
-					"name": "decline one reservation",
-					"request": {
-						"auth": {
-							"type": "oauth2",
-							"oauth2": [
-								{
-									"key": "grant_type",
-									"value": "authorization_code",
-									"type": "string"
-								},
-								{
-									"key": "addTokenTo",
-									"value": "header",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:9090/user/reservations/decline/069211",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "9090",
-							"path": [
-								"user",
-								"reservations",
-								"decline",
-								"069211"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "admin accept reservation",
-					"request": {
-						"auth": {
-							"type": "oauth2",
-							"oauth2": [
-								{
-									"key": "grant_type",
-									"value": "authorization_code",
-									"type": "string"
-								},
-								{
-									"key": "addTokenTo",
-									"value": "header",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": ""
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "admin Decline reservation",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:9090/user/reservations/adminDecline/:param",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "9090",
-							"path": [
-								"user",
-								"reservations",
-								"adminDecline",
-								":param"
-							],
-							"variable": [
-								{
-									"key": "param",
-									"value": ""
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Admin Get all reservations",
-					"request": {
-						"auth": {
-							"type": "oauth2",
-							"oauth2": [
-								{
-									"key": "grant_type",
-									"value": "authorization_code",
-									"type": "string"
-								},
-								{
-									"key": "addTokenTo",
-									"value": "header",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:9090/user/reservations/getallReservations",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "9090",
-							"path": [
-								"user",
-								"reservations",
-								"getallReservations"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "getOne reservation by id",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": ""
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "sigin with google",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
 							"raw": ""
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get myOrders",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": ""
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get one order",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": ""
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get bookedates(accepted orders)",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": ""
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "post payment",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:9090/Onlinepayment/payment",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "9090",
-							"path": [
-								"Onlinepayment",
-								"payment"
-							]
 						}
 					},
 					"response": []
@@ -901,6 +1018,131 @@
 								"header": [],
 								"url": {
 									"raw": ""
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "reviews",
+					"item": [
+						{
+							"name": "add review",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQwNzNlOWJjZGJlNzhkYjE5ZTg3OTc3IiwiZW1haWwiOiJlbHllcy5rYWJvdXNAZXNwcml0LnRuIiwicm9sZSI6IkFETUlOIn0sImlhdCI6MTY4MjY3ODQ1MiwiZXhwIjoxNjgzMjgzMjUyfQ.AuzdtC1WqGT1NrNXbsLGi9xAYV8zjOL2P8sG97_1wuI",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"Rating\":5,\r\n\"Description\":\"Test review 1\"\r\n\r\n\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:9090/appartments/reviews/6450f4d600dfc914e41e12a1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "9090",
+									"path": [
+										"appartments",
+										"reviews",
+										"6450f4d600dfc914e41e12a1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete review",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQwNzNlOWJjZGJlNzhkYjE5ZTg3OTc3IiwiZW1haWwiOiJlbHllcy5rYWJvdXNAZXNwcml0LnRuIiwicm9sZSI6IkFETUlOIn0sImlhdCI6MTY4MjY3ODQ1MiwiZXhwIjoxNjgzMjgzMjUyfQ.AuzdtC1WqGT1NrNXbsLGi9xAYV8zjOL2P8sG97_1wuI",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:9090/appartments/reviews/6453be46f13ca4c4ea5680b8",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "9090",
+									"path": [
+										"appartments",
+										"reviews",
+										"6453be46f13ca4c4ea5680b8"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update review",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQwNzNlOWJjZGJlNzhkYjE5ZTg3OTc3IiwiZW1haWwiOiJlbHllcy5rYWJvdXNAZXNwcml0LnRuIiwicm9sZSI6IkFETUlOIn0sImlhdCI6MTY4NDE4ODcxOCwiZXhwIjoxNjg0NzkzNTE4fQ.vdoGR3v6RZPCUj__zSaawnrqIfY1DexHXeOoaJfdO7w",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"Rating\":4.5,\r\n\"Description\":\"Test elyes updated \"\r\n\r\n\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:9090/appartments/updateReviews/6462af21ec3296f275daad76",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "9090",
+									"path": [
+										"appartments",
+										"updateReviews",
+										"6462af21ec3296f275daad76"
+									]
 								}
 							},
 							"response": []
@@ -992,16 +1234,11 @@
 					"name": "update one appartment by name",
 					"request": {
 						"auth": {
-							"type": "oauth2",
-							"oauth2": [
+							"type": "bearer",
+							"bearer": [
 								{
-									"key": "grant_type",
-									"value": "authorization_code",
-									"type": "string"
-								},
-								{
-									"key": "addTokenTo",
-									"value": "header",
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQwNzNlOWJjZGJlNzhkYjE5ZTg3OTc3IiwiZW1haWwiOiJlbHllcy5rYWJvdXNAZXNwcml0LnRuIiwicm9sZSI6IkFETUlOIn0sImlhdCI6MTY4MzE5Nzk3NSwiZXhwIjoxNjgzODAyNzc1fQ.IZ39IAveuLBxgOAJrdNFasjs4QGWLxm2EVET1KNkY7M",
 									"type": "string"
 								}
 							]
@@ -1009,52 +1246,16 @@
 						"method": "PUT",
 						"header": [],
 						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "name",
-									"value": "echiAppartment",
-									"type": "text"
-								},
-								{
-									"key": "description",
-									"value": "wlc to echi appartment",
-									"type": "text"
-								},
-								{
-									"key": "pricePerNight",
-									"value": "120",
-									"type": "text"
-								},
-								{
-									"key": "FromDate",
-									"value": "2023-02-11",
-									"type": "text"
-								},
-								{
-									"key": "ToDate",
-									"value": "2023-02-22",
-									"type": "text"
-								},
-								{
-									"key": "location",
-									"value": "hay nozha",
-									"type": "text"
-								},
-								{
-									"key": "rooms",
-									"value": "4",
-									"type": "text"
-								},
-								{
-									"key": "img",
-									"type": "file",
-									"src": "/C:/Users/elyes/Pictures/wallpapers/wp10437697-cyberpunk-winter-wallpapers.jpg"
+							"mode": "raw",
+							"raw": "{\r\n \"name\":\"new appartment\",\r\n \"description\":\"hello this is a test update\",\r\n\"services\":[\r\n{\r\n\"_id\":\"63b2ec0b9edd0a74ec227483\"\r\n\r\n\r\n\r\n\r\n\r\n},\r\n{\r\n\r\n\"_id\":\"63b2ec239edd0a74ec227487\"\r\n\r\n\r\n\r\n\r\n}\r\n\r\n]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
-							]
+							}
 						},
 						"url": {
-							"raw": "http://localhost:9090/user/appartments/tokyo",
+							"raw": "http://localhost:9090/user/appartments/644bead32ee12b937ab7559e",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1063,7 +1264,7 @@
 							"path": [
 								"user",
 								"appartments",
-								"tokyo"
+								"644bead32ee12b937ab7559e"
 							]
 						}
 					},
@@ -1187,6 +1388,98 @@
 						"header": [],
 						"url": {
 							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all reviews for apartment",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQwNzNlOWJjZGJlNzhkYjE5ZTg3OTc3IiwiZW1haWwiOiJlbHllcy5rYWJvdXNAZXNwcml0LnRuIiwicm9sZSI6IkFETUlOIn0sImlhdCI6MTY4MjY3ODQ1MiwiZXhwIjoxNjgzMjgzMjUyfQ.AuzdtC1WqGT1NrNXbsLGi9xAYV8zjOL2P8sG97_1wuI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"Rating\":4.5,\r\n\"Description\":\"I really enjoyed my stay  here ! wonderful apartment.\"\r\n\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:9090/appartments/reviews/644bead32ee12b937ab7559e",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "9090",
+							"path": [
+								"appartments",
+								"reviews",
+								"644bead32ee12b937ab7559e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all reviews for apartment Copy",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQwNzNlOWJjZGJlNzhkYjE5ZTg3OTc3IiwiZW1haWwiOiJlbHllcy5rYWJvdXNAZXNwcml0LnRuIiwicm9sZSI6IkFETUlOIn0sImlhdCI6MTY4MjY3ODQ1MiwiZXhwIjoxNjgzMjgzMjUyfQ.AuzdtC1WqGT1NrNXbsLGi9xAYV8zjOL2P8sG97_1wuI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"Rating\":4.5,\r\n\"Description\":\"I really enjoyed my stay  here ! wonderful apartment.\"\r\n\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:9090/appartments/reviews/644bead32ee12b937ab7559e",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "9090",
+							"path": [
+								"appartments",
+								"reviews",
+								"644bead32ee12b937ab7559e"
+							]
 						}
 					},
 					"response": []
@@ -1569,6 +1862,45 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "paypal",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQwNzNlOWJjZGJlNzhkYjE5ZTg3OTc3IiwiZW1haWwiOiJlbHllcy5rYWJvdXNAZXNwcml0LnRuIiwicm9sZSI6IkFETUlOIn0sImlhdCI6MTY4Mzg5Nzg0NiwiZXhwIjoxNjg0NTAyNjQ2fQ.Bz9Zr7Rlmhtc09GQgX3jaIXXsJAvgHVAka6Ax_51fJk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\r\n\"order\":{\r\n\r\n\"id\":\"645a4c6a0766b606f0fc2c71\"\r\n\r\n}\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9090/paypal/pay",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"paypal",
+						"pay"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

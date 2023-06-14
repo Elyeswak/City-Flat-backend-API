@@ -59,3 +59,43 @@ export  async function searchByType(req, res)  {
     res.status(500).json({ message: error.message });
   }
 };
+
+// Function to filter apartments based on multiple criteria
+export async function filterApartments(req, res) {
+
+  const  type = req.body.type;
+  const  minPrice = req.body.minPrice;
+  const maxPrice = req.body.maxPrice;
+  const rooms = req.body.rooms;
+console.log(minPrice+" "+maxPrice+" "+rooms);
+  try {
+    const filter = {};
+
+    if (type && APPARTTYPE[type.toUpperCase()]) {
+      filter.type = APPARTTYPE[type.toUpperCase()];
+    }
+
+    if (minPrice && /^\d+$/.test(minPrice)) {
+      filter.pricePerNight = { $gte: parseFloat(minPrice) };
+    }
+
+    if (maxPrice && /^\d+$/.test(maxPrice)) {
+      if (filter.pricePerNight) {
+        filter.pricePerNight.$lte = parseFloat(maxPrice);
+      } else {
+        filter.pricePerNight = { $lte: parseFloat(maxPrice) };
+      }
+    }
+
+    if (rooms && /^\d+$/.test(rooms)) {
+      filter.rooms = parseInt(rooms);
+    }
+
+    const apartments = await Appartment.find(filter);
+
+    res.status(200).json(appartsListFormat(apartments));
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: error.message });
+  }
+}

@@ -2,7 +2,8 @@ import express from 'express';
 
 import{searchByName,
     filterByPriceRange,
-    searchByType,} from "../controllers/search.controller.js";
+    searchByType,
+    filterApartments,} from "../controllers/search.controller.js";
 import { ensureUser } from '../middlewares/authorization-handler.js';
 
 
@@ -11,14 +12,19 @@ import { ensureUser } from '../middlewares/authorization-handler.js';
 
  searchRouter
  .route('/:param')
- .get(ensureUser,searchByName);
+ .get(searchByName);
 
  searchRouter
  .route('/byPrice')
- .post(ensureUser,filterByPriceRange);
+ .post(filterByPriceRange);
 
  searchRouter
  .route('/type/:param')
- .get(ensureUser,searchByType);
+ .get(searchByType);
+
+ searchRouter
+ .route('/filter')
+ .post(filterApartments);
+
 
  export { searchRouter };

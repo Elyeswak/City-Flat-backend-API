@@ -144,7 +144,7 @@ export function notificationFormat(notification) {
      id: notification._id,
      message: notification.message,
      read: notification.read,
-     readAt: notification.readAt,
+     createdAt: notification.createdAt,
 
   };
 }

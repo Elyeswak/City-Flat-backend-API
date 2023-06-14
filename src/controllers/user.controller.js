@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import userDb from '../models/user.model.js';
 import { validationResult } from 'express-validator';
 import { sendVerificationEmail } from './mailling.controller.js';
-
+import { uploadImage, updateImage,deleteImage } from './cloudinary.controller.js';
 
 
 
@@ -136,59 +136,55 @@ export function httpGetOneUser(req, res) {
       .catch((err) => res.status(500).json({ error: err.message }));
 }
 
-export function httpUpdateOneUser(req, res) {
+export async function httpUpdateOneUser(req, res) {
    if (!validationResult(req).isEmpty()) {
-      res.status(400).json({ error: validationResult(req).array() });
-   } else {
-      const newValues = req.body;
-      delete newValues.password;
+      return res.status(400).json({ error: validationResult(req).array() });
+   }
 
-      findOneUserByFilter(req.params.param)
-         .then((foundUser) => {
-            if (!foundUser) {
-               res.status(404).json({ message: 'User not found!' });
-            } else {
-             
-               newValues.isBanned = foundUser.isBanned;
-               userDb
-                  .findByIdAndUpdate(foundUser._id, newValues)
-                  .then((result) => {
-                     userDb
-                        .findById(result._id)
-                        .then((updated) => {
-                           res.status(200).json(userFormat(updated));
-                        })
-                        .catch((err) =>
-                           res.status(500).json({ error: err.message })
-                        );
-                  })
-                  .catch((err) => res.status(500).json({ error: err.message }));
+   const newValues = req.body;
+   delete newValues.password;
+
+   try {
+      const foundUser = await findOneUserByFilter(req.params.param);
+
+      if (!foundUser) {
+         return res.status(404).json({ message: 'User not found!' });
+      }
+      
+      if (req.file) {
+        
+         try {
+            if (foundUser.img) {
+           
+               const imageUrl = await updateImage(req.file.path,getPublicIdFromImageUrl(foundUser.img));
+           
+               newValues.img = imageUrl;
             }
-         })
-         .catch((err) => res.status(500).json({ error: err.message }));
+          
+
+           
+         } catch (error) {
+            return res.status(500).json({ message: error.message });
+         }
+      }
+
+      newValues.isBanned = foundUser.isBanned;
+
+      const updatedUser = await userDb.findByIdAndUpdate(foundUser._id, newValues, { new: true });
+
+      if (!updatedUser) {
+         return res.status(500).json({ error: 'Failed to update user' });
+      }
+
+      res.status(200).json(userFormat(updatedUser));
+   } catch (err) {
+      res.status(500).json({ error: err.message });
    }
 }
 
 
 
 
-//  export function httpUpdateAllPlayers(req, res) {
-//     if (!validationResult(req).isEmpty()) {
-//        res.status(400).json({ errors: validationResult(req).array() });
-//     } else {
-//        const newValues = req.body;
-//        delete newValues.password;
-//        playersDb
-//           .updateMany({}, newValues)
-//           .then((result) => {
-//              playersDb
-//                 .find({}, { password: 0, createdAt: 0, updatedAt: 0, __v: 0 })
-//                 .then((updatedPlayers) => res.status(200).json(updatedPlayers))
-//                 .catch((err) => res.status(500).json({ error: err.message }));
-//           })
-//           .catch((err) => res.status(500).json({ error: err.message }));
-//     }
-//  }
 export function httpDeleteOneUser(req, res) {
    findOneUserByFilter(req.params.param)
       .then((foundUser) => {
@@ -285,7 +281,10 @@ export async function addToWishlist(req, res) {
  export function httpListWishlist(req, res) {
    const userId = req.user.id;
    userDb.findById(userId)
-     .populate('wishlist')
+   .populate({
+      path: 'wishlist',
+      populate: { path: 'services' } // Populate the 'services' field within 'wishlist'
+    })
      .then((user) => {
        if (!user) {
          res.status(404).json({ error: 'User not found' });
@@ -385,7 +384,15 @@ export function userFormat(user) {
 }
 
 
+function getPublicIdFromImageUrl(imageUrl) {
 
+   const regex = /\/([^/]+)\.\w+$/;
+   const matches = imageUrl.match(regex);
+   if (matches && matches.length > 1) {
+     return matches[1]; // Extracted public ID
+   }
+   return null; // Public ID not found
+ }
 
 
 

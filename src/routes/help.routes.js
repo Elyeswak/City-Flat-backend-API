@@ -25,7 +25,7 @@ import { ensureAdmin, ensureUser } from '../middlewares/authorization-handler.js
 //getone
 //delete one
     HelpRouter
-    .route('/messages/:param')
+    .route('/messages/getDel/:param')
        .get(getHelpMessageById)
        .delete(ensureAdmin,deleteHelpMessage);
 

@@ -67,6 +67,7 @@ import {
    httpAdminAcceptOrder,
    httpAdminDeclineOrder,
    getAcceptedBookings,
+   httpUserDeclineOrder,
 } from '../controllers/reservation.controller.js';
 
 import {
@@ -93,7 +94,7 @@ userRouter.route('/login').post(validateLogin, httpLoginUser);
 userRouter
    .route('/:param')
    .get(httpGetOneUser)
-   .put(ensureUser, httpUpdateOneUser)
+   .put(ensureUser,multer("img", 512 * 1024), httpUpdateOneUser)
    .delete(ensureUser, httpDeleteOneUser);
 
 userRouter
@@ -115,8 +116,7 @@ userRouter
    .post(
       ensureAdmin,
       multer("img", 512 * 1024),
-
-      httpAddAppartment,
+       httpAddAppartment,
 
 
    );
@@ -223,6 +223,10 @@ userRouter
 userRouter
    .route('/order/adminDecline/:param')
    .delete(ensureAdmin, httpAdminDeclineOrder);
+userRouter
+ .route('/order/userDecline/:param')
+ .delete(ensureUser,httpUserDeclineOrder);
+
 userRouter
    .route("/webhooks/stripe")
    .post(stripeWebhookMiddleware, (req, res) => {

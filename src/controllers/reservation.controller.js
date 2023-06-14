@@ -8,7 +8,7 @@ import cardM from '../models/userCards.model.js';
 import serviceDb from '../models/service.model.js';
 import { validationResult } from 'express-validator';
 import { findOneUserByFilter, userFormat } from '../controllers/user.controller.js';
-import { sendReservationEmail, sendDeclineReservationEmail, sendUserReservationEmail } from '../controllers/mailling.controller.js';
+import { sendReservationEmail, sendDeclineReservationEmail, sendUserReservationEmail ,sendUserDeclinedReservationEmail} from '../controllers/mailling.controller.js';
 import { findOneAppartByFilter } from '../controllers/apartment.controller.js';
 import { createCustomer, addCard, httpMakePayment, createCheckoutSession } from '../controllers/stripePayment.controller.js';
 import { updateBookedDates } from "../controllers/apartment.controller.js";
@@ -35,7 +35,14 @@ export async function httpGetMyReservations(req, res) {
          .find()
          .populate({
             path: 'Order',
-            populate: { path: 'User', model: 'User' }
+            populate: [
+               { path: 'User', model: 'User' },
+               { path: 'appartment', model: 'Appartment',
+            
+               populate: { path: 'services', model: 'Service' }
+            },
+            { path: 'services', model: 'Service' }
+             ]
          })
          .populate('Card');
 
@@ -286,7 +293,11 @@ export function httpCreateReservation(req, res) {
                                                          console.log(orderF);
 
                                                          findOneReservationByFilter(result._id);
-                                                         updateBookedDates(newReservation.Order.appartment.id, newReservation.Order.checkIn, newReservation.Order.checkOut, res);
+                                                         console.log(newReservation.Order.checkIn);
+                                                         console.log(newReservation.Order.checkOut);
+                                                         
+                                                             updateBookedDates(newReservation.Order.appartment.id, newReservation.Order.checkIn, newReservation.Order.checkOut, res);
+                                                         
                                                          sendUserReservationEmail(foundUser, newReservation, newReservation.Order.totalPrice);
 
 
@@ -513,6 +524,39 @@ export function httpAdminDeclineOrder(req, res) {
       })
       .catch((err) => res.status(500).json({ error: err.message }));
 }
+
+export function httpUserDeclineOrder(req, res) {
+   findOneOrderByFilter(req.params.param)
+     .then((foundOrder) => {
+       if (!foundOrder) {
+         return res.status(404).json({ message: 'Order not found!' });
+       } else {
+         if (foundOrder.state === 'ACCEPTED' || foundOrder.state === 'DECLINED') {
+           return res.status(400).json({
+             message: 'Order already accepted or declined!',
+           });
+         } else {
+           orderDb
+             .deleteOne({ _id: foundOrder._id })
+             .then(() => {
+               sendUserDeclinedReservationEmail(foundOrder.User, foundOrder, foundOrder.appartment);
+ 
+               const notification = {
+                 user: foundOrder.User._id,
+                 message: `Your reservation for ${foundOrder.appartment.name} (reservation code: ${foundOrder.id}) has been declined sucessfully.`,
+               };
+               createNotification(notification);
+ 
+               res.status(200).json({
+                 message: `${foundOrder.id} declined and deleted successfully`,
+               });
+             })
+             .catch((err) => res.status(500).json({ error: err.message }));
+         }
+       }
+     })
+     .catch((err) => res.status(500).json({ error: err.message }));
+ }
 
 export function httpAdminAcceptOrder(req, res) {
 

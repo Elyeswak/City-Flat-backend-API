@@ -29,8 +29,8 @@ paypalRouter
     });
 
 paypalRouter
-.route('/pay')
-    .post(ensureUser,PaypalPay);
+.route('/pay/:param')
+    .get(PaypalPay);
 
 
 export { paypalRouter };

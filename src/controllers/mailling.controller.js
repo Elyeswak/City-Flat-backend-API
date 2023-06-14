@@ -264,7 +264,41 @@ check your CityFlat App`;
       console.log(`Email sent to ${user.email} successfully`);
    });
 }
+export function sendUserDeclinedReservationEmail(user,order,appartment) {
+   const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+         user: process.env.EMAIL,
+         pass: process.env.PASSWORD,
+      },
+   });
+  
 
+   const template = handlebars.compile(emailReservationTemplateSource);
+   const title = 'CityFlat Reservation feedback';
+   const message = `Hi there ${user.name}, you have declined your reservation for  ${appartment.name}.
+ reservation code is : ${order.code}.
+check your CityFlat App`;
+
+   const htmlToSend = template({
+      title: title,
+      message: message,
+      code: order.name,
+   });
+   const mailOptions = {
+      from: process.env.EMAIL,
+      to: user.email,
+      subject: 'CityFlat Reservation feedback',
+      html: htmlToSend,
+   };
+   transporter.sendMail(mailOptions, (err, info) => {
+      if (err) {
+         console.log(err);
+      } else {
+      }
+      console.log(`Email sent to ${user.email} successfully`);
+   });
+}
 
 function sendResetPasswordEmail(user) {
    const transporter = nodemailer.createTransport({

@@ -32,7 +32,7 @@ const AppartmentSchema = new Schema(
     bookedDates: [{ start: Date, end: Date }],
     location: {
       type: String,
-      required: "Location is required",
+      required: false,
     },
     type: {
       type: String,

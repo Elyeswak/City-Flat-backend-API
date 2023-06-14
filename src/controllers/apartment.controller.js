@@ -2,45 +2,48 @@ import mongoose from 'mongoose';
 import apartmentDb from '../models/appartment.model.js';
 import { validationResult } from 'express-validator';
 import orderModel from '../models/order.model.js';
-
+import { uploadMultipleImages, updateMultipleImages } from './cloudinary.controller.js';
 
 //add apartment
 export function httpAddAppartment(req, res) {
-    if (!validationResult(req).isEmpty()) {
-        res.status(400).json({ error: validationResult(req).array() });
-    } else {
-        apartmentDb
-            .findOne({})
-            .or([
-                { name: req.body.name },
+  if (!validationResult(req).isEmpty()) {
+    res.status(400).json({ error: validationResult(req).array() });
+  } else {
+    apartmentDb
+      .findOne({})
+      .or([{ name: req.body.name }])
+      .then(async (exists) => {
+        if (exists) {
+          res.status(409).json({ message: 'Appartment exists already!' });
+        } else {
+          const newAppartment = req.body;
 
-            ])
-            .then((exists) => {
-                if (exists) {
-                    res.status(409).json({ message: 'Appartment exists already!' });
-                } else {
-                    const newAppartment = req.body;
+         console.log(newAppartment);
 
-                    // newAppartment.name = newAppartment.name.toLowerCase();
+          if (req.files && req.files.length > 0) {
+            const files = req.files.map((file) => file.path);
+            try {
+              const uploadedImages = await uploadMultipleImages(files);
+              newAppartment.img = uploadedImages;
+            } catch (error) {
+              return res.status(500).json({ error: "error.message 1" });
+            }
+          }
 
-                    if (req.file) {
-                     newAppartment.img = '../public/images/' + req.file.filename;
-                 }
-                    apartmentDb
-                        .create(newAppartment)
-                        .then((result) => {
-                            findOneAppartByFilter(result._id)
-                                .then((register) => res.status(201).json(appartFormat(register)))
-                                .catch((err) =>
-                                    res.status(500).json({ error: err.message })
-                                );
-                        })
-                        .catch((err) => res.status(500).json({ error: err.message }));
-                }
+          apartmentDb
+            .create(newAppartment)
+            .then((result) => {
+              findOneAppartByFilter(result._id)
+                .then((register) => res.status(201).json(appartFormat(register)))
+                .catch((err) => res.status(500).json({ error: " 2" }));
             })
-            .catch((err) => res.status(500).json({ error: err.message }));
-    }
+            .catch((err) => res.status(500).json({ error: "err.3" }));
+        }
+      })
+      .catch((err) => res.status(500).json({ error:" err.message 3" }));
+  }
 }
+
 //get all appartments
 export function httpGetAllApparts(req, res) {
     apartmentDb
@@ -172,7 +175,7 @@ export function httpDeleteOneAppart(req, res) {
 
 
 
- export async function updateBookedDates(apartmentId, checkInDate, checkOutDate,res) {
+ export async function updateBookedDates(apartmentId, checkInDate, checkOutDate, res) {
   try {
     const apartment = await apartmentDb.findById(apartmentId);
 
@@ -198,9 +201,9 @@ export function httpDeleteOneAppart(req, res) {
       );
     });
 
-    // If there is overlap, return a conflict response
     if (overlap) {
-      return ;
+      console.log('Overlap detected');
+      return res.status(400).json({ error: 'Selected dates overlap with existing bookings' });
     }
 
     // Add the booked dates to the apartment document
@@ -211,15 +214,14 @@ export function httpDeleteOneAppart(req, res) {
     apartment.bookedDates = apartment.bookedDates.filter(({ end }) => new Date(end) > today);
 
     // Save the apartment document
-    await apartment.save();
-    console.log(apartment);
+    const updatedApartment = await apartment.save();
+    console.log('Apartment updated:', updatedApartment);
 
     // Return a success response
-    //return res.status(200).json(apartment);
+    
   } catch (error) {
     console.error(error);
-    // Return an error response
-    
+  
   }
 }
 

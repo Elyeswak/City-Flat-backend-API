@@ -204,6 +204,58 @@ export function httpGetAllApparts(req, res) {
   }
 }
 
+
+export async function updateBookedDates2(apartmentId, checkInDate, checkOutDate,res) {
+   try {
+     const apartment = await apartmentDb.findById(apartmentId);
+ 
+     if (!apartment) {
+       throw new Error('Apartment not found');
+     }
+ 
+     // Convert check-in and check-out dates to ISO strings
+     const isoCheckInDate = String(checkInDate);
+     const isoCheckOutDate = String(checkOutDate);
+ 
+     // Check if the new booked dates overlap with any existing booked dates
+     const overlap = apartment.bookedDates.some(({ start, end }) => {
+       const existingStart = new Date(start);
+       const existingEnd = new Date(end);
+       const newStart = new Date(isoCheckInDate);
+       const newEnd = new Date(isoCheckOutDate);
+ 
+       return (
+         (newStart >= existingStart && newStart < existingEnd) ||
+         (newEnd > existingStart && newEnd <= existingEnd) ||
+         (newStart <= existingStart && newEnd >= existingEnd)
+       );
+     });
+ 
+     // If there is overlap, return a conflict response
+     if (overlap) {
+       return ;
+     }
+ 
+     // Add the booked dates to the apartment document
+     apartment.bookedDates.push({ start: isoCheckInDate, end: isoCheckOutDate });
+ 
+     // Remove any booked dates that have already passed
+     const today = new Date();
+     apartment.bookedDates = apartment.bookedDates.filter(({ end }) => new Date(end) > today);
+ 
+     // Save the apartment document
+     await apartment.save();
+     console.log(apartment);
+ 
+     // Return a success response
+     //return res.status(200).json(apartment);
+   } catch (error) {
+     console.error(error);
+     // Return an error response
+     return res.status(500).json({ message: 'An error occurred while updating the booked dates' });
+   }
+ }
+
  
 export async function findOneAppartByFilter(appartFilter) {
     var appartId = null;

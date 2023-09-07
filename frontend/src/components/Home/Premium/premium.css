@@ -1,0 +1,128 @@
+.premium__page {
+    background-color: black;
+    min-height: 100%;
+padding-bottom: 3%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.title__premium {
+    margin: 0;
+    padding-top: 3%;
+    font-size: 40px;
+    font-weight: 400;
+    font-family: "Spectral SC";
+    color: #FCD2B4;
+}
+
+.title {
+    margin: 0;
+}
+
+.line-in-middle {
+
+    height: 35px;
+    background: linear-gradient(to left,
+            transparent 0%,
+            transparent calc(50% - 0.81px),
+            #FCD2B4 calc(50% - 0.8px),
+            #FCD2B4 calc(50% + 0.8px),
+            transparent calc(50% + 0.81px),
+            transparent 100%);
+}
+
+.premium__content {
+    padding: 3%;
+}
+
+.premium__description {
+    width: 50%;
+    float: left;
+
+}
+
+.description__image {
+    width: 50%;
+    float: left;
+
+}
+
+.side__line {
+    width: 10%;
+    float: left;
+    padding: 20px;
+    height: 350px;
+    margin: 0 20px;
+    background: linear-gradient(to left,
+            transparent 0%,
+            transparent calc(50% - 0.81px),
+            #FCD2B4 calc(50% - 0.8px),
+            #FCD2B4 calc(50% + 0.8px),
+            transparent calc(50% + 0.81px),
+            transparent 100%);
+}
+
+.description__title p {
+    margin: 0;
+    font-size: x-large;
+    font-weight: 400;
+    font-family: "Spectral SC";
+    color: #FCD2B4;
+}
+
+.description__text P {
+   text-align: left; 
+   font-family: "Spectral SC";
+   
+   font-size: small;
+}
+
+.discover__button {
+    font-family: "Spectral SC" !important;
+}
+
+.description__content {
+    color: bisque;
+    text-align: left;
+    line-height: 26pt;
+    width: 70%;
+    float: left;
+    padding: 20px;
+}
+
+.description__image {
+    position: relative;
+    display: flex;
+}
+
+.description__image img {
+    
+    margin-left: auto;
+    margin-right: auto;
+    width: 85%;
+    border-radius: 3px;
+    z-index: 2;
+  }
+
+@media screen and (max-width: 780px) {
+    .title-premium {
+        font-size-adjust: ex-height 0.58;
+    }
+
+    @media screen and (max-width:780px) {
+
+        .description__image {
+        justify-content: center;
+        width: 100%;
+        padding-bottom: 6%;
+        }
+
+        .premium__description {
+            width: 100%;
+            float: right;
+        }
+    }
+
+}

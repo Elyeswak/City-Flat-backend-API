@@ -1,0 +1,84 @@
+@import url("https://fonts.googleapis.com/css2?family=Spectral+SC:wght@400;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Alegreya:wght@400&display=swap");
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@600&display=swap');
+
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+}
+
+body {
+  margin: 0;
+  line-height: normal;
+}
+
+:root {
+  /* fonts */
+  --font-alethia-pro: "Alethia Pro";
+  --font-spectral-sc: "Spectral SC";
+  --font-alegreya: Alegreya;
+
+  /* font sizes */
+  --font-size-4xs: 8px;
+  --font-size-3xs: 10px;
+  --font-size-2xs: 11px;
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-base: 20px;
+  --font-size-lg: 24px;
+  --font-size-xl: 32px;
+  --font-size-2xl: 36px;
+  --font-size-3xl: 40px;
+  --font-size-4xl: 60px;
+
+  /* Colors */
+  --color-white: #fff;
+  --color-peachpuff: #fcd2b4;
+  --color-black: #000;
+  --color-saddlebrown: #84461a;
+  --color-darkslateblue: #003a7f;
+  --color-gray: #969696;
+  --color-brown: #3a1e0a;
+
+  /* border radiuses */
+  --br-md: 3px;
+}
+

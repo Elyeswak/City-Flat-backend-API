@@ -76,6 +76,7 @@ and renting apartments.
 
 Design Link: https://24bey.com/project/City%20Flat
 
+Frontend repo Link: https://github.com/elyk48/CityFlat_FrontEnd
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 

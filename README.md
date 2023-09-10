@@ -75,6 +75,7 @@ cutting-edge technologies ensures optimal user experience and efficiency in sear
 and renting apartments.
 
 Design Link: https://24bey.com/project/City%20Flat
+Front-end repo link: Design Link: https://24bey.com/project/City%20Flat
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

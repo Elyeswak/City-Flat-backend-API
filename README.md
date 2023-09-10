@@ -74,6 +74,8 @@ mobile application that addresses the needs of apartment rental in Germany. Its 
 cutting-edge technologies ensures optimal user experience and efficiency in searching
 and renting apartments.
 
+Design Link: https://24bey.com/project/City%20Flat
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
